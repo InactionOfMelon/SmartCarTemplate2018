@@ -1,0 +1,1 @@
+【驱动安装及keil使用】win10 stm32 stlink驱动安装，检测不到芯片，下载不了程序 https://blog.csdn.net/m0_37140588/article/details/80065307
