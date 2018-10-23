@@ -33,3 +33,4 @@ smartcar2018\main.o: ../Inc/spi.h
 smartcar2018\main.o: ../Inc/tim.h
 smartcar2018\main.o: ../Inc/usart.h
 smartcar2018\main.o: ../Inc/gpio.h
+smartcar2018\main.o: ../Src/motor.h

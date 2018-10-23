@@ -46,7 +46,7 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -65,7 +65,6 @@ void user_pwm_setvalue ( uint16_t value );
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /**
@@ -113,21 +112,18 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int pwm_value=800,step=100;
-  while (1)
+  int32_t pwm_pulse = 600;
+	cpMotor cur = MOTORA_F;
+	pwm_set_pulse_single(cur, pwm_pulse);
+	while (1)
   {
-
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-    HAL_Delay ( 100 ) ;
-    //if ( pwm_value == 0) step = 100 ;
-    //if ( pwm_value == 2000) step = -100;
-    //pwm_value += step ;
-    user_pwm_setvalue ( pwm_value ) ;
+    HAL_Delay(100);
   }
+	//while (cur);//
   /* USER CODE END 3 */
-
 }
 
 /**
@@ -181,22 +177,8 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void user_pwm_setvalue ( uint16_t value )
-{
-  TIM_OC_InitTypeDef sConfigOC ;
-  sConfigOC .OCMode = TIM_OCMODE_PWM1;
-  sConfigOC . Pulse = value ;
-  sConfigOC . OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC . OCFastMode = TIM_OCFAST_DISABLE;
-  HAL_TIM_PWM_ConfigChannel(&htim1 , &sConfigOC , TIM_CHANNEL_2) ;
-  HAL_TIM_PWM_Start(&htim1 , TIM_CHANNEL_2) ;
-  HAL_TIM_PWM_ConfigChannel(&htim1 , &sConfigOC , TIM_CHANNEL_3) ;
-  HAL_TIM_PWM_Start(&htim1 , TIM_CHANNEL_3) ;
-  HAL_TIM_PWM_ConfigChannel(&htim3 , &sConfigOC , TIM_CHANNEL_2) ;
-  HAL_TIM_PWM_Start(&htim3 , TIM_CHANNEL_2) ;
-  HAL_TIM_PWM_ConfigChannel(&htim3 , &sConfigOC , TIM_CHANNEL_3) ;
-  HAL_TIM_PWM_Start(&htim3 , TIM_CHANNEL_3) ;
-}
+
+
 /* USER CODE END 4 */
 
 /**
