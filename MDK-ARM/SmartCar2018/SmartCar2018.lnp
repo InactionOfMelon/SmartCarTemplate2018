@@ -8,6 +8,7 @@
 "smartcar2018\usart.o"
 "smartcar2018\stm32f1xx_it.o"
 "smartcar2018\stm32f1xx_hal_msp.o"
+"smartcar2018\motor.o"
 "smartcar2018\stm32f1xx_hal_gpio_ex.o"
 "smartcar2018\stm32f1xx_hal_i2c.o"
 "smartcar2018\stm32f1xx_hal_spi.o"
