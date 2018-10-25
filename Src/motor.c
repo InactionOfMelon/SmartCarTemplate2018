@@ -50,6 +50,7 @@ void __oc_init_pulse(TIM_OC_InitTypeDef * psConfigOC, uint16_t pulse)
  */
 void __pwm_set(const cpMotor motor, TIM_OC_InitTypeDef * psConfigOC)
 {
+	HAL_TIM_PWM_Stop(motor->phtim, motor->channel);
 	HAL_TIM_PWM_ConfigChannel(motor->phtim , psConfigOC, motor->channel);
 	HAL_TIM_PWM_Start(motor->phtim, motor->channel);
 }

@@ -112,15 +112,47 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int32_t pwm_pulse = 600;
+	int T0 = 500, T1 = 1000, T2 = 50;
+  int32_t P0 = 800, P1 = 400, P2 = 2000;
 	cpMotor cur = MOTORA_F;
-	pwm_set_pulse_single(cur, pwm_pulse);
+	for (int i = 0; i < 4; ++i)
+	{
+		pwm_set_pulse_F(P0);
+		HAL_Delay(1000);
+		pwm_set_pulse_F(0);
+		HAL_Delay(1000);
+		pwm_set_pulse_right_F(2000);
+		HAL_Delay(380);
+		pwm_set_pulse_F(0);
+		HAL_Delay(1000);
+	}
+/*		pwm_set_pulse_F(P0);
+		HAL_Delay(T0);
+		pwm_set_pulse_left_F(650);
+		pwm_set_pulse_right_F(1200);
+		HAL_Delay(T2);
+		pwm_set_pulse_left_F(500);
+		pwm_set_pulse_right_F(1600);
+		HAL_Delay(T2);
+		pwm_set_pulse_left_F(P1);
+		pwm_set_pulse_right_F(P2);
+		HAL_Delay(T1);
+		pwm_set_pulse_left_F(500);
+		pwm_set_pulse_right_F(1600);
+		HAL_Delay(T2);
+		pwm_set_pulse_left_F(650);
+		pwm_set_pulse_right_F(1200);
+		HAL_Delay(T2);
+		pwm_set_pulse_F(P0);
+	}*/
+	pwm_set_pulse_F(0);
 	while (1)
   {
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
     HAL_Delay(100);
+		
   }
 	//while (cur);//
   /* USER CODE END 3 */
