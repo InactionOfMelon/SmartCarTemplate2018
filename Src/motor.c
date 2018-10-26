@@ -143,6 +143,36 @@ void pwm_set_pulse_R(uint16_t pulse)
 	__pwm_set(MOTORD_R, &sConfigOC);
 }
 
+/**
+ * point turn clockwise or anticlockwise
+ * @param uint16_t pulse PointTurnDirDef dir
+ */
+void point_turn(uint16_t pulse,PointTurnDirDef dir)
+{
+	if (dir==ANTICLOCKWISE){
+		pwm_set_pulse_right_F(pulse);
+		pwm_set_pulse_left_R(pulse);
+	}else if (dir==CLOCKWISE){
+		pwm_set_pulse_right_R(pulse);
+		pwm_set_pulse_left_F(pulse);
+	}
+}
+
+/**
+ * set to stop all pwm 
+ */
+void set_stop(void)
+{
+	HAL_TIM_PWM_Stop(MOTORA_F->phtim, MOTORA_F->channel);
+	HAL_TIM_PWM_Stop(MOTORB_F->phtim, MOTORB_F->channel);
+	HAL_TIM_PWM_Stop(MOTORC_F->phtim, MOTORC_F->channel);
+	HAL_TIM_PWM_Stop(MOTORD_F->phtim, MOTORD_F->channel);
+	HAL_TIM_PWM_Stop(MOTORA_R->phtim, MOTORA_R->channel);
+	HAL_TIM_PWM_Stop(MOTORB_R->phtim, MOTORB_R->channel);
+	HAL_TIM_PWM_Stop(MOTORC_R->phtim, MOTORC_R->channel);
+	HAL_TIM_PWM_Stop(MOTORD_R->phtim, MOTORD_R->channel);
+}
+
 /* TIM End */
 
 #endif

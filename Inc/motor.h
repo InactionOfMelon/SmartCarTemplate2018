@@ -67,6 +67,28 @@ void pwm_set_pulse_F(uint16_t pulse);
  */
 void pwm_set_pulse_R(uint16_t pulse);
 
+
+/** 
+ *@def point turn direction
+ */
+typedef enum
+{
+  CLOCKWISE=0,
+	ANTICLOCKWISE=1
+} PointTurnDirDef;
+
+/**
+ * point turn clockwise or anticlockwise
+ * @param uint16_t pulse PointTurnDirDef dir
+ */
+
+void point_turn(uint16_t pulse,PointTurnDirDef dir);
+
+/**
+ * set to stop all pwm 
+ */
+void set_stop(void);
+
 /* TIM End */
 
 #ifdef __cplusplus
