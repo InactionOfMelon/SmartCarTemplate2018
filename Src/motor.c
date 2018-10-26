@@ -161,7 +161,7 @@ void point_turn(uint16_t pulse,PointTurnDirDef dir)
 /**
  * set to stop all pwm 
  */
-void set_stop(void)
+void pwm_set_stop(void)
 {
 	HAL_TIM_PWM_Stop(MOTORA_F->phtim, MOTORA_F->channel);
 	HAL_TIM_PWM_Stop(MOTORB_F->phtim, MOTORB_F->channel);

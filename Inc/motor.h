@@ -87,7 +87,7 @@ void point_turn(uint16_t pulse,PointTurnDirDef dir);
 /**
  * set to stop all pwm 
  */
-void set_stop(void);
+void pwm_set_stop(void);
 
 /* TIM End */
 

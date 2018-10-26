@@ -117,13 +117,13 @@ int main(void)
 	cpMotor cur = MOTORA_F;
 	point_turn(1200,ANTICLOCKWISE);
 	HAL_Delay(2000);
-	set_stop();
+	pwm_set_stop();
 	
 	HAL_Delay(1000);
 	
 	point_turn(1200,CLOCKWISE);
 	HAL_Delay(2000);
-	set_stop();
+	pwm_set_stop();
 	
 	/*for (int i = 0; i < 4; ++i)
 
