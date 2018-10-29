@@ -125,6 +125,8 @@ int main(void)
 	HAL_Delay(2000);
 	pwm_set_stop();
 	
+	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+	
 	/*for (int i = 0; i < 4; ++i)
 
 		pwm_set_pulse_F(P0);
