@@ -112,7 +112,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	int T0 = 500, T1 = 1000, T2 = 50;
+  /*	int T0 = 500, T1 = 1000, T2 = 50;
   int32_t P0 = 800, P1 = 400, P2 = 2000;
 	cpMotor cur = MOTORA_F;
 	point_turn(1200,ANTICLOCKWISE);
@@ -123,9 +123,9 @@ int main(void)
 	
 	point_turn(1200,CLOCKWISE);
 	HAL_Delay(2000);
-	pwm_set_stop();
+	pwm_set_stop();*/
 	
-	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+	
 	
 	/*for (int i = 0; i < 4; ++i)
 
@@ -161,9 +161,11 @@ int main(void)
 	while (1)
   {
   /* USER CODE END WHILE */
-
+		uint8_t data;
+    HAL_SPI_Receive(&hspi1,&data,1,0xffffff);
+		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
   /* USER CODE BEGIN 3 */
-    HAL_Delay(100);
+    HAL_Delay(100000);
 		
   }
 	//while (cur);//
