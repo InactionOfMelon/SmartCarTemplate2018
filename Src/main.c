@@ -158,12 +158,30 @@ int main(void)
 		pwm_set_pulse_F(P0);
 	}*/
 	//pwm_set_pulse_F(0);
+	
+	
+		/*corner_turn(1200,0,LEFT);
+    HAL_Delay(3000);
+		pwm_set_stop();
+    HAL_Delay(1000);
+		corner_turn(1200,600,LEFT);
+    HAL_Delay(3000);
+		pwm_set_stop();
+    HAL_Delay(1000);
+		corner_turn(1200,1200,LEFT);
+    HAL_Delay(3000);
+		pwm_set_stop();
+		return 0;*/
+		
+		/*differ_turn(600,1500,RIGHT);
+		return 0;*/
+		
 	while (1)
   {
   /* USER CODE END WHILE */
-		uint8_t data;
+		/*uint8_t data;
     HAL_SPI_Receive(&hspi1,&data,1,0xffffff);
-		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);*/
   /* USER CODE BEGIN 3 */
     HAL_Delay(100000);
 		

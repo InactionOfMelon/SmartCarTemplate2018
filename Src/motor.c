@@ -42,6 +42,7 @@ void __oc_init_pulse(TIM_OC_InitTypeDef * psConfigOC, uint16_t pulse)
 	psConfigOC->OCFastMode = TIM_OCFAST_DISABLE;
 }
 
+
 /**
  * sets config for a single motor
  * @access private
@@ -158,6 +159,43 @@ void point_turn(uint16_t pulse,PointTurnDirDef dir)
 	}
 }
 
+
+/**
+ * corner turn left or right
+ * Usually InsidePulse should be 0.Or be positive for smaller radii.
+ * @param uint16_t OutsidePulse uint16_t InsidePulse TurnDir dir
+ */
+void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
+{
+	if (dir==LEFT){
+		pwm_set_pulse_right_F(OutsidePulse);
+		pwm_set_pulse_left_R(InsidePulse);
+	}else if (dir==RIGHT){
+		pwm_set_pulse_left_F(OutsidePulse);
+		pwm_set_pulse_right_R(InsidePulse);
+	}
+}
+
+
+/**
+ * turn left or right with differential speed
+ * @param uint16_t Pulse,uint16_t differ,TurnDirDef dir
+ */
+void differ_turn(uint16_t Pulse,uint16_t differ,TurnDirDef dir)
+{
+	differ=(uint16_t)((float)differ/10000*(htim1.Init.Period+1));
+	uint16_t OutsidePulse=Pulse,InsidePulse=Pulse-differ;
+	if (InsidePulse<0) InsidePulse=0;
+	if (dir==LEFT){
+		pwm_set_pulse_right_F(OutsidePulse);
+		pwm_set_pulse_left_F(InsidePulse);
+	}else if (dir==RIGHT){
+		pwm_set_pulse_left_F(OutsidePulse);
+		pwm_set_pulse_right_F(InsidePulse);
+	}
+}
+
+
 /**
  * set to stop all pwm 
  */
@@ -172,7 +210,6 @@ void pwm_set_stop(void)
 	HAL_TIM_PWM_Stop(MOTORC_R->phtim, MOTORC_R->channel);
 	HAL_TIM_PWM_Stop(MOTORD_R->phtim, MOTORD_R->channel);
 }
-
 /* TIM End */
 
 #endif

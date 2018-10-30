@@ -84,6 +84,32 @@ typedef enum
 
 void point_turn(uint16_t pulse,PointTurnDirDef dir);
 
+
+/** 
+ *@def direction(left or right)
+ */
+
+typedef enum
+{
+  LEFT=0,
+	RIGHT=1
+} TurnDirDef;
+
+/**
+ * point turn left or right with differential speed
+ * @param uint16_t OutsidePulse uint16_t InsidePulse TurnDirDef dir
+ */
+
+void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir);
+
+
+/**
+ * turn left or right with differential speed
+ * @param uint16_t Pulse,uint16_t differ,TurnDirDef dir
+ */
+void differ_turn(uint16_t Pulse,uint16_t differ,TurnDirDef dir);
+	
+
 /**
  * set to stop all pwm 
  */
