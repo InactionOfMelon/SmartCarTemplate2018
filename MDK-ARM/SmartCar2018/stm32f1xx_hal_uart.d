@@ -7,13 +7,13 @@ smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Include/core_cm3.h
-smartcar2018\stm32f1xx_hal_uart.o: C:\environment\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+smartcar2018\stm32f1xx_hal_uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Include/core_cmInstr.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Include/core_cmFunc.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
-smartcar2018\stm32f1xx_hal_uart.o: C:\environment\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+smartcar2018\stm32f1xx_hal_uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 smartcar2018\stm32f1xx_hal_uart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h

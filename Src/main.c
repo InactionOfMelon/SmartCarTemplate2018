@@ -179,11 +179,26 @@ int main(void)
 	while (1)
   {
   /* USER CODE END WHILE */
-		/*uint8_t data;
-    HAL_SPI_Receive(&hspi1,&data,1,0xffffff);
-		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);*/
+		uint8_t data[2];
+		data[0] = 233; data[1] = 233;
+		HAL_SPI_MspInit(&hspi1);
+    while (HAL_SPI_Receive(&hspi1,data,2,100)!=HAL_OK);
+		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+		HAL_Delay(10000);
+		if (data[0] == 0)
+		{
+			HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_SET);
+			pwm_set_pulse_left_R(800);
+		}
+		else if (data[0] == 1)
+		{
+			HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+			pwm_set_pulse_right_F(800);
+		}
+		HAL_SPI_MspDeInit(&hspi1);
+		
   /* USER CODE BEGIN 3 */
-    HAL_Delay(100000);
+    HAL_Delay(10000);
 		
   }
 	//while (cur);//
