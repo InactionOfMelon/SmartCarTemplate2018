@@ -1,23 +1,33 @@
 import env
+import spidev
+
+spi = spidev.SpiDev()
+spi.open(0, 0)
 
 def stop():
-	pass
+	x = [102, 0, 0, 0, 0]
+	spi.xfer2(x)
 
 def forward(speed):
-	pass
+	x = [101, 0, 0, 0, 0]
+	spi.xfer2(x)
 
 def backward(speed):
-	pass
+	x = [103, 0, 0, 0, 0]
+	spi.xfer2(x)
 
 def left(speed_diff):
-	pass
-
+	x = [104, 0, 0, 0, 0]
+	spi.xfer2(x)
 
 def right(speed_diff):
-	pass
+	x = [105, 0, 0, 0, 0]
+	spi.xfer2(x)
 
 def clockwise():
-	pass
+	x = [107, 0, 0, 0, 0]
+	spi.xfer2(x)
 
 def anticlockwise():
-	pass
+	x = [106, 0, 0, 0, 0]
+	spi.xfer2(x)

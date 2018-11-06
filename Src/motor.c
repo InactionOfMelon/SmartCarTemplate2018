@@ -183,7 +183,7 @@ void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
  */
 void differ_turn(uint16_t Pulse,uint16_t differ,TurnDirDef dir)
 {
-	differ=(uint16_t)((float)differ/10000*Pulse);
+	differ=(uint16_t)((float)differ/10000*(htim1.Init.Period+1));
 	uint16_t OutsidePulse=Pulse,InsidePulse=Pulse-differ;
 	if (InsidePulse<0) InsidePulse=0;
 	if (dir==LEFT){
