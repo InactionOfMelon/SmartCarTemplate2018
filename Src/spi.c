@@ -152,15 +152,20 @@ void SPI_Receive(void)
 	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
   while (HAL_SPI_Receive(&hspi1,data,5,100)!=HAL_OK);
 	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
+  uint16_t g = (data[2] << 8) | data[1];
 	switch (data[0])
 	{
-		case 101: pwm_set_pulse_F(600); break;
+		case 101: pwm_set_stop(); pwm_set_pulse_F(600); break;
 		case 102: pwm_set_stop(); break;
-		case 103: pwm_set_pulse_R(600); break;
-		case 104: corner_turn(1200, 0, LEFT); break;
-		case 105: corner_turn(1200, 0, RIGHT); break;
-		case 106: point_turn(1200, ANTICLOCKWISE); break;
-		case 107: point_turn(1200, CLOCKWISE); break;
+		case 103: pwm_set_stop(); pwm_set_pulse_R(600); break;
+		case 104: pwm_set_stop(); corner_turn(1200, 0, LEFT); break;
+		case 105: pwm_set_stop(); corner_turn(1200, 0, RIGHT); break;
+		case 106: pwm_set_stop(); point_turn(1200, ANTICLOCKWISE); break;
+		case 107: pwm_set_stop(); point_turn(1200, CLOCKWISE); break;
+    case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
+    case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
+    case 110: pwm_set_stop(); differ_turn(1200, g, LEFT); break;
+    case 111: pwm_set_stop(); differ_turn(1200, g, RIGHT); break;
 	}
 	HAL_SPI_MspDeInit(&hspi1);
 	/*}

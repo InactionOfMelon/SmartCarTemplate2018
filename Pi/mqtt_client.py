@@ -28,6 +28,15 @@ def mqtt_on_message(client,	userdata, msg):
 			car.anticlockwise()
 		elif msg.payload[0:5] == 'other':
 			pass
+			#forward()
+			#forward_param(uint16_t)
+			#backward()
+			#backward_param(uint16_t)
+			#left
+			#left_param(uint16_t)
+			#right
+			#right_param(uint16_t)
+
 	print("%s: %s" % (msg.topic, msg.payload))
 
 client = mqtt.Client()
