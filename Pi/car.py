@@ -5,15 +5,15 @@ spi = spidev.SpiDev()
 spi.open(0, 0)
 
 def stop():
-	x = [102, 0, 0, 0, 0]
+	x = [102, 102, 102, 102, 102]
 	spi.xfer2(x)
 
 def forward(speed):
-	x = [101, 0, 0, 0, 0]
+	x = [101, 101, 101, 101, 101]
 	spi.xfer2(x)
 
 def backward(speed):
-	x = [103, 0, 0, 0, 0]
+	x = [103, 103, 103, 103, 103]
 	spi.xfer2(x)
 
 def left(speed_diff):

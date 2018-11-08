@@ -176,6 +176,8 @@ int main(void)
 		/*differ_turn(600,1500,RIGHT);
 		return 0;*/
 		
+		//SPI_Receive();
+		
 	while (1)
   {
   /* USER CODE END WHILE */
@@ -183,8 +185,11 @@ int main(void)
 		data[0] = 233; data[1] = 233;
 		HAL_SPI_MspInit(&hspi1);
     	while (HAL_SPI_Receive(&hspi1,data,2,100)!=HAL_OK);
-		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+		if (data[0] == 1) HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+		if (data[1] == 1) HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_SET);
 		HAL_Delay(10000);
+		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_RESET);
 		if (data[0] == 0)
 		{
 			HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_SET);
@@ -192,14 +197,14 @@ int main(void)
 		}
 		else if (data[0] == 1)
 		{
-			HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+			HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
 			pwm_set_pulse_right_F(800);
 		}
 		HAL_SPI_MspDeInit(&hspi1);*/
 		
   /* USER CODE BEGIN 3 */
   	SPI_Receive();
-    HAL_Delay(100);
+		HAL_Delay(3000);
   }
 	//while (cur);//
   /* USER CODE END 3 */

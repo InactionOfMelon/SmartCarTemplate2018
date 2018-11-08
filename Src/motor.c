@@ -184,14 +184,14 @@ void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
 void differ_turn(uint16_t Pulse,uint16_t differ,TurnDirDef dir)
 {
 	differ=(uint16_t)((float)differ/10000*(htim1.Init.Period+1));
-	uint16_t OutsidePulse=Pulse,InsidePulse=Pulse-differ;
+	int16_t OutsidePulse=Pulse,InsidePulse=Pulse-differ;
 	if (InsidePulse<0) InsidePulse=0;
 	if (dir==LEFT){
-		pwm_set_pulse_right_F(OutsidePulse);
-		pwm_set_pulse_left_F(InsidePulse);
+		pwm_set_pulse_right_F((uint16_t) OutsidePulse);
+		pwm_set_pulse_left_F((uint16_t) InsidePulse);
 	}else if (dir==RIGHT){
-		pwm_set_pulse_left_F(OutsidePulse);
-		pwm_set_pulse_right_F(InsidePulse);
+		pwm_set_pulse_left_F((uint16_t) OutsidePulse);
+		pwm_set_pulse_right_F((uint16_t) InsidePulse);
 	}
 }
 

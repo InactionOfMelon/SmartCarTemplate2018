@@ -30,3 +30,7 @@ smartcar2018\spi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 smartcar2018\spi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 smartcar2018\spi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smartcar2018\spi.o: ../Inc/gpio.h
+smartcar2018\spi.o: ../Inc/motor.h
+smartcar2018\spi.o: ../Inc/i2c.h
+smartcar2018\spi.o: ../Inc/tim.h
+smartcar2018\spi.o: ../Inc/usart.h

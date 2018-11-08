@@ -63,6 +63,8 @@ void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
+void SPI_Receive(void);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

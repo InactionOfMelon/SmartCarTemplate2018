@@ -144,22 +144,31 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
 /**
  * Receive information from berry
  */
-void SPI_Receive()
+void SPI_Receive(void)
 {
-  uint8_t data[5];
+  uint8_t data[5] = {0};
   HAL_SPI_MspInit(&hspi1);
-  while (HAL_SPI_Receive(&hspi1,data,5,10000)!=HAL_OK);
-  switch (data[0])
-  {
-    case 101: pwm_set_pulse_F(600); break;
-    case 102: pwm_set_stop(); break;
-    case 103: pwm_set_pulse_R(600); break;
-    case 104: corner_turn(1200, 0, LEFT); break;
-    case 105: corner_turn(1200, 0, RIGHT); break;
-    case 106: point_turn(1200, ANTICLOCKWISE); break;
-    case 107: point_turn(1200, CLOCKWISE); break;
-  }
-  HAL_SPI_MspDeInit(&hspi1);
+	//HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+  while (HAL_SPI_Receive(&hspi1,data,5,100)!=HAL_OK);
+	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
+	switch (data[0])
+	{
+		case 101: pwm_set_pulse_F(600); break;
+		case 102: pwm_set_stop(); break;
+		case 103: pwm_set_pulse_R(600); break;
+		case 104: corner_turn(1200, 0, LEFT); break;
+		case 105: corner_turn(1200, 0, RIGHT); break;
+		case 106: point_turn(1200, ANTICLOCKWISE); break;
+		case 107: point_turn(1200, CLOCKWISE); break;
+	}
+	HAL_SPI_MspDeInit(&hspi1);
+	/*}
+	else
+	{
+			HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+			HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_SET);
+	}*/
 }
 
 
