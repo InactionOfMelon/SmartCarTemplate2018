@@ -3,6 +3,7 @@ import spidev
 
 spi = spidev.SpiDev()
 spi.open(0, 0)
+spi.max_speed_hz=5000
 
 def stop():
 	x = [102, 102, 102, 102, 102]
