@@ -40,7 +40,7 @@ def mqtt_on_message(client,	userdata, msg):
 			car.anticlockwise()
 		elif msg.payload[0:5] == 'other':
 			pass
-			
+		
 	print("%s: %s" % (msg.topic, msg.payload))
 
 client = mqtt.Client()
