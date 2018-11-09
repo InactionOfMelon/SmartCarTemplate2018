@@ -7,16 +7,17 @@ def __str2int(val, default):
 	return default if val == '' else int(val)
 
 def __mqtt_report(client, msg):
+	print("Status: %s" % msg)
 	client.publish(env.MQTT_TOPIC_STATUS, msg)
 
 def mqtt_on_connect(client, userdata, flags, rc):
 	client.subscribe(env.MQTT_TOPIC_RCCONTROL)
-	client.subscribe(env.MQTT_TOPIC_STATUS)
+#	client.subscribe(env.MQTT_TOPIC_STATUS)
 	__mqtt_report(client, env.MQTT_CONNECT_ERROR[rc])
 	if rc == 0:
 		client.not_connected = False
 	else:
-		print('Reconnecting...')
+		__mqtt_report(client, 'reconnecting...')
 
 def mqtt_on_message(client, userdata, msg):
 	if msg.topic == env.MQTT_TOPIC_RCCONTROL:
