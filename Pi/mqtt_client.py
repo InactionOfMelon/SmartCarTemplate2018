@@ -50,12 +50,10 @@ def mqtt_on_message(client, userdata, msg):
 			pass
 	print("%s: %s" % (msg.topic, msg.payload))
 
+mqtt.Client.not_connected = True
 client = mqtt.Client()
 client.username_pw_set(env.CLIENT_USERNAME, env.CLIENT_PASSWORD)
 client.on_connect = mqtt_on_connect
 client.on_message = mqtt_on_message
-client.not_connected = True
 client.connect(env.MQTT_BROKER)
-while client.not_connected:
-	pass
 client.loop_forever()
