@@ -3,7 +3,7 @@ import spidev
 
 spi = spidev.SpiDev()
 spi.open(0, 0)
-spi.max_speed_hz=5000
+spi.max_speed_hz=500
 
 def forward():
 	x = [101, 0, 0, 0, 0]

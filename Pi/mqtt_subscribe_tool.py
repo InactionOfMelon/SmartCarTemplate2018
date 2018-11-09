@@ -23,4 +23,4 @@ client.username_pw_set(env.CLIENT_USERNAME, env.CLIENT_PASSWORD)
 client.on_connect = mqtt_on_connect
 client.on_message = mqtt_on_message
 client.connect(env.MQTT_BROKER)
-client.loop_start()
+client.loop_forever()

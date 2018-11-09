@@ -29,5 +29,5 @@ while client.not_connected:
 	pass
 
 while True:
-	text = raw_input("publish: ")
+	text = input("publish: ")
 	client.publish(env.MQTT_TOPIC_RCCONTROL, text, 1)
