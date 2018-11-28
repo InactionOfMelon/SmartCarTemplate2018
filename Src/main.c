@@ -54,6 +54,10 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
+const uint8_t SPI_SIZE = 5;
+
+uint8_t data[SPI_SIZE];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -178,13 +182,26 @@ int main(void)
 		
 		//SPI_Receive();
 		
+	//pwm_set_pulse_F(600);
+	
+	//HAL_Delay(1500);
+	//pwm_set_stop();
+
+	
+	HAL_SPI_Receive_IT(&hspi1, data, SPI_SIZE);
+	
+
 	while (1)
   {
   /* USER CODE END WHILE */
 		
   /* USER CODE BEGIN 3 */
-  	SPI_Receive();
+		
+		SPI_Receive(data, SPI_SIZE);
+	
   }
+	
+	
 	//while (cur);//
   /* USER CODE END 3 */
 }
@@ -240,6 +257,15 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+	HAL_SPI_Receive_IT(&hspi1, data, SPI_SIZE);
+  /* NOTE : This function should not be modified, when the callback is needed,
+            the HAL_SPI_RxCpltCallback should be implemented in the user file
+  */
+}
 
 
 /* USER CODE END 4 */

@@ -49,12 +49,12 @@ void __oc_init_pulse(TIM_OC_InitTypeDef * psConfigOC, uint16_t pulse)
  * @param const cpMotor motor
  * @param TIM_OC_InitTypeDef * psConfigOC
  */
-/*void __pwm_set(const cpMotor motor, TIM_OC_InitTypeDef * psConfigOC)
+void __pwm_set(const cpMotor motor, TIM_OC_InitTypeDef * psConfigOC)
 {
 	HAL_TIM_PWM_Stop(motor->phtim, motor->channel);
 	HAL_TIM_PWM_ConfigChannel(motor->phtim , psConfigOC, motor->channel);
 	HAL_TIM_PWM_Start(motor->phtim, motor->channel);
-}*/
+}
 
 /**
  * sets pulse for a single motor
@@ -63,13 +63,13 @@ void __oc_init_pulse(TIM_OC_InitTypeDef * psConfigOC, uint16_t pulse)
  */
 void pwm_set_pulse_single(const cpMotor motor, uint16_t pulse)
 {
-	/*
+	
 	static TIM_OC_InitTypeDef sConfigOC;
 	__oc_init_pulse(&sConfigOC, pulse);
 	__pwm_set(motor, &sConfigOC);
-	*/
 	
-	__HAL_TIM_SET_COMPARE(motor->phtim, motor->channel, pulse);
+	
+	//__HAL_TIM_SET_COMPARE(motor->phtim, motor->channel, pulse);
 }
 
 /**
@@ -81,8 +81,8 @@ void pwm_set_pulse_left_F(uint16_t pulse)
 	/*static TIM_OC_InitTypeDef sConfigOC;
 	__oc_init_pulse(&sConfigOC, pulse);
 	__pwm_set(MOTORC_F, &sConfigOC);
-	__pwm_set(MOTORD_F, &sConfigOC);
-	*/
+	__pwm_set(MOTORD_F, &sConfigOC);*/
+	
 	pwm_set_pulse_single(MOTORC_F, pulse);
 	pwm_set_pulse_single(MOTORD_F, pulse);
 }

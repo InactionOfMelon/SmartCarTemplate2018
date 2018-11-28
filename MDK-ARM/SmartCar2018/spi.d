@@ -34,3 +34,4 @@ smartcar2018\spi.o: ../Inc/motor.h
 smartcar2018\spi.o: ../Inc/i2c.h
 smartcar2018\spi.o: ../Inc/tim.h
 smartcar2018\spi.o: ../Inc/usart.h
+smartcar2018\spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

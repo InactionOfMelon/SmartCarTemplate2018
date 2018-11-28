@@ -44,6 +44,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "motor.h"
+#include <string.h>
 /* USER CODE END 0 */
 
 SPI_HandleTypeDef hspi1;
@@ -144,15 +145,32 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
 /**
  * Receive information from berry
  */
-void SPI_Receive(void)
+
+
+void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 {
-  uint8_t data[5] = {0};
-  HAL_SPI_MspInit(&hspi1);
-	//HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
-  while (HAL_SPI_Receive(&hspi1,data,5,100)!=HAL_OK);
-	HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
-  uint16_t g = (data[2] << 8) | data[1];
+  //HAL_SPI_MspInit(&hspi1);
+	
+	HAL_SPI_IRQHandler(&hspi1);
+	
+	/*if (data[0] <= 100) 
+	{
+		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_SET);
+		HAL_Delay(500);
+		HAL_GPIO_WritePin(LED_A_GPIO_Port,LED_A_Pin,GPIO_PIN_RESET);
+	}
+	if (data[0] >= 112)
+	{
+		HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_SET);
+		HAL_Delay(500);
+		HAL_GPIO_WritePin(LED_B_GPIO_Port,LED_B_Pin,GPIO_PIN_RESET);
+	}*/
+	
+	
+	//if (data[0] == 101) pwm_set_pulse_F(600);
+	//if (data[0] == 102) pwm_set_stop();
+	
+  uint16_t g = 0;//(data[2] << 8) | data[1];
 	switch (data[0])
 	{
 		case 101: pwm_set_stop(); pwm_set_pulse_F(600); break;
@@ -167,7 +185,10 @@ void SPI_Receive(void)
     case 110: pwm_set_stop(); differ_turn(1200, g, LEFT); break;
     case 111: pwm_set_stop(); differ_turn(1200, g, RIGHT); break;
 	}
-	HAL_SPI_MspDeInit(&hspi1);
+	
+	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;
+	
+	//HAL_SPI_MspDeInit(&hspi1);
 	/*}
 	else
 	{

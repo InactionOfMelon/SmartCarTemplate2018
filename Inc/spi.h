@@ -55,6 +55,8 @@ extern SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN Private defines */
 
+
+
 /* USER CODE END Private defines */
 
 extern void _Error_Handler(char *, int);
@@ -63,7 +65,7 @@ void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
-void SPI_Receive(void);
+void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE);
 
 /* USER CODE END Prototypes */
 
