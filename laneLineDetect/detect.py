@@ -4,7 +4,7 @@ import time
 import kmeans
 import trans
 
-def main(img):
+def detect_lines(img):
   #---------Preprocess
 
   isShowImage=False
@@ -118,11 +118,47 @@ def main(img):
 
   return lines_rt
 
-if __name__ == '__main__':
-  img=cv2.imread('5.jpg')
-  start = time.time()
-  main(img)
-  end = time.time()
-  print "time:",end-start
+def detect_point(img):
+  #---------Parameters
+  #-------------------------------------------
+  PYR_TIMES = 2 # Times of pyrDown()
+  HSV_H_MIN, HSV_H_MAX = 5, 13   # H range of red
+  HSV_S_MIN, HSV_S_MAX = 65, 255 # S range of red
+  HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red
+  BOX_KSIZE = 41 # Kernal size of boxFilter
+  BOX_THRESHOLD = BOX_KSIZE * BOX_KSIZE / 8 # Threshold of boxFilter result
+  #-------------------------------------------
+  #---------Resizes
+  PYR_SCALE = 2 ** PYR_TIMES
+  small = img.copy()
+  for i in xrange(PYR_TIMES):
+	  small = cv2.pyrDown(small)
+  #---------Converts to HSV
+  hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+  #---------Detects Color
+  ___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 1, 1, cv2.THRESH_BINARY)
+  dst.astype(np.int16)
+  #---------Filters detected color
+  res = cv2.boxFilter(dst, -1, (BOX_KSIZE, BOX_KSIZE), normalize = False)
+  res_max = np.max(res)
+  if res_max < BOX_THRESHOLD:
+    return (-1, -1)
+  else:
+    pos = np.where(res == res_max)
+    vec = np.sum(pos, axis = 1)
+    num = np.size(pos, axis = 1)
+    return (int(round(float(vec[1]) / num * PYR_SCALE)), int(round(float(vec[0]) / num * PYR_SCALE)))
 
+if __name__ == '__main__':
+  img = cv2.imread('5.jpg')
+  start = time.time()
+  print detect_lines(img)
+  end = time.time()
+  print "time:", end - start
+
+  img = cv2.imread('cam4.jpg')
+  start = time.time()
+  print detect_point(img)
+  end = time.time()
+  print "time:", end - start
 
