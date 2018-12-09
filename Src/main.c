@@ -47,6 +47,7 @@
 
 /* USER CODE BEGIN Includes */
 #include "motor.h"
+#include "pid.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -57,7 +58,7 @@
 const uint8_t SPI_SIZE = 5;
 
 uint8_t data[SPI_SIZE];
-
+uint16_t Speed_Now = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -86,7 +87,7 @@ int main(void)
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
+	pid_init();
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
@@ -163,8 +164,8 @@ int main(void)
 	}*/
 	//pwm_set_pulse_F(0);
 	
-	
-		/*corner_turn(1200,0,LEFT);
+		/*
+		corner_turn(1200,0,LEFT);
     HAL_Delay(3000);
 		pwm_set_stop();
     HAL_Delay(1000);
@@ -175,8 +176,7 @@ int main(void)
 		corner_turn(1200,1200,LEFT);
     HAL_Delay(3000);
 		pwm_set_stop();
-		return 0;*/
-		
+		*/
 		/*differ_turn(600,1500,RIGHT);
 		return 0;*/
 		

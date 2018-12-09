@@ -23,7 +23,7 @@ extern const cpMotor
 	MOTORB_F, MOTORB_R,
 	MOTORC_F, MOTORC_R,
 	MOTORD_F, MOTORD_R;
-
+extern uint16_t Speed_Now;
 /**
  * sets pulse for a single motor
  * @param cpMotor motor

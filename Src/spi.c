@@ -39,7 +39,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "spi.h"
-
+#include "pid.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN 0 */
@@ -151,6 +151,7 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 {
   //HAL_SPI_MspInit(&hspi1);
 	
+	while (!data[4])
 	HAL_SPI_IRQHandler(&hspi1);
 	
 	/*if (data[0] <= 100) 
@@ -170,9 +171,15 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 	//if (data[0] == 101) pwm_set_pulse_F(600);
 	//if (data[0] == 102) pwm_set_stop();
 	
-  uint16_t g = 0;//(data[2] << 8) | data[1];
+	
+	
+  uint16_t g = (data[2] << 8) | data[1];
+	
 	switch (data[0])
 	{
+		case 1: Speed_Now = g; pwm_set_stop(); pwm_set_pulse_F(g); break;//set new speed
+		case 2: straight_adjustment(g); break;//need turn right
+		case 3: straight_adjustment(-g); break;//need turn left
 		case 101: pwm_set_stop(); pwm_set_pulse_F(600); break;
 		case 102: pwm_set_stop(); break;
 		case 103: pwm_set_stop(); pwm_set_pulse_R(600); break;
@@ -180,10 +187,10 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 		case 105: pwm_set_stop(); corner_turn(1200, 0, RIGHT); break;
 		case 106: pwm_set_stop(); point_turn(1200, ANTICLOCKWISE); break;
 		case 107: pwm_set_stop(); point_turn(1200, CLOCKWISE); break;
-    case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
-    case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
-    case 110: pwm_set_stop(); differ_turn(1200, g, LEFT); break;
-    case 111: pwm_set_stop(); differ_turn(1200, g, RIGHT); break;
+    	case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
+    	case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
+    	case 110: pwm_set_stop(); differ_turn(1200, g, LEFT); break;
+    	case 111: pwm_set_stop(); differ_turn(1200, g, RIGHT); break;
 	}
 	
 	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;
