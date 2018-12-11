@@ -36,8 +36,8 @@ while True:
     point=detect.detect_point(frame)
     print 'point:', point
 
-    distLeft=dist(w/2,h,line[0,0,0],line[0,0,1])
-    distRight=dist(w/2,h,line[1,0,0],line[1,0,1])
+    distLeft=dist(w/2,h,lines[0,0,0],lines[0,0,1])
+    distRight=dist(w/2,h,lines[1,0,0],lines[1,0,1])
     
     #time.sleep(1)
 
