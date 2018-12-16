@@ -177,20 +177,23 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 	
 	switch (data[0])
 	{
-		case 1: Speed_Now = g; pwm_set_stop(); pwm_set_pulse_F(g); break;//set new speed
+		case 1: Speed_Now = g; break;//set new speed
 		case 2: straight_adjustment(g); break;//need turn right
 		case 3: straight_adjustment(-g); break;//need turn left
-		case 101: pwm_set_stop(); pwm_set_pulse_F(600); break;
+		case 101: pwm_set_stop(); pwm_set_pulse_F(Speed_Now); break;
 		case 102: pwm_set_stop(); break;
-		case 103: pwm_set_stop(); pwm_set_pulse_R(600); break;
-		case 104: pwm_set_stop(); corner_turn(1200, 0, LEFT); break;
-		case 105: pwm_set_stop(); corner_turn(1200, 0, RIGHT); break;
-		case 106: pwm_set_stop(); point_turn(1200, ANTICLOCKWISE); break;
-		case 107: pwm_set_stop(); point_turn(1200, CLOCKWISE); break;
-    	case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
-    	case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
-    	case 110: pwm_set_stop(); differ_turn(1200, g, LEFT); break;
-    	case 111: pwm_set_stop(); differ_turn(1200, g, RIGHT); break;
+		case 103: pwm_set_stop(); pwm_set_pulse_R(Speed_Now); break;
+		case 104: pwm_set_stop(); corner_turn(Speed_Now, 0, LEFT); break;
+		case 105: pwm_set_stop(); corner_turn(Speed_Now, 0, RIGHT); break;
+		case 106: pwm_set_stop(); point_turn(Speed_Now, ANTICLOCKWISE); break;
+		case 107: pwm_set_stop(); point_turn(Speed_Now, CLOCKWISE); break;
+    case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
+    case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
+    case 110: pwm_set_stop(); differ_turn(Speed_Now, g, LEFT); break;
+    case 111: pwm_set_stop(); differ_turn(Speed_Now, g, RIGHT); break;
+		case 112: straight_param_change(g, -1, -1); break;
+		case 113: straight_param_change(-1, g, -1); break;
+		case 114: straight_param_change(-1, -1, g); break;
 	}
 	
 	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;

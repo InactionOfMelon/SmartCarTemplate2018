@@ -62,3 +62,20 @@ def left_param(speed_diff):
 def right_param(speed_diff):
 	x = [111, speed & (0xFF), speed >> 8, 0, 1]
 	spi.xfer2(x)
+
+def set_pid_param_Kp(Kp):
+	x = [112, Kp & (0xFF), Kp >> 8, 0, 1]
+	spi.xfer2(x)
+
+def set_pid_param_Ki(Ki):
+	x = [113, Ki & (0xFF), Ki >> 8, 0, 1]
+	spi.xfer2(x)
+	
+def set_pid_param_Kd(Kd):
+	x = [114, Kd & (0xFF), Kd >> 8, 0, 1]
+	spi.xfer2(x)
+	
+def set_pid_param(Kp, Ki, Kd):
+        set_pid_param_Kp(Kp)
+        set_pid_param_Ki(Ki)
+        set_pid_param_Kd(Kd)

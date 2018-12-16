@@ -29,15 +29,25 @@ void straight_adjustment(int16_t error){
 	
 	pwm_set_stop();
 	if (straight.differ > 0){
-		if (straight.differ > 10000) straight.differ = 10000;
 		differ_turn(Speed_Now, straight.differ, RIGHT);
 	}else{
-		straight.differ *=-1;
-		if (straight.differ > 10000) straight.differ = 10000;
+		straight.differ *= -1;
 		differ_turn(Speed_Now, straight.differ, LEFT);
 	}
 	
 	straight.error_last=error;
 	straight.integral += error;
+}
+
+void straight_param_change(int16_t Kp, int16_t Ki, int16_t Kd){
+	if (Kp!=-1){
+		straight.Kp=Kp;
+	}
+	if (Kp!=-1){
+		straight.Ki=Ki;
+	}
+	if (Kp!=-1){
+		straight.Kd=Kd;
+	}
 }
 #endif
