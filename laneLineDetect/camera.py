@@ -3,8 +3,8 @@ import time
 import detect
 import numpy as np
 
-#cap=cv2.VideoCapture(0)
-#print "camera launched"
+cap=cv2.VideoCapture(0)
+print "camera launched"
 
 def dist(x,y,rho,theta):
     a,b = np.cos(theta),np.sin(theta)
