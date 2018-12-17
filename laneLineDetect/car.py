@@ -1,4 +1,4 @@
-import env
+# import env
 import spidev
 
 spi = spidev.SpiDev()
