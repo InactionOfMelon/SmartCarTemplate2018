@@ -57,7 +57,9 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		return 0,0,False
 	if isDraw:
 		draw_lines(img,lines,[255,255,255])
-	
+        
+	h,w=img.shape[:2]
+        
 	left_lines, right_lines = [], []
 	for line in lines:
 		for x1, y1, x2, y2 in line:
@@ -73,8 +75,12 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 			else:
 				right_lines.append(line)
 				
-	if (len(left_lines) <= 0 or len(right_lines) <= 0):
-		return 0,0,False
+	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
+	#	return 0,0,False
+        if len(left_lines)==0:
+                left_lines.append([0,0,0,h])
+        if len(right_lines)==0:
+                right_lines.append([w,0,w,h])
 				
 	clean_lines(left_lines, 0.2)
 	clean_lines(right_lines, 0.2)
@@ -92,8 +98,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	right_vtx = calc_lane_vertices(right_points, 0, img.shape[0])
 	
 	if isDraw:
-		cv2.line(img, left_vtx[0], left_vtx[1], color, thickness)
-		cv2.line(img, right_vtx[0], right_vtx[1], color, thickness)
+		cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
+       	        cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
 	
 	return left_vtx[0][0],right_vtx[0][0],True
 
@@ -113,7 +119,7 @@ def detect_lines(img):
 
 	#--------------
 
-	blur_ksize = 5  # Gaussian blur kernel size
+	blur_ksize = 7  # Gaussian blur kernel size
 	canny_lthreshold = 20  # Canny edge detection low threshold
 	canny_hthreshold = 180  # Canny edge detection high threshold
 	
@@ -160,7 +166,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('camera.jpg')
+	img = cv2.imread('lane5.jpg')
 	start = time.time()
 	print detect_lines(img)
 	end = time.time()
