@@ -78,10 +78,11 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
         if len(left_lines)==0:
-                left_lines.append([0,0,0,h])
+                left_lines.append(np.array([[0,0,0,h]]))
         if len(right_lines)==0:
-                right_lines.append([w,0,w,h])
-				
+                right_lines.append(np.array([[w,0,w,h]]))
+	print left_lines
+        print right_lines
 	clean_lines(left_lines, 0.2)
 	clean_lines(right_lines, 0.2)
 
@@ -166,7 +167,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('lane5.jpg')
+	img = cv2.imread('lane6.jpg')
 	start = time.time()
 	print detect_lines(img)
 	end = time.time()
