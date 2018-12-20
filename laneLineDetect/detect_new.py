@@ -100,7 +100,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	left_vtx = calc_lane_vertices(left_points, 0, img.shape[0])
 	right_vtx = calc_lane_vertices(right_points, 0, img.shape[0])
 
-        if abs(left_vtx[0][0]-right_vtx[0][0])<=20 and abs(left_vtx[1][0]-right_vtx[1][0])<=20:
+        if abs(left_vtx[0][0]-right_vtx[0][0])<=50 and abs(left_vtx[1][0]-right_vtx[1][0])<=50:
                 if left_vtx[0][0]<left_vtx[1][0]:
                         left_vtx[0]=(0,0)
                         left_vtx[1]=(0,h)
@@ -131,8 +131,8 @@ def detect_lines(img):
 
 	#--------------
 
-	blur_ksize = 15  # Gaussian blur kernel size
-	canny_lthreshold = 150  # Canny edge detection low threshold
+	blur_ksize = 9  # Gaussian blur kernel size
+	canny_lthreshold = 100  # Canny edge detection low threshold
 	canny_hthreshold = 200  # Canny edge detection high threshold
 	
 	# Hough transform parameters
@@ -179,7 +179,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('lane8.jpg')
+	img = cv2.imread('lane10.jpg')
 	start = time.time()
         #last_error=-200
 	print detect_lines(img)
