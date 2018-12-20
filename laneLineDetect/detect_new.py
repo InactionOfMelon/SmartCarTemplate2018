@@ -52,7 +52,7 @@ def calc_lane_vertices(point_list, ymin, ymax):
   
 	return [(xmin, ymin), (xmax, ymax)]
 
-last_error=0
+#last_error=0
 
 def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	if lines is None:
@@ -72,7 +72,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 				continue
 			#if (abs(k)<horizon_threshold):
 			#	continue
-			if midx<img.shape[1]/2+last_error/2:
+			if midx<img.shape[1]/2:
 				left_lines.append(line)
 			else:
 				right_lines.append(line)
@@ -99,7 +99,14 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
   
 	left_vtx = calc_lane_vertices(left_points, 0, img.shape[0])
 	right_vtx = calc_lane_vertices(right_points, 0, img.shape[0])
-	
+
+        if abs(left_vtx[0][0]-right_vtx[0][0])<=20 and abs(left_vtx[1][0]-right_vtx[1][0])<=20:
+                if left_vtx[0][0]<left_vtx[1][0]:
+                        left_vtx[0]=(0,0)
+                        left_vtx[1]=(0,h)
+                else:
+                        right_vtx[0]=(w,0)
+                        right_vtx[1]=(w,h)
 	if isDraw:
                 print left_vtx[0], left_vtx[1]
                 print right_vtx[0], right_vtx[1]
@@ -166,7 +173,7 @@ def detect_lines(img):
 	offset=rightOffset-leftOffset
 
 	print 'detect success'
-        last_error=offset
+        #last_error=offset
 	return offset,True
 
 if __name__ == '__main__':
