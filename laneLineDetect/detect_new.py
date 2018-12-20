@@ -52,6 +52,8 @@ def calc_lane_vertices(point_list, ymin, ymax):
   
 	return [(xmin, ymin), (xmax, ymax)]
 
+last_error=0
+
 def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	if lines is None:
 		return 0,0,False
@@ -70,7 +72,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 				continue
 			#if (abs(k)<horizon_threshold):
 			#	continue
-			if midx<img.shape[1]/2:
+			if midx<img.shape[1]/2+last_error/2:
 				left_lines.append(line)
 			else:
 				right_lines.append(line)
@@ -81,8 +83,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
                 left_lines.append(np.array([[0,0,0,h]]))
         if len(right_lines)==0:
                 right_lines.append(np.array([[w,0,w,h]]))
-	print left_lines
-        print right_lines
+	#print left_lines
+        #print right_lines
 	clean_lines(left_lines, 0.2)
 	clean_lines(right_lines, 0.2)
 
@@ -99,6 +101,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	right_vtx = calc_lane_vertices(right_points, 0, img.shape[0])
 	
 	if isDraw:
+                print left_vtx[0], left_vtx[1]
+                print right_vtx[0], right_vtx[1]
 		cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
        	        cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
 	
@@ -120,9 +124,9 @@ def detect_lines(img):
 
 	#--------------
 
-	blur_ksize = 7  # Gaussian blur kernel size
-	canny_lthreshold = 20  # Canny edge detection low threshold
-	canny_hthreshold = 180  # Canny edge detection high threshold
+	blur_ksize = 15  # Gaussian blur kernel size
+	canny_lthreshold = 150  # Canny edge detection low threshold
+	canny_hthreshold = 200  # Canny edge detection high threshold
 	
 	# Hough transform parameters
 	rho = 1
@@ -162,13 +166,15 @@ def detect_lines(img):
 	offset=rightOffset-leftOffset
 
 	print 'detect success'
+        last_error=offset
 	return offset,True
 
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('lane6.jpg')
+	img = cv2.imread('lane8.jpg')
 	start = time.time()
+        #last_error=-200
 	print detect_lines(img)
 	end = time.time()
 	print "time:", end - start
