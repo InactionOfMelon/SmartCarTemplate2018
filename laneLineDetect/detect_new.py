@@ -119,7 +119,7 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
 							minLineLength=min_line_len, maxLineGap=max_line_gap)
 	line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-	draw_lines(line_img, lines)
+	#draw_lines(line_img, lines)
 	x1,x2,result=draw_lanes(line_img, lines,horizon_threshold)
 	if result==False:
 		return line_img,x1,x2,False
