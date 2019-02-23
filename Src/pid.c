@@ -15,16 +15,16 @@ void pid_init(){
 	straight.error_last = 0;
 	straight.integral = 0;
 	straight.differ = 0;
-	straight.Kp = 5;
-	straight.Ki = 2;
-	straight.Kd = 1;
+	straight.Kp = 1.5;
+	straight.Ki = 0;
+	straight.Kd = 0.7;
 }
 
 /*********
  * adjust when go straight with pid
  * @param int16_t error (positive for near left side now)
 *********/
-void straight_adjustment(int16_t error){
+void straight_adjustment(int32_t error){
 	straight.differ = error * straight.Kp + straight.integral * straight.Ki - straight.error_last * straight.Kd;
 	
 	pwm_set_stop();
@@ -36,17 +36,18 @@ void straight_adjustment(int16_t error){
 	}
 	
 	straight.error_last=error;
+	straight.integral -= straight.integral / 10;
 	straight.integral += error;
 }
 
-void straight_param_change(int16_t Kp, int16_t Ki, int16_t Kd){
+void straight_param_change(float Kp, float Ki, float Kd){
 	if (Kp!=-1){
 		straight.Kp=Kp;
 	}
-	if (Kp!=-1){
+	if (Ki!=-1){
 		straight.Ki=Ki;
 	}
-	if (Kp!=-1){
+	if (Kd!=-1){
 		straight.Kd=Kd;
 	}
 }

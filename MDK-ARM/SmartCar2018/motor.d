@@ -1,7 +1,7 @@
 smartcar2018\motor.o: ..\Src\motor.c
-smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 smartcar2018\motor.o: ../Inc/stm32f1xx_hal_conf.h
+smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h
 smartcar2018\motor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 smartcar2018\motor.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h

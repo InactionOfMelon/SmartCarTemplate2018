@@ -1,7 +1,6 @@
 #ifndef __MOTOR_C__
 #define __MOTOR_C__
 
-#include "main.h"
 #include "stm32f1xx_hal.h"
 #include "i2c.h"
 #include "spi.h"
@@ -66,7 +65,7 @@ void pwm_set_pulse_single(const cpMotor motor, uint16_t pulse)
 	
 	/*static TIM_OC_InitTypeDef sConfigOC;
 	__oc_init_pulse(&sConfigOC, pulse);
-	__pwm_set(motor, &sConfigOC);*/ 
+	__pwm_set(motor, &sConfigOC);*/
 	
 	
 	HAL_TIM_PWM_Stop(motor->phtim, motor->channel);
@@ -200,10 +199,10 @@ void point_turn(uint16_t pulse,PointTurnDirDef dir)
  */
 void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
 {
-	if (dir==LEFT){
+	if (dir == LEFT){
 		pwm_set_pulse_right_F(OutsidePulse);
 		pwm_set_pulse_left_R(InsidePulse);
-	}else if (dir==RIGHT){
+	}else if (dir == RIGHT){
 		pwm_set_pulse_left_F(OutsidePulse);
 		pwm_set_pulse_right_R(InsidePulse);
 	}
@@ -214,20 +213,24 @@ void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
  * turn left or right with differential speed
  * @param uint16_t Pulse,uint16_t differ,TurnDirDef dir
  */
-void differ_turn(uint16_t Pulse,uint16_t differ,TurnDirDef dir)
+void differ_turn(uint16_t Pulse, uint16_t differ, TurnDirDef dir)
 {
-	int16_t OutsidePulse=Pulse,InsidePulse=Pulse-differ;
-	if (InsidePulse<-Speed_Now) InsidePulse=-Speed_Now;
-	if (dir==LEFT){
+	uint16_t OutsidePulse = Pulse;
+	int16_t InsidePulse = ((int16_t)Pulse) - ((int16_t)differ);
+	if (InsidePulse < 0) InsidePulse = 0;
+	if (InsidePulse > ((int16_t)Speed_Now)) InsidePulse = (int16_t)Speed_Now;
+	OutsidePulse += (((int16_t)Pulse) - InsidePulse) / 3;
+	
+	if (dir == LEFT){
 		pwm_set_pulse_right_F((uint16_t) OutsidePulse);
-		if (InsidePulse>0){
+		if (InsidePulse > 0){
 			pwm_set_pulse_left_F((uint16_t) InsidePulse);
 		}else{
 			pwm_set_pulse_left_R((uint16_t) -InsidePulse);
 		}
-	}else if (dir==RIGHT){
+	}else if (dir == RIGHT){
 		pwm_set_pulse_left_F((uint16_t) OutsidePulse);
-		if (InsidePulse>0){
+		if (InsidePulse > 0){
 			pwm_set_pulse_right_F((uint16_t) InsidePulse);
 		}else{
 			pwm_set_pulse_right_R((uint16_t) -InsidePulse);

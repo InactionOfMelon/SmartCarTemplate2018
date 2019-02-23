@@ -187,13 +187,24 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 		case 105: pwm_set_stop(); corner_turn(Speed_Now, 0, RIGHT); break;
 		case 106: pwm_set_stop(); point_turn(Speed_Now, ANTICLOCKWISE); break;
 		case 107: pwm_set_stop(); point_turn(Speed_Now, CLOCKWISE); break;
-    case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
-    case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
-    case 110: pwm_set_stop(); differ_turn(Speed_Now, g, LEFT); break;
-    case 111: pwm_set_stop(); differ_turn(Speed_Now, g, RIGHT); break;
-		case 112: straight_param_change(g, -1, -1); break;
-		case 113: straight_param_change(-1, g, -1); break;
-		case 114: straight_param_change(-1, -1, g); break;
+		case 108: pwm_set_stop(); pwm_set_pulse_F(g / 5); break;
+		case 109: pwm_set_stop(); pwm_set_pulse_R(g / 5); break;
+		case 110: pwm_set_stop(); differ_turn(Speed_Now, g, LEFT); break;
+		case 111: pwm_set_stop(); differ_turn(Speed_Now, g, RIGHT); break;
+		case 112: straight_param_change(((float)g)/256, -1, -1); break;
+		case 113: straight_param_change(-1, ((float)g)/256, -1); break;
+		case 114: straight_param_change(-1, -1, ((float)g)/256); break;
+		case 115: pid_init(); break;
+		
+		case 200: pwm_set_pulse_single(MOTORA_F, g); break;
+		case 201: pwm_set_pulse_single(MOTORB_F, g); break;
+		case 202: pwm_set_pulse_single(MOTORC_F, g); break;
+		case 203: pwm_set_pulse_single(MOTORD_F, g); break;
+		
+		case 210: pwm_set_pulse_single(MOTORA_R, g); break;
+		case 211: pwm_set_pulse_single(MOTORB_R, g); break;
+		case 212: pwm_set_pulse_single(MOTORC_R, g); break;
+		case 213: pwm_set_pulse_single(MOTORD_R, g); break;
 	}
 	
 	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;

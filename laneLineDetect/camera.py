@@ -3,9 +3,14 @@ import time
 import detect_new as detect
 import numpy as np
 import car
+import random
 
 cap=cv2.VideoCapture(0)
 print "camera launched"
+
+def saveImageTo(img, fileName):
+    cv2.imwrite(fileName, img)
+    print(fileName)
 
 def dist(x,y,rho,theta):
 	a,b = np.cos(theta),np.sin(theta)
@@ -20,7 +25,7 @@ def dist(x,y,rho,theta):
 	distance   = np.sqrt((array_trans - array_temp).dot(array_trans - array_temp))
 	return distance
 
-car.set_speed(600)
+car.set_speed(350)
 car.forward()
 cnt = 0
 while True:
@@ -39,9 +44,14 @@ while True:
 		++cnt
 		if cnt > 10:
 			break
+                continue
 	else:
 		cnt = 0
 	print error
+        #car.self_adjustment(error)
+        if error > 100 or error<-100:
+            saveImageTo(frame, "figure" + str(random.randint(0, 10000)) + '.jpg')
+            exit()
 	if error < 0:
 		car.left_adjustment(-error)
 	elif error > 0:
