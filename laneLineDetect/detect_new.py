@@ -153,7 +153,7 @@ def detect_lines(img):
 	
 	gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 	showImage(gray)
-	th_gray = cv2.threshold(gray, white_thresh, 0, cv2.THRESH_TOZERO)
+	_retval, th_gray = cv2.threshold(gray, white_thresh, 0, cv2.THRESH_TOZERO)
 	blur_gray = cv2.GaussianBlur(th_gray, (blur_ksize, blur_ksize), 0, 0)
 	showImage(blur_gray)
 	edges = cv2.Canny(blur_gray, canny_lthreshold, canny_hthreshold)
