@@ -4,7 +4,7 @@ import cv2
 import time
 
 isShowImage=False
-isDraw=False
+isDraw=True
 def showImage(img,winName="Image"):
 	if isShowImage:
 		cv2.imshow(winName,img)
@@ -115,7 +115,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	
 	return left_vtx[0][0],right_vtx[0][0],True
 
-def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold):
+def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold, raw_img):
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
 							minLineLength=min_line_len, maxLineGap=max_line_gap)
 	line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
@@ -123,6 +123,7 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 	x1,x2,result=draw_lanes(line_img, lines,horizon_threshold)
 	if result==False:
 		return line_img,x1,x2,False
+        draw_lanes(raw_img,lines,horizon_threshold)
 	return line_img,x1,x2,True
 
 def detect_lines(img):
@@ -162,13 +163,13 @@ def detect_lines(img):
 	showImage(roi_edges)
 	
 	line_img,leftX,rightX,isDetected= hough_lines(roi_edges, rho, theta, threshold,
-												  min_line_length, max_line_gap,horizon_threshold)
+												  min_line_length, max_line_gap,horizon_threshold,img)
 	
 	if isDetected==False:
 		print 'detect failed'
 		return 0,False
-	img=cv2.addWeighted(img, 0.5, line_img, 1, 0)
-	showImage(img)
+	res=cv2.addWeighted(img, 0.5, line_img, 1, 0)
+	showImage(res)
 
 	leftOffset=w/2-leftX
 	rightOffset=rightX-w/2
@@ -181,7 +182,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('lane10.jpg')
+	img = cv2.imread('figure4367.jpg')
 	start = time.time()
         #last_error=-200
 	print detect_lines(img)
