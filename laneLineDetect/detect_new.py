@@ -14,6 +14,7 @@ def roi_mask(img, vertices):
 	mask = np.zeros_like(img)
 	mask_color = 255
 	cv2.fillPoly(mask, vertices, mask_color)
+        #showImage(mask)
 	masked_img = cv2.bitwise_and(img, mask)
 	return masked_img
 
@@ -188,9 +189,9 @@ def detect_lines(img):
 	min_line_length = 40
 	max_line_gap = 20
 	
-	#roi_vtx = np.array([[(0, int(h*0.9)), (0, int(h*0.1)),
-	#				   (w, int(h*0.1)), (w, int(h*0.9))]])
-	roi_vtx = np.array([[(0, h), (0, 0), (w, 0), (w, h)]])
+	roi_vtx = np.array([[(0, int(h*0.4)), (0, int(h)),
+					   (w, int(h)), (w, int(h*0.4))]])
+	#roi_vtx = np.array([[(0, h), (0, 0), (w, 0), (w, h)]])
 
 	horizon_threshold=1 # threshold for slope of horizontal lines, maybe should be larger 
 	
