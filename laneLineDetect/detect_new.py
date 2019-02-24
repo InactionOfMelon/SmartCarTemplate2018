@@ -19,9 +19,10 @@ def roi_mask(img, vertices):
 
 def draw_lines(img, lines, color=[255, 0, 0], thickness=2):
 	if isDraw:
-		for line in lines:
-			for x1, y1, x2, y2 in line:
-				cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+		if lines is not None:
+			for line in lines:
+				for x1, y1, x2, y2 in line:
+					cv2.line(img, (x1, y1), (x2, y2), color, thickness)
 
 def draw_point(img, point, k = 127, kmax = 255):
 	if isDraw:
@@ -172,7 +173,7 @@ def detect_lines(img):
 	showImage(img)
 
 	#--------------
-	white_thresh = 235#225
+	white_thresh = 225
 
 	blur_ksize = 9  # Gaussian blur kernel size
 	canny_lthreshold = 100  # Canny edge detection low threshold
@@ -210,7 +211,7 @@ def detect_lines(img):
 	if isDetected==False:
 		print('detect failed')
 		return 0,False
-	res=cv2.addWeighted(img, 0.5, line_img, 1, 0, img)
+	res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 	showImage(res)
 
 	leftOffset=w/2-leftX
