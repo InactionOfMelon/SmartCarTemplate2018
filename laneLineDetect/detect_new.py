@@ -4,7 +4,7 @@ import cv2
 import time
 
 isShowImage=False
-isDraw=True
+isDraw=False
 def showImage(img,winName="Image"):
 	if isShowImage:
 		cv2.imshow(winName,img)
@@ -29,7 +29,20 @@ def draw_point(img, point, k = 127, kmax = 255):
 		cv2.circle(img, point, 3, (int(255 * k), 0, 0), 3)
 
 def clean_lines(lines, threshold):
-	slope = [[math.atan2(float(y2 - y1),float(x2 - x1)) if (math.atan2(float(y2 - y1),float(x2 - x1))>0)
+	arg_max, l = -1, []
+	for line in lines:
+		x1, y1, x2, y2 = line[0]
+		arg = math.atan2(float(y2 - y1), float(x2 - x1))
+		if arg < 0:
+			arg += np.pi
+		#if arg > np.pi:
+		#	arg -= np.pi
+		if arg > np.pi / 2:
+			arg = np.pi - arg
+		if arg > arg_max:
+			arg_max, l = arg, line
+	return [l]
+	'''slope = [[math.atan2(float(y2 - y1),float(x2 - x1)) if (math.atan2(float(y2 - y1),float(x2 - x1))>0)
 			  else math.atan2(float(y2 - y1),float(x2 - x1))+np.pi,
 			  abs(x2*y1-x1*y2)/np.sqrt((y2-y1)*(y2-y1)+(x2-x1)*(x2-x1))]
 			 for line in lines for x1, y1, x2, y2 in line]
@@ -45,23 +58,22 @@ def clean_lines(lines, threshold):
 			slope.pop(idx)
 			lines.pop(idx)
 		else:
-			break
+			break'''
 
 def calc_lane_vertices(point_list, ymin, ymax, img):
 	#------------------------
-	y_chunks = 5 # number of chunks of height
-	y_chunk_size = (ymax - ymin) // y_chunks + 1
+	'''y_chunks = 5 # number of chunks of height
+	y_chunk_size = (ymax - ymin) // y_chunks + 1'''
 	#------------------------
-	#x = [p[0] for p in point_list]
-	#y = [p[1] for p in point_list]
-	x, y = [], []
-	kmax = y_chunks + 1
+	x = [p[0] for p in point_list]
+	y = [p[1] for p in point_list]
+	'''x, y = [], []
+	kmax = (y_chunks + 1) ** 2
 	for p in point_list:
-		k = (p[0] - ymin) // y_chunk_size + 1
-		k **= 2
+		k = ((p[0] - ymin) // y_chunk_size + 1) ** 2
 		x += [p[0]] * k
 		y += [p[1]] * k
-		draw_point(img, p, k, kmax)
+		draw_point(img, p, k, kmax)'''
 	fit = np.polyfit(y, x, 1)
 	fit_fn = np.poly1d(fit)
 	
@@ -101,8 +113,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		left_lines.append(np.array([[0,0,0,h]]))
 	if len(right_lines)==0:
 		right_lines.append(np.array([[w,0,w,h]]))
-	clean_lines(left_lines, 0.2)
-	clean_lines(right_lines, 0.2)
+	left_lines = clean_lines(left_lines, 0.2)
+	right_lines = clean_lines(right_lines, 0.2)
 	left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 	draw_lines(left_lines_img, left_lines)
 	showImage(left_lines_img)
@@ -160,7 +172,7 @@ def detect_lines(img):
 	showImage(img)
 
 	#--------------
-	white_thresh = 225
+	white_thresh = 235#225
 
 	blur_ksize = 9  # Gaussian blur kernel size
 	canny_lthreshold = 100  # Canny edge detection low threshold
@@ -186,11 +198,11 @@ def detect_lines(img):
 	_retval, th_gray = cv2.threshold(gray, white_thresh, 0, cv2.THRESH_TOZERO)
 	showImage(th_gray)
 	blur_gray = cv2.GaussianBlur(th_gray, (blur_ksize, blur_ksize), 0, 0)
-	#showImage(blur_gray)
+	showImage(blur_gray)
 	edges = cv2.Canny(blur_gray, canny_lthreshold, canny_hthreshold)
-	#showImage(edges)
+	showImage(edges)
 	roi_edges = roi_mask(edges, roi_vtx)
-	#showImage(roi_edges)
+	showImage(roi_edges)
 	
 	line_img,leftX,rightX,isDetected= hough_lines(roi_edges, rho, theta, threshold,
 												  min_line_length, max_line_gap,horizon_threshold)
@@ -212,7 +224,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig.jpg')
+	img = cv2.imread('fig2.jpg')
 	start = time.time()
 	#last_error=-200
 	print(detect_lines(img))
