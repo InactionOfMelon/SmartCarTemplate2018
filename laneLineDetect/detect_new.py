@@ -29,21 +29,22 @@ def draw_point(img, point, k = 127, kmax = 255):
 		k /= kmax
 		cv2.circle(img, point, 3, (int(255 * k), 0, 0), 3)
 
-def clean_lines(lines, threshold):
-	arg_max, l = -1, []
+def dist2(p1, p2):
+	return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
+
+def choose_lines(lines, center_point):
+	d_min, l = dist2((-1, -1), center_point), None
 	for line in lines:
 		x1, y1, x2, y2 = line[0]
-		arg = math.atan2(float(y2 - y1), float(x2 - x1))
-		if arg < 0:
-			arg += np.pi
-		#if arg > np.pi:
-		#	arg -= np.pi
-		if arg > np.pi / 2:
-			arg = np.pi - arg
-		if arg > arg_max:
-			arg_max, l = arg, line
+		d = min(dist2((x1, y1), center_point), dist2((x2, y2), center_point))
+		if d < d_min:
+			d_min, l = d, line
+	if l is None:
+		raise Exception('could not choose lines')
 	return [l]
-	'''slope = [[math.atan2(float(y2 - y1),float(x2 - x1)) if (math.atan2(float(y2 - y1),float(x2 - x1))>0)
+'''
+def clean_lines(lines, threshold):
+	slope = [[math.atan2(float(y2 - y1),float(x2 - x1)) if (math.atan2(float(y2 - y1),float(x2 - x1))>0)
 			  else math.atan2(float(y2 - y1),float(x2 - x1))+np.pi,
 			  abs(x2*y1-x1*y2)/np.sqrt((y2-y1)*(y2-y1)+(x2-x1)*(x2-x1))]
 			 for line in lines for x1, y1, x2, y2 in line]
@@ -59,7 +60,8 @@ def clean_lines(lines, threshold):
 			slope.pop(idx)
 			lines.pop(idx)
 		else:
-			break'''
+			break
+'''
 
 def calc_lane_vertices(point_list, ymin, ymax, img):
 	#------------------------
@@ -114,8 +116,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		left_lines.append(np.array([[0,0,0,h]]))
 	if len(right_lines)==0:
 		right_lines.append(np.array([[w,0,w,h]]))
-	left_lines = clean_lines(left_lines, 0.2)
-	right_lines = clean_lines(right_lines, 0.2)
+	left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
+	right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
 	left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 	draw_lines(left_lines_img, left_lines)
 	showImage(left_lines_img)
@@ -225,7 +227,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig2.jpg')
+	img = cv2.imread('fig.jpg')
 	start = time.time()
 	#last_error=-200
 	print(detect_lines(img))
