@@ -30,8 +30,44 @@ def draw_point(img, point, k = 127, kmax = 255):
 		k /= kmax
 		cv2.circle(img, point, 3, (int(255 * k), 0, 0), 3)
 
-def dist2(p1, p2):
-	return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
+def det(vec1, vec2):
+	x1, y1 = vec1
+	x2, y2 = vec2
+	return x1 * y2 - x2 * y1
+
+def len2(vec):
+	return vec[0] ** 2 + vec[1] ** 2
+
+def dist2(point1, point2):
+	return len2((point1[0] - point2[0], point1[1] - point2[1]))
+
+def dist1(point, line):
+	x0, y0 = point
+	x1, y1, x2, y2 = line[0]
+	return abs(det((x1 - x0, y1 - y0), (x2 - x0, y2 - y0))) / 2 / math.sqrt(len2((x1 - x2, y1 - y2)))
+
+def arg(line):
+	x1, y1, x2, y2 = line[0]
+	a = math.atan2(float(y2 - y1), float(x2 - x1))
+	if a < 0:
+		a += np.pi
+	return a
+
+def is_same_line(line1, line2):
+	#--------------------
+	arg_threshold = np.pi * 10 / 180
+	dist1_threshold = 16
+	#--------------------
+	a1 = arg(line1)
+	a2 = arg(line2)
+	if abs(a1 - a2) > arg_threshold:
+		return False
+	x11, y11, x12, y12 = line1[0]
+	x21, y21, x22, y22 = line2[0]
+	d1 = max(dist1((x11, y11), line2), dist1((x12, y12), line2), dist1((x21, y21), line1), dist1((x22, y22), line1))
+	if d1 > dist1_threshold:
+		return False
+	return True
 
 def choose_lines(lines, center_point):
 	d_min, l = dist2((-1, -1), center_point), None
@@ -42,7 +78,12 @@ def choose_lines(lines, center_point):
 			d_min, l = d, line
 	if l is None:
 		raise Exception('could not choose lines')
-	return [l]
+	ls = []
+	for line in lines:
+		x1, y1, x2, y2 = line[0]
+		if is_same_line(line, l):
+			ls.append(line)
+	return ls
 '''
 def clean_lines(lines, threshold):
 	slope = [[math.atan2(float(y2 - y1),float(x2 - x1)) if (math.atan2(float(y2 - y1),float(x2 - x1))>0)
