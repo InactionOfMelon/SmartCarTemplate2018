@@ -217,23 +217,30 @@ void differ_turn(uint16_t Pulse, uint16_t differ, TurnDirDef dir)
 {
 	uint16_t OutsidePulse = Pulse;
 	int16_t InsidePulse = ((int16_t)Pulse) - ((int16_t)differ);
-	if (InsidePulse < 0) InsidePulse = 0;
+	
+	if (MIN_Speed == 0){
+		if (InsidePulse < 0) InsidePulse = 0;
+	}else{
+		if (InsidePulse < -((int16_t)Speed_Now)) InsidePulse = -((int16_t)Speed_Now);
+	}
+	
+	
 	if (InsidePulse > ((int16_t)Speed_Now)) InsidePulse = (int16_t)Speed_Now;
-	OutsidePulse += (((int16_t)Pulse) - InsidePulse) / 3;
+	OutsidePulse += (((int16_t)Pulse) - InsidePulse) * Speed_Up / 100;
 	
 	if (dir == LEFT){
 		pwm_set_pulse_right_F((uint16_t) OutsidePulse);
 		if (InsidePulse > 0){
 			pwm_set_pulse_left_F((uint16_t) InsidePulse);
 		}else{
-			pwm_set_pulse_left_R((uint16_t) -InsidePulse);
+			pwm_set_pulse_left_R((uint16_t) (-InsidePulse));
 		}
 	}else if (dir == RIGHT){
 		pwm_set_pulse_left_F((uint16_t) OutsidePulse);
 		if (InsidePulse > 0){
 			pwm_set_pulse_right_F((uint16_t) InsidePulse);
 		}else{
-			pwm_set_pulse_right_R((uint16_t) -InsidePulse);
+			pwm_set_pulse_right_R((uint16_t) (-InsidePulse));
 		}
 	}
 }

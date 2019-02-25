@@ -205,6 +205,9 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 		case 211: pwm_set_pulse_single(MOTORB_R, g); break;
 		case 212: pwm_set_pulse_single(MOTORC_R, g); break;
 		case 213: pwm_set_pulse_single(MOTORD_R, g); break;
+		
+		case 220: MIN_Speed = g; break;
+		case 221: Speed_Up = g; break;
 	}
 	
 	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;

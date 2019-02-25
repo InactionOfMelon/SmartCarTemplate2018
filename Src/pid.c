@@ -17,7 +17,7 @@ void pid_init(){
 	straight.differ = 0;
 	straight.Kp = 1.5;
 	straight.Ki = 0;
-	straight.Kd = 0.7;
+	straight.Kd = 0.5;
 }
 
 /*********

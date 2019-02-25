@@ -90,22 +90,37 @@ def pid_init():
 	
 def left_turn(deg,differ):
 	stop()
+	set_speed(1000)
+	set_min_speed(1)
 	left_param(differ)
 	time.sleep(float(deg)/100)
+	set_min_speed(0)
 	stop()
 
 def right_turn(deg,differ):
 	stop()
+	set_speed(1000)
+	set_min_speed(1)
 	right_param(differ)
 	time.sleep(float(deg)/100)
+	set_min_speed(0)
 	stop()
 	
 def self_adjustment(error):
 	set_speed(1000)
-	if error > 100:
+	if error > 150:
 		right_turn(10, 2000)
-	if error < -100:
+	if error < -150:
 		left_turn(10, 2000)
+		
 def set_pulse_single(MOTOR, Dir, Pulse):
 	x = [200+MOTOR+Dir*10, Pulse & (0xFF), Pulse >> 8, 0, 1]
+	spi.xfer2(x)
+
+def set_min_speed(state):
+	x = [220, state, 0, 0, 1]
+	spi.xfer2(x)
+
+def set_speed_up(rate):
+	x = [221, rate, 0, 0, 1]
 	spi.xfer2(x)

@@ -25,31 +25,29 @@ def dist(x,y,rho,theta):
 	distance   = np.sqrt((array_trans - array_temp).dot(array_trans - array_temp))
 	return distance
 
-car.set_speed(350)
-car.forward()
-cnt = 0
-while True:
+def work():
 	ret,frame=cap.read()
 	#frame=cv2.imread('5.jpg')
 	#ret=True
 	h,w=frame.shape[:2]
 	if not ret:
 		print "capture error"
-		break
+                raise Exception('Car stopped')
 	#cv2.imwrite("camera.jpg",frame)
-
+	
 	error,ret=detect.detect_lines(frame)
+
 	if not ret:
 		cv2.imwrite("camera.jpg",frame)
 		++cnt
 		if cnt > 10:
-			break
-                continue
+			raise Exception('Car stopped')
+                return
 	else:
 		cnt = 0
 	print error
         #car.self_adjustment(error)
-        if error > 100 or error<-100:
+        if error > 1000 or error< -1000:
             saveImageTo(frame, "figure" + str(random.randint(0, 10000)) + '.jpg')
             exit()
 	if error < 0:
@@ -60,4 +58,15 @@ while True:
 	#break
 
 	#time.sleep(1)
+	
+	
+car.set_speed(450)
+car.forward()
+cnt = 0
+while True:
+	try:
+		work()
+	except KeyboardInterrupt:
+		car.stop()
+		exit()
 
