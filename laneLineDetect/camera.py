@@ -4,13 +4,50 @@ import detect_new as detect
 import numpy as np
 import car
 import random
+import threading
 
-cap=cv2.VideoCapture(0)
+
+class ipcamCapture:
+	TIMEOUT = 2
+	def __init__(self, URL):
+		self.Frame = None
+		self.status = False
+		self.isstop = False
+		self.lock = threading.Lock()
+		self.capture = cv2.VideoCapture(0)
+		self.thread = threading.Thread(target=self.queryframe, args=())
+
+	def start(self):
+		print('ipcam started!')
+		self.thread.start()
+
+	def stop(self):
+		self.isstop = True
+		print('ipcam stopped!')
+		time.sleep(0)
+   
+	def getframe(self):
+		self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+		frame = self.Frame
+		self.lock.release()
+		return frame
+		
+	def queryframe(self):
+		while (not self.isstop):
+			self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+			self.status, self.Frame = self.capture.read()
+			self.lock.release()
+			time.sleep(0)
+		self.capture.release()
+		#raise KeyboardInterrupt()
+
+		
+		
 print "camera launched"
 
 def saveImageTo(img, fileName):
-    cv2.imwrite(fileName, img)
-    print(fileName)
+	cv2.imwrite(fileName, img)
+	print(fileName)
 
 def dist(x,y,rho,theta):
 	a,b = np.cos(theta),np.sin(theta)
@@ -25,48 +62,44 @@ def dist(x,y,rho,theta):
 	distance   = np.sqrt((array_trans - array_temp).dot(array_trans - array_temp))
 	return distance
 
-def work():
-	ret,frame=cap.read()
-	#frame=cv2.imread('5.jpg')
-	#ret=True
-	h,w=frame.shape[:2]
-	if not ret:
-		print "capture error"
-                raise Exception('Car stopped')
-	#cv2.imwrite("camera.jpg",frame)
-	
-	error,ret=detect.detect_lines(frame)
+class Handler:
+	def __init__(self, func):
+		self.func = func
+		self.ipcam = ipcamCapture(0)
+		self.ipcam.start()
+	def __del__(self):
+		self.ipcam.stop()
+	def work(self):
+		frame=self.ipcam.getframe()
+		ret=self.ipcam.status
+		if frame is None:
+			return 0
+		#frame=cv2.imread('5.jpg')
+		#ret=True
+		h,w=frame.shape[:2]
+		#if not ret:
+		#	print "capture error"
+		#	raise Exception('Car stopped')
+		#cv2.imwrite("camera.jpg",frame)
+		
+		error,ret=detect.detect_lines(frame)
+		
+		global cnt
+		if not ret:
+			cv2.imwrite("camera.jpg",frame)
+			++cnt
+			if cnt > 10:
+				raise Exception('Car stopped')
+		else:
+			cnt = 0
+			
+		print error
+		
+		if error > 0 or error< -0:
+			saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
+			#exit()
+		
+		self.func(error)
 
-	if not ret:
-		cv2.imwrite("camera.jpg",frame)
-		++cnt
-		if cnt > 10:
-			raise Exception('Car stopped')
-                return
-	else:
-		cnt = 0
-	print error
-        #car.self_adjustment(error)
-        if error > 1000 or error< -1000:
-            saveImageTo(frame, "figure" + str(random.randint(0, 10000)) + '.jpg')
-            exit()
-	if error < 0:
-		car.left_adjustment(-error)
-	elif error > 0:
-		car.right_adjustment(error)
-
-	#break
-
-	#time.sleep(1)
-	
-	
-car.set_speed(450)
-car.forward()
-cnt = 0
-while True:
-	try:
-		work()
-	except KeyboardInterrupt:
-		car.stop()
-		exit()
+		#break
 
