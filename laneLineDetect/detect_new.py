@@ -154,6 +154,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 				
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
+	if len(left_lines) == 0 or len(right_lines) == 0:
+		return 0,0,False
 	if len(left_lines)==0:
 		left_lines.append(np.array([[0,0,0,h]]))
 	if len(right_lines)==0:
