@@ -19,6 +19,7 @@ class ipcamCapture:
 
 	def start(self):
 		print('ipcam started!')
+		self.thread.setDaemon(True)
 		self.thread.start()
 
 	def stop(self):
@@ -99,7 +100,7 @@ class Handler:
 			saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
 			#exit()
 		
-		self.func(error)
+		return self.func(error)
 
 		#break
 

@@ -7,6 +7,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "assert.h"
 
 #include "motor.h"
 
@@ -183,8 +184,8 @@ void pwm_set_pulse_R(uint16_t pulse)
 void point_turn(uint16_t pulse,PointTurnDirDef dir)
 {
 	if (dir==ANTICLOCKWISE){
-		pwm_set_pulse_right_F(pulse);
 		pwm_set_pulse_left_R(pulse);
+		pwm_set_pulse_right_F(pulse);
 	}else if (dir==CLOCKWISE){
 		pwm_set_pulse_right_R(pulse);
 		pwm_set_pulse_left_F(pulse);
@@ -221,12 +222,15 @@ void differ_turn(uint16_t Pulse, uint16_t differ, TurnDirDef dir)
 	if (MIN_Speed == 0){
 		if (InsidePulse < 0) InsidePulse = 0;
 	}else{
-		if (InsidePulse < -((int16_t)Speed_Now)) InsidePulse = -((int16_t)Speed_Now);
+		if (InsidePulse < -((int16_t)Pulse)) InsidePulse = -((int16_t)Pulse);
 	}
 	
 	
-	if (InsidePulse > ((int16_t)Speed_Now)) InsidePulse = (int16_t)Speed_Now;
-	OutsidePulse += (((int16_t)Pulse) - InsidePulse) * Speed_Up / 100;
+	if (InsidePulse > ((int16_t)Pulse)) InsidePulse = (int16_t)Pulse;
+	OutsidePulse += (uint16_t)((((int16_t)Pulse) - InsidePulse) * (Speed_Up-50) / 100);
+	
+	assert(OutsidePulse >= 0u && OutsidePulse <= 2000u);
+	assert(InsidePulse >= -2000 && InsidePulse <= 2000);
 	
 	if (dir == LEFT){
 		pwm_set_pulse_right_F((uint16_t) OutsidePulse);
