@@ -143,7 +143,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 			slope=math.atan2(float(y2)-float(y1),float(x2)-float(x1))
 			#k = (float(y2) - float(y1)) / (x2 - x1)
 			midx=(x1+x2)/2
-			if (abs(slope)<np.pi/4):
+			if (abs(slope)<np.pi / 6):
 				continue
 			#if (abs(k)<horizon_threshold):
 			#	continue
@@ -214,6 +214,8 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 
 def detect_lines(img):
 	h,w=img.shape[:2]
+	import trans
+	img = trans.main(img)
 	showImage(img)
 
 	#--------------
@@ -269,7 +271,7 @@ def detect_lines(img):
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig.jpg')
+	img = cv2.imread('fig1.jpg')
 	start = time.time()
 	#last_error=-200
 	print(detect_lines(img))
