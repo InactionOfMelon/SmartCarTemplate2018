@@ -271,14 +271,61 @@ def detect_lines(img):
 	#last_error=offset
 	return offset,True
 
+def detect_point(img):
+	#---------Parameters
+	#-------------------------------------------
+	PYR_TIMES = 2 # Times of pyrDown()
+	HSV_H_MIN, HSV_H_MAX = 5, 16 # H range of red # 5, 13
+	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
+	HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red # 46, 255
+	BOX_KSIZE_WIDTH = 31 # Kernal size of boxFilter
+	BOX_KSIZE_HEIGHT = 31 # Kernal size of boxFilter
+	BOX_THRESHOLD = BOX_KSIZE_WIDTH * BOX_KSIZE_HEIGHT / 12 # Threshold of boxFilter result
+	#-------------------------------------------
+	#---------Resizes
+	PYR_SCALE = 2 ** PYR_TIMES
+	small = img.copy()
+	for i in range(PYR_TIMES):
+		small = cv2.pyrDown(small)
+	showImage(small)
+	#---------Converts to HSV
+	hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+	showImage(hsv)
+	#---------Detects Color
+	if isDraw:
+		___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 255, cv2.THRESH_BINARY)
+		showImage(dst)
+	___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 1, cv2.THRESH_BINARY)
+	dst.astype(np.int16)
+	#---------Filters detected color
+	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = False)
+	res_max = np.max(res)
+	print(res_max)
+	if res_max < BOX_THRESHOLD:
+		return None
+	else:
+		pos = np.where(res == res_max)
+		vec = np.sum(pos, axis = 1)
+		num = np.size(pos, axis = 1)
+		return (int(round(float(vec[1]) / num * PYR_SCALE)), int(round(float(vec[0]) / num * PYR_SCALE)))
+
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig1.jpg')
+	img = cv2.imread('fig6.jpg')
 	start = time.time()
 	#last_error=-200
-	print(detect_lines(img))
-	showImage(img)
+	#print(detect_lines(img))
+	#showImage(img)
 	end = time.time()
 	print("time:", end - start)
-  
+	start = time.time()
+	point = detect_point(img)
+	if point is not None:
+		img1 = img.copy()
+		draw_point(img1, point)
+		showImage(img1)
+	else:
+		print('detect point failed')
+	end = time.time()
+	print("time:", end - start)
