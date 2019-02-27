@@ -10,7 +10,7 @@ def straight(error):
 		car.right_adjustment(error)
 		
 car.set_speed(450)
-car.forward()
+#car.forward()
 cnt = 0
 handler = camera.Handler(straight)
 time.sleep(1)
