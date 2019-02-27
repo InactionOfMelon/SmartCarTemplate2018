@@ -13,9 +13,10 @@ car.set_speed(450)
 car.forward()
 cnt = 0
 handler = camera.Handler(straight)
+time.sleep(1)
 try:
 	while True:
-		time.sleep(0)
+		#time.sleep(0)
 		handler.work()
 except KeyboardInterrupt:
 	car.stop()

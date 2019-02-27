@@ -4,7 +4,7 @@ import cv2
 import time
 
 isShowImage=False
-isDraw=False
+isDraw=True
 def showImage(img,winName="Image"):
 	if isShowImage:
 		cv2.imshow(winName,img)
@@ -180,9 +180,9 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
   
 	left_vtx = calc_lane_vertices(left_points, 0, img.shape[0], img)
 	right_vtx = calc_lane_vertices(right_points, 0, img.shape[0], img)
-	if isDraw:
-		print(left_vtx[0], left_vtx[1])
-		print(right_vtx[0], right_vtx[1])
+	#if isDraw:
+		#print(left_vtx[0], left_vtx[1])
+		#print(right_vtx[0], right_vtx[1])
 
 	if abs(left_vtx[0][0]-right_vtx[0][0])<=50 and abs(left_vtx[1][0]-right_vtx[1][0])<=50:
 			if left_vtx[0][0]<left_vtx[1][0]:
@@ -192,8 +192,8 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 					right_vtx[0]=(w,0)
 					right_vtx[1]=(w,h)
 	if isDraw:
-		print(left_vtx[0], left_vtx[1])
-		print(right_vtx[0], right_vtx[1])
+		#print(left_vtx[0], left_vtx[1])
+		#print(right_vtx[0], right_vtx[1])
 		cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
 		cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
 	

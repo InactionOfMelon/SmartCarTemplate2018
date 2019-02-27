@@ -3,9 +3,9 @@
 #include "pid.h"
 
 struct Pid{
-	int16_t error_last;
-	int16_t integral;
-	int16_t differ;
+	int32_t error_last;
+	int32_t integral;
+	int32_t differ;
 	float Kp;
 	float Ki;
 	float Kd;
@@ -15,9 +15,9 @@ void pid_init(){
 	straight.error_last = 0;
 	straight.integral = 0;
 	straight.differ = 0;
-	straight.Kp = 1.5;
+	straight.Kp = 4;
 	straight.Ki = 0;
-	straight.Kd = 0.5;
+	straight.Kd = 1.5;
 }
 
 /*********
@@ -28,6 +28,7 @@ void straight_adjustment(int32_t error){
 	straight.differ = error * straight.Kp + straight.integral * straight.Ki - straight.error_last * straight.Kd;
 	
 	pwm_set_stop();
+	if (straight.differ > 4000) straight.differ = 4000;
 	if (straight.differ > 0){
 		differ_turn(Speed_Now, straight.differ, RIGHT);
 	}else{
