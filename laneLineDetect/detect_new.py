@@ -281,6 +281,7 @@ def detect_point(img):
 	BOX_KSIZE_WIDTH = 31 # Kernal size of boxFilter
 	BOX_KSIZE_HEIGHT = 31 # Kernal size of boxFilter
 	BOX_THRESHOLD = BOX_KSIZE_WIDTH * BOX_KSIZE_HEIGHT / 12 # Threshold of boxFilter result
+	CENTER_THRESHOLD_RATIO = 0.333
 	#-------------------------------------------
 	#---------Resizes
 	PYR_SCALE = 2 ** PYR_TIMES
@@ -300,14 +301,19 @@ def detect_point(img):
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = False)
 	res_max = np.max(res)
-	print(res_max)
 	if res_max < BOX_THRESHOLD:
-		return None
+		return False
 	else:
 		pos = np.where(res == res_max)
 		vec = np.sum(pos, axis = 1)
 		num = np.size(pos, axis = 1)
-		return (int(round(float(vec[1]) / num * PYR_SCALE)), int(round(float(vec[0]) / num * PYR_SCALE)))
+		x, y = int(round(float(vec[1]) / num * PYR_SCALE)), int(round(float(vec[0]) / num * PYR_SCALE))
+		if isDraw:
+			img1 = img.copy()
+			draw_point(img1, (x, y))
+			showImage(img1)
+		h, w = img.shape[:2]
+		return y > h * CENTER_THRESHOLD_RATIO
 
 if __name__ == '__main__':
 	isShowImage=True
@@ -320,12 +326,6 @@ if __name__ == '__main__':
 	end = time.time()
 	print("time:", end - start)
 	start = time.time()
-	point = detect_point(img)
-	if point is not None:
-		img1 = img.copy()
-		draw_point(img1, point)
-		showImage(img1)
-	else:
-		print('detect point failed')
+	print(detect_point(img))
 	end = time.time()
 	print("time:", end - start)
