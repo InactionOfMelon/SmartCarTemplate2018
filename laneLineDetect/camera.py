@@ -70,11 +70,14 @@ class Handler:
 		self.ipcam.start()
 	def __del__(self):
 		self.ipcam.stop()
-	def work(self):
+	def work(self, doDetectPoint = False):
 		frame=self.ipcam.getframe()
 		ret=self.ipcam.status
 		if frame is None:
 			return 0
+		if doDetectPoint:
+			if detect.detect_point(frame):
+				return False, None
 		#frame=cv2.imread('5.jpg')
 		#ret=True
 		h,w=frame.shape[:2]
@@ -100,7 +103,7 @@ class Handler:
 			saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
 			#exit()
 		
-		return self.func(error)
+		return True, self.func(error)
 
 		#break
 

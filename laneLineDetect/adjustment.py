@@ -17,7 +17,7 @@ time.sleep(1)
 try:
 	while True:
 		#time.sleep(0)
-		tmp=handler.work()
+		_, tmp=handler.work()
 		if tmp==1:
 			great+=1
 		else:

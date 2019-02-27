@@ -1,9 +1,9 @@
 import camera
 import car
 import time
+import detect_new as detect
 
 def straight(error):
-
 	if error < 0:
 		car.left_adjustment(-error)
 	elif error > 0:
@@ -15,9 +15,9 @@ cnt = 0
 handler = camera.Handler(straight)
 time.sleep(1)
 try:
-	while True:
-		#time.sleep(0)
-		handler.work()
+	while handler.work(True)[0]:
+		pass
 except KeyboardInterrupt:
-	car.stop()
-	del handler
+	pass
+car.stop()
+del handler
