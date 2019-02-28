@@ -275,19 +275,20 @@ def detect_point(img, t = 0): # t: current time
 	#---------Parameters
 	#-------------------------------------------
 	PYR_TIMES = 2 # Times of pyrDown()
+	PYR_SCALE = 2 ** PYR_TIMES
 	HSV_H_MIN, HSV_H_MAX = 5, 16 # H range of red # 5, 13
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red # 46, 255
-	BOX_KSIZE_WIDTH = int(31 / (2 ** PYR_TIMES))  # Kernal size of boxFilter
-	BOX_KSIZE_HEIGHT = int(31 / (2 ** PYR_TIMES)) # Kernal size of boxFilter
+	BOX_KSIZE_WIDTH = int(31 / PYR_SCALE)  # Kernal size of boxFilter
+	BOX_KSIZE_HEIGHT = int(31 / PYR_SCALE) # Kernal size of boxFilter
 	BOX_THRESHOLD = 0.5 # Threshold of boxFilter result
-	CENTER_THRESHOLD_RATIO_MIN = 0.333
-	CENTER_THRESHOLD_RATIO_WIDTH = 0.333
-	START_TIME = 3
-	START_TIME_HALF = START_TIME / 2
+	CENTER_THRESHOLD_RATIO_MAX = 1
+	CENTER_THRESHOLD_RATIO_MIN = 0.666
+	CENTER_THRESHOLD_RATIO_WIDTH = CENTER_THRESHOLD_RATIO_MAX - CENTER_THRESHOLD_RATIO_MIN
+	STARTUP_TIME = 2
+	STARTUP_TIME_HALF = STARTUP_TIME / 2
 	#-------------------------------------------
 	#---------Resizes
-	PYR_SCALE = 2 ** PYR_TIMES
 	small = img.copy()
 	for i in range(PYR_TIMES):
 		small = cv2.pyrDown(small)
@@ -296,10 +297,8 @@ def detect_point(img, t = 0): # t: current time
 	hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
 	showImage(hsv)
 	#---------Detects color
-	if isDraw:
-		___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 255, cv2.THRESH_BINARY)
-		showImage(dst)
 	___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 255, cv2.THRESH_BINARY)
+	showImage(dst)
 	dst.astype(np.int16)
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
@@ -316,12 +315,12 @@ def detect_point(img, t = 0): # t: current time
 			draw_point(img1, (x, y))
 			showImage(img1)
 		h, w = img.shape[:2]
-		ratio = CENTER_THRESHOLD_RATIO_MIN + CENTER_THRESHOLD_RATIO_WIDTH / math.exp((t / START_TIME_HALF - 1) * 3.5)
+		ratio = CENTER_THRESHOLD_RATIO_MIN + CENTER_THRESHOLD_RATIO_WIDTH / math.exp((t / STARTUP_TIME_HALF - 1) * 3.5)
 		return y > h * ratio
 
 if __name__ == '__main__':
-	isShowImage=True
-	isDraw=True
+	isShowImage=False
+	isDraw=False
 	img = cv2.imread('fig8.jpg')
 	start = time.time()
 	#last_error=-200
