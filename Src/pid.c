@@ -15,9 +15,9 @@ void pid_init(){
 	straight.error_last = 0;
 	straight.integral = 0;
 	straight.differ = 0;
-	straight.Kp = 4;
+	straight.Kp = 2;
 	straight.Ki = 0;
-	straight.Kd = 1.5;
+	straight.Kd = 1;
 }
 
 /*********

@@ -38,16 +38,16 @@ class ipcamCapture:
 			t2 = time.time()
 			t = t2 - t1
 		return frame
-		#self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+		##self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
 		#frame = self.Frame
-		#self.lock.release()
+		##self.lock.release()
 		#return frame
 		
 	def queryframe(self):
 		while (not self.isstop):
-			self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+			#self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
 			self.status, self.Frame = self.capture.read()
-			self.lock.release()
+			#self.lock.release()
 			time.sleep(0)
 		self.capture.release()
 		#raise KeyboardInterrupt()
@@ -84,9 +84,12 @@ class Handler:
 		frame=self.ipcam.getframe()
 		ret=self.ipcam.status
 		if frame is None:
-			return 0
+			print('None')
+			return True, None
 		if doDetectPoint:
-			if detect.detect_point(frame, time.time() - t0):
+			tmp=detect.detect_point(frame, time.time() - t0)
+			print('point:',tmp)
+			if tmp:
 				return False, None
 		#frame=cv2.imread('5.jpg')
 		#ret=True
@@ -98,14 +101,14 @@ class Handler:
 		
 		error,ret=detect.detect_lines(frame)
 		
-		global cnt
-		if not ret:
-			cv2.imwrite("camera.jpg",frame)
-			++cnt
-			if cnt > 10:
-				raise Exception('Car stopped')
-		else:
-			cnt = 0
+		#global cnt
+		#if not ret:
+		#	cv2.imwrite("camera.jpg",frame)
+		#	cnt=cnt+1
+		#	if cnt > 10:
+		#		raise Exception('Car stopped')
+		#else:
+		#	cnt = 0
 			
 		print error
 		

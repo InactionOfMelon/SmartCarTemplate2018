@@ -84,9 +84,14 @@ void pwm_set_pulse_left_F(uint16_t pulse)
 	__oc_init_pulse(&sConfigOC, pulse);
 	__pwm_set(MOTORC_F, &sConfigOC);
 	__pwm_set(MOTORD_F, &sConfigOC);*/
+	if (GoBack){
+		pwm_set_pulse_single(MOTORB_R, pulse);
+		pwm_set_pulse_single(MOTORA_R, pulse);
+		return;
+	}
 	
-	pwm_set_pulse_single(MOTORC_F, pulse);
 	pwm_set_pulse_single(MOTORD_F, pulse);
+	pwm_set_pulse_single(MOTORC_F, pulse);
 }
 
 /**
@@ -100,9 +105,14 @@ void pwm_set_pulse_right_F(uint16_t pulse)
 	__pwm_set(MOTORB_F, &sConfigOC);
 	__pwm_set(MOTORA_F, &sConfigOC);
 	*/
+	if (GoBack){
+		pwm_set_pulse_single(MOTORC_R, pulse);
+		pwm_set_pulse_single(MOTORD_R, pulse);
+		return;
+	}
 	
-	pwm_set_pulse_single(MOTORB_F, pulse);
 	pwm_set_pulse_single(MOTORA_F, pulse);
+	pwm_set_pulse_single(MOTORB_F, pulse);
 }
 
 /**
@@ -116,6 +126,11 @@ void pwm_set_pulse_left_R(uint16_t pulse)
 	__pwm_set(MOTORC_R, &sConfigOC);
 	__pwm_set(MOTORD_R, &sConfigOC);
 	*/
+	if (GoBack){
+		pwm_set_pulse_single(MOTORA_F, pulse);
+		pwm_set_pulse_single(MOTORB_F, pulse);
+		return;
+	}
 	
 	pwm_set_pulse_single(MOTORC_R, pulse);
 	pwm_set_pulse_single(MOTORD_R, pulse);
@@ -132,6 +147,11 @@ void pwm_set_pulse_right_R(uint16_t pulse)
 	__pwm_set(MOTORB_R, &sConfigOC);
 	__pwm_set(MOTORA_R, &sConfigOC);
 	*/
+	if (GoBack){
+		pwm_set_pulse_single(MOTORD_F, pulse);
+		pwm_set_pulse_single(MOTORC_F, pulse);
+		return;
+	}
 	
 	pwm_set_pulse_single(MOTORB_R, pulse);
 	pwm_set_pulse_single(MOTORA_R, pulse);
@@ -150,6 +170,14 @@ void pwm_set_pulse_F(uint16_t pulse)
 	__pwm_set(MOTORA_F, &sConfigOC);
 	__pwm_set(MOTORD_F, &sConfigOC);
 	*/
+	
+	if (GoBack){
+		pwm_set_pulse_single(MOTORB_R, pulse);
+		pwm_set_pulse_single(MOTORC_R, pulse);
+		pwm_set_pulse_single(MOTORA_R, pulse);
+		pwm_set_pulse_single(MOTORD_R, pulse);
+		return;
+	}
 	
 	pwm_set_pulse_single(MOTORB_F, pulse);
 	pwm_set_pulse_single(MOTORC_F, pulse);
@@ -170,7 +198,13 @@ void pwm_set_pulse_R(uint16_t pulse)
 	__pwm_set(MOTORA_R, &sConfigOC);
 	__pwm_set(MOTORD_R, &sConfigOC);
 	*/
-	
+	if (GoBack){
+		pwm_set_pulse_single(MOTORB_F, pulse);
+		pwm_set_pulse_single(MOTORC_F, pulse);
+		pwm_set_pulse_single(MOTORA_F, pulse);
+		pwm_set_pulse_single(MOTORD_F, pulse);
+		return;
+	}
 	pwm_set_pulse_single(MOTORB_R, pulse);
 	pwm_set_pulse_single(MOTORC_R, pulse);
 	pwm_set_pulse_single(MOTORA_R, pulse);
@@ -216,6 +250,7 @@ void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
  */
 void differ_turn(uint16_t Pulse, uint16_t differ, TurnDirDef dir)
 {
+	pwm_set_stop();
 	uint16_t OutsidePulse = Pulse;
 	int16_t InsidePulse = ((int16_t)Pulse) - ((int16_t)differ);
 	
