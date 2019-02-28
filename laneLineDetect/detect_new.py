@@ -4,7 +4,7 @@ import cv2
 import time
 
 isShowImage=False
-isDraw=True
+isDraw=False
 def showImage(img,winName="Image"):
 	if isShowImage:
 		cv2.imshow(winName,img)
@@ -280,10 +280,10 @@ def detect_point(img, t = 0): # t: current time
 	HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red # 46, 255
 	BOX_KSIZE_WIDTH = int(31 / (2 ** PYR_TIMES))  # Kernal size of boxFilter
 	BOX_KSIZE_HEIGHT = int(31 / (2 ** PYR_TIMES)) # Kernal size of boxFilter
-	BOX_THRESHOLD = 0.6 # Threshold of boxFilter result
+	BOX_THRESHOLD = 0.5 # Threshold of boxFilter result
 	CENTER_THRESHOLD_RATIO_MIN = 0.333
 	CENTER_THRESHOLD_RATIO_WIDTH = 0.333
-	START_TIME = 2
+	START_TIME = 3
 	START_TIME_HALF = START_TIME / 2
 	#-------------------------------------------
 	#---------Resizes
@@ -305,7 +305,7 @@ def detect_point(img, t = 0): # t: current time
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
 	res_max = np.max(res)
 	if res_max < 255 * BOX_THRESHOLD:
-		return False
+		return None
 	else:
 		pos = np.where(res == res_max)
 		vec = np.sum(pos, axis = 1)
@@ -317,12 +317,12 @@ def detect_point(img, t = 0): # t: current time
 			showImage(img1)
 		h, w = img.shape[:2]
 		ratio = CENTER_THRESHOLD_RATIO_MIN + CENTER_THRESHOLD_RATIO_WIDTH / math.exp((t / START_TIME_HALF - 1) * 3.5)
-		return y < h * ratio
+		return y > h * ratio
 
 if __name__ == '__main__':
-	isShowImage=False
+	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig6.jpg')
+	img = cv2.imread('fig8.jpg')
 	start = time.time()
 	#last_error=-200
 	#print(detect_lines(img))
