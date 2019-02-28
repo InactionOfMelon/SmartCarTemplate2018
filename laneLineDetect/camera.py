@@ -70,13 +70,13 @@ class Handler:
 		self.ipcam.start()
 	def __del__(self):
 		self.ipcam.stop()
-	def work(self, doDetectPoint = False):
+	def work(self, doDetectPoint = False, t0 = 0.0):
 		frame=self.ipcam.getframe()
 		ret=self.ipcam.status
 		if frame is None:
 			return 0
 		if doDetectPoint:
-			if detect.detect_point(frame):
+			if detect.detect_point(frame, time.time() - t0):
 				return False, None
 		#frame=cv2.imread('5.jpg')
 		#ret=True
