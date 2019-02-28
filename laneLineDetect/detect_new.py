@@ -271,17 +271,20 @@ def detect_lines(img):
 	#last_error=offset
 	return offset,True
 
-def detect_point(img):
+def detect_point(img, t = 0): # t: current time
 	#---------Parameters
 	#-------------------------------------------
 	PYR_TIMES = 2 # Times of pyrDown()
 	HSV_H_MIN, HSV_H_MAX = 5, 16 # H range of red # 5, 13
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red # 46, 255
-	BOX_KSIZE_WIDTH = 31 # Kernal size of boxFilter
-	BOX_KSIZE_HEIGHT = 31 # Kernal size of boxFilter
-	BOX_THRESHOLD = BOX_KSIZE_WIDTH * BOX_KSIZE_HEIGHT / 12 # Threshold of boxFilter result
-	CENTER_THRESHOLD_RATIO = 0.333
+	BOX_KSIZE_WIDTH = int(31 / (2 ** PYR_TIMES))  # Kernal size of boxFilter
+	BOX_KSIZE_HEIGHT = int(31 / (2 ** PYR_TIMES)) # Kernal size of boxFilter
+	BOX_THRESHOLD = 0.6 # Threshold of boxFilter result
+	CENTER_THRESHOLD_RATIO_MIN = 0.333
+	CENTER_THRESHOLD_RATIO_WIDTH = 0.333
+	START_TIME = 2
+	START_TIME_HALF = START_TIME / 2
 	#-------------------------------------------
 	#---------Resizes
 	PYR_SCALE = 2 ** PYR_TIMES
@@ -292,16 +295,16 @@ def detect_point(img):
 	#---------Converts to HSV
 	hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
 	showImage(hsv)
-	#---------Detects Color
+	#---------Detects color
 	if isDraw:
 		___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 255, cv2.THRESH_BINARY)
 		showImage(dst)
-	___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 1, cv2.THRESH_BINARY)
+	___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 255, cv2.THRESH_BINARY)
 	dst.astype(np.int16)
 	#---------Filters detected color
-	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = False)
+	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
 	res_max = np.max(res)
-	if res_max < BOX_THRESHOLD:
+	if res_max < 255 * BOX_THRESHOLD:
 		return False
 	else:
 		pos = np.where(res == res_max)
@@ -313,10 +316,11 @@ def detect_point(img):
 			draw_point(img1, (x, y))
 			showImage(img1)
 		h, w = img.shape[:2]
-		return y > h * CENTER_THRESHOLD_RATIO
+		ratio = CENTER_THRESHOLD_RATIO_MIN + CENTER_THRESHOLD_RATIO_WIDTH / math.exp((t / START_TIME_HALF - 1) * 3.5)
+		return y < h * ratio
 
 if __name__ == '__main__':
-	isShowImage=True
+	isShowImage=False
 	isDraw=True
 	img = cv2.imread('fig6.jpg')
 	start = time.time()
@@ -326,6 +330,6 @@ if __name__ == '__main__':
 	end = time.time()
 	print("time:", end - start)
 	start = time.time()
-	print(detect_point(img))
+	print(detect_point(img, 0))
 	end = time.time()
 	print("time:", end - start)
