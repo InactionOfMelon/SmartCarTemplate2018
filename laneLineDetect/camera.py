@@ -15,7 +15,7 @@ class ipcamCapture:
 		self.isstop = False
 		self.lock = threading.Lock()
 		self.capture = cv2.VideoCapture(0)
-		self.thread = threading.Thread(target=self.queryframe, args=())
+		#self.thread = threading.Thread(target=self.queryframe, args=())
 
 	def start(self):
 		print('ipcam started!')
@@ -28,10 +28,20 @@ class ipcamCapture:
 		time.sleep(0)
    
 	def getframe(self):
-		self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
-		frame = self.Frame
-		self.lock.release()
+		for i in range(6):
+			self.status, frame = self.capture.read()
 		return frame
+		t = 0
+		while t <= 0.01:
+			t1 = time.time()
+			self.status, frame = self.capture.read()
+			t2 = time.time()
+			t = t2 - t1
+		return frame
+		#self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+		#frame = self.Frame
+		#self.lock.release()
+		#return frame
 		
 	def queryframe(self):
 		while (not self.isstop):
