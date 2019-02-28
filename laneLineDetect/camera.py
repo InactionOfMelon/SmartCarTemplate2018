@@ -14,7 +14,7 @@ class ipcamCapture:
 		self.status = False
 		self.isstop = False
 		self.lock = threading.Lock()
-		self.capture = cv2.VideoCapture(0)
+		self.capture = cv2.VideoCapture(URL)
 		self.thread = threading.Thread(target=self.queryframe, args=())
 
 	def start(self):
@@ -28,16 +28,16 @@ class ipcamCapture:
 		time.sleep(0)
    
 	def getframe(self):
-		self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+		#self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
 		frame = self.Frame
-		self.lock.release()
+		#self.lock.release()
 		return frame
 		
 	def queryframe(self):
 		while (not self.isstop):
-			self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
+			#self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
 			self.status, self.Frame = self.capture.read()
-			self.lock.release()
+			#self.lock.release()
 			time.sleep(0)
 		self.capture.release()
 		#raise KeyboardInterrupt()
@@ -76,7 +76,9 @@ class Handler:
 		if frame is None:
 			return 0
 		if doDetectPoint:
-			if detect.detect_point(frame, time.time() - t0):
+			tmp=detect.detect_point(frame, time.time() - t0)
+			print('point:',tmp)
+			if tmp:
 				return False, None
 		#frame=cv2.imread('5.jpg')
 		#ret=True

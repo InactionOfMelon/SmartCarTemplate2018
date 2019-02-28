@@ -105,9 +105,9 @@ def right_turn(deg):
 def self_adjustment(error):
 	set_speed(1000)
 	if error > 0:
-		right_turn(6)
+		right_turn(4)
 	if error < 0:
-		left_turn(6)
+		left_turn(4)
 		
 def set_pulse_single(MOTOR, Dir, Pulse):
 	x = [200+MOTOR+Dir*10, Pulse & (0xFF), Pulse >> 8, 0, 1]
@@ -119,4 +119,8 @@ def set_min_speed(state):
 
 def set_speed_up(rate):
 	x = [221, rate, 0, 0, 1]
+	spi.xfer2(x)
+	
+def set_go_back(dir):
+	x = [222, dir, 0, 0, 1]
 	spi.xfer2(x)

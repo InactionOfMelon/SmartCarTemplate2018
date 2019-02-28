@@ -4,10 +4,10 @@ import time
 
 def adjustment(error):
 	if error<100 and error>-100:
-		return 1
+		return True
 	else:
 		car.self_adjustment(error)
-		return 0
+		return False
 
 
 cnt = 0
@@ -18,7 +18,7 @@ try:
 	while True:
 		#time.sleep(0)
 		_, tmp=handler.work()
-		if tmp==1:
+		if tmp:
 			great+=1
 		else:
 			great=0

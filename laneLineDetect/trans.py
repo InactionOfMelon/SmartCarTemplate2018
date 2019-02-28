@@ -11,7 +11,7 @@ def main(img):
     M = cv2.getPerspectiveTransform(src_points,dst_points)
 
     dst = cv2.warpPerspective(img,M,(w,h)) # (w,h)
-    cv2.imwrite('dst.png',dst)
+    #cv2.imwrite('dst.png',dst)
     return dst
     
 if __name__ == '__main__':

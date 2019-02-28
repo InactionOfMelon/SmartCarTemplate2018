@@ -3,7 +3,7 @@
 <title>Static Call Graph - [SmartCar2018\SmartCar2018.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image SmartCar2018\SmartCar2018.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Feb 27 15:26:04 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Feb 28 16:20:11 2019
 <BR><P>
 <H3>Maximum Stack Usage =        144 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -742,8 +742,8 @@ Global Symbols
 <P><STRONG><a name="[9]"></a>PendSV_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(i.PendSV_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xb.o(RESET)
 </UL>
-<P><STRONG><a name="[83]"></a>SPI_Receive</STRONG> (Thumb, 452 bytes, Stack size 24 bytes, spi.o(i.SPI_Receive))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = SPI_Receive &rArr; straight_adjustment &rArr; differ_turn &rArr; pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
+<P><STRONG><a name="[83]"></a>SPI_Receive</STRONG> (Thumb, 478 bytes, Stack size 24 bytes, spi.o(i.SPI_Receive))
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = SPI_Receive &rArr; straight_adjustment &rArr; differ_turn &rArr; pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;straight_param_change
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;straight_adjustment
@@ -845,13 +845,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Receive
 </UL>
 
-<P><STRONG><a name="[8a]"></a>differ_turn</STRONG> (Thumb, 144 bytes, Stack size 8 bytes, motor.o(i.differ_turn))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = differ_turn &rArr; pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
+<P><STRONG><a name="[8a]"></a>differ_turn</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, motor.o(i.differ_turn))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = differ_turn &rArr; pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_right_R
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_right_F
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_left_R
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_left_F
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_stop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;straight_adjustment
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Receive
@@ -893,7 +894,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Receive
 </UL>
 
-<P><STRONG><a name="[88]"></a>pwm_set_pulse_F</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_F))
+<P><STRONG><a name="[88]"></a>pwm_set_pulse_F</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_F))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pwm_set_pulse_F &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_single
@@ -901,7 +902,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Receive
 </UL>
 
-<P><STRONG><a name="[89]"></a>pwm_set_pulse_R</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_R))
+<P><STRONG><a name="[89]"></a>pwm_set_pulse_R</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_R))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pwm_set_pulse_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_single
@@ -909,7 +910,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Receive
 </UL>
 
-<P><STRONG><a name="[94]"></a>pwm_set_pulse_left_F</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_left_F))
+<P><STRONG><a name="[94]"></a>pwm_set_pulse_left_F</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_left_F))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pwm_set_pulse_left_F &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_single
@@ -919,7 +920,7 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;corner_turn
 </UL>
 
-<P><STRONG><a name="[97]"></a>pwm_set_pulse_left_R</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_left_R))
+<P><STRONG><a name="[97]"></a>pwm_set_pulse_left_R</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_left_R))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pwm_set_pulse_left_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_single
@@ -929,7 +930,7 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;corner_turn
 </UL>
 
-<P><STRONG><a name="[96]"></a>pwm_set_pulse_right_F</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_right_F))
+<P><STRONG><a name="[96]"></a>pwm_set_pulse_right_F</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_right_F))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pwm_set_pulse_right_F &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_single
@@ -939,7 +940,7 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;corner_turn
 </UL>
 
-<P><STRONG><a name="[95]"></a>pwm_set_pulse_right_R</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_right_R))
+<P><STRONG><a name="[95]"></a>pwm_set_pulse_right_R</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, motor.o(i.pwm_set_pulse_right_R))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwm_set_pulse_single
@@ -970,11 +971,12 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Stop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;straight_adjustment
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;differ_turn
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Receive
 </UL>
 
 <P><STRONG><a name="[84]"></a>straight_adjustment</STRONG> (Thumb, 132 bytes, Stack size 24 bytes, pid.o(i.straight_adjustment))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = straight_adjustment &rArr; differ_turn &rArr; pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = straight_adjustment &rArr; differ_turn &rArr; pwm_set_pulse_right_R &rArr; pwm_set_pulse_single &rArr; HAL_TIM_PWM_Stop &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub

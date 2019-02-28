@@ -208,6 +208,7 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 		
 		case 220: MIN_Speed = g; break;
 		case 221: Speed_Up = g; break;
+		case 222: GoBack = g; break;
 	}
 	
 	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;
