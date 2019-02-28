@@ -217,9 +217,9 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 def detect_lines(img):
 	h,w=img.shape[:2]
 	showImage(img)
-	import trans
-	img = trans.main(img)
-	showImage(img)
+	#import trans
+	#img = trans.main(img)
+	#showImage(img)
 
 	#--------------
 	white_thresh = 225
