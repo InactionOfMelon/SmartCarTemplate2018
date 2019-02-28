@@ -14,7 +14,7 @@ class ipcamCapture:
 		self.status = False
 		self.isstop = False
 		self.lock = threading.Lock()
-		self.capture = cv2.VideoCapture(URL)
+		self.capture = cv2.VideoCapture(0)
 		self.thread = threading.Thread(target=self.queryframe, args=())
 
 	def start(self):
@@ -29,7 +29,7 @@ class ipcamCapture:
    
 	def getframe(self):
 		#self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
-		frame = self.Frame
+		frame = self.Frame.copy()
 		#self.lock.release()
 		return frame
 		
@@ -74,7 +74,8 @@ class Handler:
 		frame=self.ipcam.getframe()
 		ret=self.ipcam.status
 		if frame is None:
-			return 0
+			print('None')
+			return True, None
 		if doDetectPoint:
 			tmp=detect.detect_point(frame, time.time() - t0)
 			print('point:',tmp)
@@ -90,14 +91,14 @@ class Handler:
 		
 		error,ret=detect.detect_lines(frame)
 		
-		global cnt
-		if not ret:
-			cv2.imwrite("camera.jpg",frame)
-			++cnt
-			if cnt > 10:
-				raise Exception('Car stopped')
-		else:
-			cnt = 0
+		#global cnt
+		#if not ret:
+		#	cv2.imwrite("camera.jpg",frame)
+		#	cnt=cnt+1
+		#	if cnt > 10:
+		#		raise Exception('Car stopped')
+		#else:
+		#	cnt = 0
 			
 		print error
 		

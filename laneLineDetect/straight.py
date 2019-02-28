@@ -9,11 +9,11 @@ def straight(error):
 	elif error > 0:
 		car.right_adjustment(error)
 		
-car.set_speed(450)
+car.set_speed(500)
 #car.forward()
 cnt = 0
 handler = camera.Handler(straight)
-#time.sleep(1)
+time.sleep(1)
 t0 = time.time()
 try:
 	while handler.work(True, t0)[0]:
