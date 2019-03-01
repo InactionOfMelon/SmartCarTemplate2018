@@ -19,24 +19,34 @@ def work(handler):
 	t0 = time.time()
 	try:
 		cnt=0
-		while handler.work(True, t0)[0]!=True:
+		tmp=None
+		while True:
+			tmp=handler.work_for_point(t0)
+			if (tmp!=None):
+				break
+			handler.work()
 			cnt+=1
 			pass
 		print('Find a point')
 		car.stop()
-		if (cnt>2):
+		
+		if (cnt>0):
 			car.short_backward(0.15)
 			car.stop()
 			time.sleep(1)
-		status, point=handler.work(True, t0)
+		point=handler.work_for_point(t0)
 		
-		if status==True:
-			tmp=(float(point+115)**0.5)/30
-			print('forward',tmp)
-			car.stop()
+		if point!=None:
+			tmp=(float(point+77)**0.5)/34
 			car.short_forward(tmp)
 			car.stop()
+			
 	except KeyboardInterrupt:
 		car.stop()
 		pass
 	del handler
+
+
+if __name__ == '__main__':
+	handler=camera.Handler()
+	work(handler)
