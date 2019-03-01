@@ -200,7 +200,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
 		cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
 	
-	return left_vtx[0][0],right_vtx[0][0],True
+	return left_vtx,right_vtx,True
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold):
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
@@ -211,10 +211,10 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 	#draw_lines(line_img, lines)
 	draw_lines(lines_img, lines)
 	showImage(lines_img)
-	x1,x2,result=draw_lanes(line_img, lines,horizon_threshold)
+	lvtx,rvtx,result=draw_lanes(line_img, lines,horizon_threshold)
 	if result==False:
-		return line_img,x1,x2,False
-	return line_img,x1,x2,True
+		return line_img,lvtx,rvtx,False
+	return line_img,lvtx,rvtx,True
 
 def detect_lines(img):
 	h,w=img.shape[:2]
@@ -256,12 +256,15 @@ def detect_lines(img):
 	roi_edges = roi_mask(edges, roi_vtx)
 	showImage(roi_edges)
 	
-	line_img,leftX,rightX,isDetected= hough_lines(roi_edges, rho, theta, threshold,
+	line_img,leftVtx,rightVtx,isDetected= hough_lines(roi_edges, rho, theta, threshold,
 												  min_line_length, max_line_gap,horizon_threshold)
+
+        leftX=leftVtx[0][0]
+        rightX=rightVtx[0][0]
 	
 	if isDetected==False:
 		print('detect failed')
-		return 0,False
+		return 0,False,0,0
 	res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 	showImage(res)
 
@@ -271,7 +274,7 @@ def detect_lines(img):
 
 	print('detect success')
 	#last_error=offset
-	return offset,True
+	return offset,True,leftVtx,rightVtx
 
 def detect_point(img, t = 0, lines = None): # t: current time
 	#---------Parameters
@@ -303,13 +306,21 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	showImage(dst)
 	dst.astype(np.int16)
 	#---------Finds point within road
+        #print lines
 	if lines is not None:
-		x1, y1, x2, y2 = lines[0][0]
+                #print "lines not none"
+		#x1, y1, x2, y2 = lines[0][0]
+                x1,y1=lines[0][0]
+                x2,y2=lines[0][1]
+                #print x1,y1,x2,y2
 		if y1 > y2:
 			x1, y1, x2, y2 = x2, y2, x1, y1
 		top_left = x1 / PYR_SCALE
 		bottom_left = x2 / PYR_SCALE
-		x1, y1, x2, y2 = lines[1][0]
+		#x1, y1, x2, y2 = lines[1][0]
+                x1,y1=lines[1][0]
+                x2,y2=lines[1][1]
+                #print x1,y1,x2,y2
 		if y1 > y2:
 			x1, y1, x2, y2 = x2, y2, x1, y1
 		top_right = x1 / PYR_SCALE
@@ -317,7 +328,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		mask = np.zeros_like(dst)
 		mask[:, :] = 255
 		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
-		dst = cv2.bitwise_and(dst, msk)
+		dst = cv2.bitwise_and(dst, mask)
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
 	res_max = np.max(res)
@@ -340,15 +351,13 @@ def detect_point(img, t = 0, lines = None): # t: current time
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig10.jpg')
 	#start = time.time()
 	#last_error=-200
-	lines = detect_lines(img)
-	print(img)
-	#showImage(img)
+	lines = detect_lines(img)[2:]
+        print lines
 	#end = time.time()
 	#print("time:", end - start)
 	start = time.time()
-	print(detect_point(img, 0))
+	print(detect_point(img, 0,lines))
 	end = time.time()
 	print("time:", end - start)
