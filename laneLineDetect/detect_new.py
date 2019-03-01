@@ -2,6 +2,7 @@ import numpy as np
 import math
 import cv2
 import time
+import trans
 
 isShowImage=False
 isDraw=False
@@ -272,7 +273,7 @@ def detect_lines(img):
 	#last_error=offset
 	return offset,True
 
-def detect_point(img, t = 0): # t: current time
+def detect_point(img, t = 0, lines = None): # t: current time
 	#---------Parameters
 	#-------------------------------------------
 	PYR_TIMES = 2 # Times of pyrDown()
@@ -301,6 +302,22 @@ def detect_point(img, t = 0): # t: current time
 	___, dst = cv2.threshold(cv2.inRange(hsv, np.array([HSV_H_MIN, HSV_S_MIN, HSV_V_MIN]), np.array([HSV_H_MAX, HSV_S_MAX, HSV_V_MAX])), 0, 255, cv2.THRESH_BINARY)
 	showImage(dst)
 	dst.astype(np.int16)
+	#---------Finds point within road
+	if lines is not None:
+		x1, y1, x2, y2 = lines[0][0]
+		if y1 > y2:
+			x1, y1, x2, y2 = x2, y2, x1, y1
+		top_left = x1 / PYR_SCALE
+		bottom_left = x2 / PYR_SCALE
+		x1, y1, x2, y2 = lines[1][0]
+		if y1 > y2:
+			x1, y1, x2, y2 = x2, y2, x1, y1
+		top_right = x1 / PYR_SCALE
+		bottom_right = x2 / PYR_SCALE
+		mask = np.zeros_like(dst)
+		mask[:, :] = 255
+		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
+		dst = cv2.bitwise_and(dst, msk)
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
 	res_max = np.max(res)
@@ -323,10 +340,11 @@ def detect_point(img, t = 0): # t: current time
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig9.jpg')
+	img = cv2.imread('fig10.jpg')
 	#start = time.time()
 	#last_error=-200
-	#print(detect_lines(img))
+	lines = detect_lines(img)
+	print(img)
 	#showImage(img)
 	#end = time.time()
 	#print("time:", end - start)
