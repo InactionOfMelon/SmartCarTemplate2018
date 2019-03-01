@@ -204,7 +204,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold):
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
 							minLineLength=min_line_len, maxLineGap=max_line_gap)
-        print lines
+	#print(lines)
 	line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 	lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 	#draw_lines(line_img, lines)
@@ -277,7 +277,7 @@ def detect_point(img, t = 0): # t: current time
 	#-------------------------------------------
 	PYR_TIMES = 2 # Times of pyrDown()
 	PYR_SCALE = 2 ** PYR_TIMES
-	HSV_H_MIN, HSV_H_MAX = 5, 25 # H range of red # 5, 13 # 5, 16
+	HSV_H_MIN, HSV_H_MAX = 5, 27 # H range of red # 5, 13 # 5, 16
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red # 46, 255
 	BOX_KSIZE_WIDTH = int(31 / PYR_SCALE)  # Kernal size of boxFilter
@@ -324,13 +324,13 @@ if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
 	img = cv2.imread('fig9.jpg')
-	start = time.time()
+	#start = time.time()
 	#last_error=-200
-	print(detect_lines(img))
+	#print(detect_lines(img))
 	#showImage(img)
-	end = time.time()
-	print("time:", end - start)
+	#end = time.time()
+	#print("time:", end - start)
 	start = time.time()
-	#print(detect_point(img, 0))
+	print(detect_point(img, 0))
 	end = time.time()
 	print("time:", end - start)
