@@ -18,7 +18,7 @@ def work(handler):
 	try:
 		while True:
 			#time.sleep(0)
-			_, tmp=handler.work()
+			tmp=handler.work()
 			if tmp:
 				great+=1
 			else:
@@ -28,3 +28,7 @@ def work(handler):
 	except KeyboardInterrupt:
 		pass
 	del handler
+
+if __name__ == '__main__':
+	handler=camera.Handler()
+	work(handler)

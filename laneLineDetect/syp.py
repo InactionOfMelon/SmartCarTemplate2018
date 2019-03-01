@@ -5,24 +5,26 @@ import camera
 import adjustment
 import time
 
-def work():
-	handler = camera.Handler()
+def work(handler):
 	
 	for i in range(4):
-		time.sleep(1)
+		time.sleep(0.1)
 		adjustment.work(handler)
 		print(i," adjustment")
 		
-		time.sleep(1)
+		time.sleep(0.1)
 		straight.work(handler)
 		print(i," straight")
-	
-		time.sleep(1)
-		car.left_turn(60)
+		
+		time.sleep(0.1)
+		car.left_turn(70)
 		print(i," turn")
 
-try:
-	work()
-	pass
-except :
-	car.stop()
+handler = camera.Handler()
+
+if __name__ == '__main__':
+	try:
+		work(handler)
+		pass
+	except :
+		car.stop()
