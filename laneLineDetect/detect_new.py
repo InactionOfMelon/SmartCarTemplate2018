@@ -351,7 +351,6 @@ def detect_point(img, t = 0, lines = None): # t: current time
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig11.jpg')
 	#start = time.time()
 	#last_error=-200
 	lines = detect_lines(img)[2:]
