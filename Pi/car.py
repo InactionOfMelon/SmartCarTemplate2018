@@ -88,6 +88,11 @@ def pid_init():
 	x = [115, 0, 0, 0, 1]
 	spi.xfer2(x)
 	
+def fast_stop(back_time):
+	backward()
+	time.sleep(back_time)
+	stop()
+	
 def left_turn(deg):
 	stop()
 	set_speed(1000)

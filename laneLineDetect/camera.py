@@ -28,11 +28,10 @@ class ipcamCapture:
 		time.sleep(0)
    
 	def getframe(self):
-		for i in range(6):
+		for i in range(4):
 			self.status, frame = self.capture.read()
-		return frame
 		t = 0
-		while t <= 0.01:
+		while t <= 0.035:
 			t1 = time.time()
 			self.status, frame = self.capture.read()
 			t2 = time.time()
@@ -74,14 +73,15 @@ def dist(x,y,rho,theta):
 	return distance
 
 class Handler:
-	def __init__(self, func):
-		self.func = func
+	def __init__(self):
 		self.ipcam = ipcamCapture(0)
-		self.ipcam.start()
+		#self.ipcam.start()
 	def __del__(self):
-		self.ipcam.stop()
+		#self.ipcam.stop()
+		pass
 	def work(self, doDetectPoint = False, t0 = 0.0):
 		frame=self.ipcam.getframe()
+		saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
 		ret=self.ipcam.status
 		if frame is None:
 			print('None')
@@ -89,8 +89,10 @@ class Handler:
 		if doDetectPoint:
 			tmp=detect.detect_point(frame, time.time() - t0)
 			print('point:',tmp)
-			if tmp:
-				return False, None
+			if tmp!=None:
+				return True, tmp
+		else:
+			tmp=False
 		#frame=cv2.imread('5.jpg')
 		#ret=True
 		h,w=frame.shape[:2]
@@ -112,11 +114,12 @@ class Handler:
 			
 		print error
 		
-		if error > 0 or error< -0:
-			saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
+		#if error > 0 or error< -0:
+			#saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
 			#exit()
-		
-		return True, self.func(error)
+		if tmp!=None:
+			tmp=False
+		return tmp, self.func(error)
 
 		#break
 

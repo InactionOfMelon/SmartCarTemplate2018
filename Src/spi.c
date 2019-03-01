@@ -209,6 +209,14 @@ void SPI_Receive(uint8_t *data, uint8_t SPI_SIZE)
 		case 220: MIN_Speed = g; break;
 		case 221: Speed_Up = g; break;
 		case 222: GoBack = g; break;
+		case 223:	pwm_set_stop();
+							pwm_set_pulse_F(500);
+							HAL_Delay(1500);
+							pwm_set_stop();
+							pwm_set_pulse_R(500);
+							HAL_Delay(1500);
+							pwm_set_stop();
+							break;
 	}
 	
 	for (int i = 0; i < SPI_SIZE; i++) data[i] = 0;

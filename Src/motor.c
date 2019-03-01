@@ -64,14 +64,15 @@ void __pwm_set(const cpMotor motor, TIM_OC_InitTypeDef * psConfigOC)
 void pwm_set_pulse_single(const cpMotor motor, uint16_t pulse)
 {
 	
-	/*static TIM_OC_InitTypeDef sConfigOC;
+	static TIM_OC_InitTypeDef sConfigOC;
 	__oc_init_pulse(&sConfigOC, pulse);
-	__pwm_set(motor, &sConfigOC);*/
+	__pwm_set(motor, &sConfigOC);
 	
-	
+	/*
 	HAL_TIM_PWM_Stop(motor->phtim, motor->channel);
 	__HAL_TIM_SET_COMPARE(motor->phtim, motor->channel, pulse);
 	HAL_TIM_PWM_Start(motor->phtim, motor->channel);
+	*/
 }
 
 /**
@@ -217,6 +218,7 @@ void pwm_set_pulse_R(uint16_t pulse)
  */
 void point_turn(uint16_t pulse,PointTurnDirDef dir)
 {
+	pwm_set_stop();
 	if (dir==ANTICLOCKWISE){
 		pwm_set_pulse_left_R(pulse);
 		pwm_set_pulse_right_F(pulse);
@@ -234,6 +236,7 @@ void point_turn(uint16_t pulse,PointTurnDirDef dir)
  */
 void corner_turn(uint16_t OutsidePulse,uint16_t InsidePulse,TurnDirDef dir)
 {
+	pwm_set_stop();
 	if (dir == LEFT){
 		pwm_set_pulse_right_F(OutsidePulse);
 		pwm_set_pulse_left_R(InsidePulse);

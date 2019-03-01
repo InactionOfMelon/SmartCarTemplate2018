@@ -283,10 +283,10 @@ def detect_point(img, t = 0): # t: current time
 	BOX_KSIZE_HEIGHT = int(31 / PYR_SCALE) # Kernal size of boxFilter
 	BOX_THRESHOLD = 0.5 # Threshold of boxFilter result
 	CENTER_THRESHOLD_RATIO_MAX = 1
-	CENTER_THRESHOLD_RATIO_MIN = 0.666
+	CENTER_THRESHOLD_RATIO_MIN = 0.3
 	CENTER_THRESHOLD_RATIO_WIDTH = CENTER_THRESHOLD_RATIO_MAX - CENTER_THRESHOLD_RATIO_MIN
-	STARTUP_TIME = 2
-	STARTUP_TIME_HALF = STARTUP_TIME / 2
+	STARTUP_TIME = 0.6
+	STARTUP_TIME_HALF = float(STARTUP_TIME) / 2
 	#-------------------------------------------
 	#---------Resizes
 	small = img.copy()
@@ -316,6 +316,7 @@ def detect_point(img, t = 0): # t: current time
 			showImage(img1)
 		h, w = img.shape[:2]
 		ratio = CENTER_THRESHOLD_RATIO_MIN + CENTER_THRESHOLD_RATIO_WIDTH / math.exp((t / STARTUP_TIME_HALF - 1) * 3.5)
+		return h-y
 		return y > h * ratio
 
 if __name__ == '__main__':

@@ -29,9 +29,15 @@ smartcar2018\motor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 smartcar2018\motor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 smartcar2018\motor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smartcar2018\motor.o: ../Inc/i2c.h
+smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: ../Inc/spi.h
+smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: ../Inc/tim.h
+smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: ../Inc/usart.h
+smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: ../Inc/gpio.h
+smartcar2018\motor.o: ../Inc/main.h
 smartcar2018\motor.o: C:\environment\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
 smartcar2018\motor.o: ../Inc/motor.h
+smartcar2018\motor.o: ../Inc/main.h

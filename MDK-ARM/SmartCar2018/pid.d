@@ -5,6 +5,7 @@ smartcar2018\pid.o: ../Inc/motor.h
 smartcar2018\pid.o: ../Inc/main.h
 smartcar2018\pid.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 smartcar2018\pid.o: ../Inc/stm32f1xx_hal_conf.h
+smartcar2018\pid.o: ../Inc/main.h
 smartcar2018\pid.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h
 smartcar2018\pid.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 smartcar2018\pid.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
@@ -31,7 +32,12 @@ smartcar2018\pid.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 smartcar2018\pid.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 smartcar2018\pid.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smartcar2018\pid.o: ../Inc/i2c.h
+smartcar2018\pid.o: ../Inc/main.h
 smartcar2018\pid.o: ../Inc/spi.h
+smartcar2018\pid.o: ../Inc/main.h
 smartcar2018\pid.o: ../Inc/tim.h
+smartcar2018\pid.o: ../Inc/main.h
 smartcar2018\pid.o: ../Inc/usart.h
+smartcar2018\pid.o: ../Inc/main.h
 smartcar2018\pid.o: ../Inc/gpio.h
+smartcar2018\pid.o: ../Inc/main.h

@@ -104,5 +104,5 @@ void _Error_Handler(char *, int);
 #endif
 
 #endif /* __MAIN_H__ */
-
+extern void SystemClock_Config(void);
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

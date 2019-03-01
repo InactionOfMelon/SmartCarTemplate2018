@@ -58,7 +58,7 @@
 const uint8_t SPI_SIZE = 5;
 
 uint8_t data[SPI_SIZE];
-uint16_t Speed_Now = 0, MIN_Speed = 0, Speed_Up = 50, GoBack = 0;
+uint16_t Speed_Now = 0, MIN_Speed = 0, Speed_Up = 50, GoBack = 1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -189,6 +189,8 @@ int main(void)
 
 	
 	HAL_SPI_Receive_IT(&hspi1, data, SPI_SIZE);
+	
+	
 	
 
 	while (1)
