@@ -143,7 +143,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 			slope=math.atan2(float(y2)-float(y1),float(x2)-float(x1))
 			#k = (float(y2) - float(y1)) / (x2 - x1)
 			midx=(x1+x2)/2
-			if (abs(slope)<np.pi / 6):
+			if (abs(slope)<np.pi / 4):
 				continue
 			#if (abs(k)<horizon_threshold):
 			#	continue
@@ -204,6 +204,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold):
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
 							minLineLength=min_line_len, maxLineGap=max_line_gap)
+        print lines
 	line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 	lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 	#draw_lines(line_img, lines)
@@ -222,7 +223,7 @@ def detect_lines(img):
 	#showImage(img)
 
 	#--------------
-	white_thresh = 225
+	white_thresh = 235
 
 	blur_ksize = 9  # Gaussian blur kernel size
 	canny_lthreshold = 100  # Canny edge detection low threshold
@@ -232,12 +233,12 @@ def detect_lines(img):
 	rho = 1
 	theta = np.pi / 180
 	threshold = 15
-	min_line_length = 40
+	min_line_length = 60
 	max_line_gap = 20
 	
-	roi_vtx = np.array([[(0, int(h*0.4)), (0, int(h)),
-					   (w, int(h)), (w, int(h*0.4))]])
-	#roi_vtx = np.array([[(0, h), (0, 0), (w, 0), (w, h)]])
+	#roi_vtx = np.array([[(0, int(h*0.4)), (0, int(h)),
+	#				   (w, int(h)), (w, int(h*0.4))]])
+	roi_vtx = np.array([[(0, h), (0, 0), (w, 0), (w, h)]])
 
 	horizon_threshold=1 # threshold for slope of horizontal lines, maybe should be larger 
 	
@@ -322,14 +323,14 @@ def detect_point(img, t = 0): # t: current time
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	img = cv2.imread('fig10.jpg')
+	img = cv2.imread('fig9.jpg')
 	start = time.time()
 	#last_error=-200
-	#print(detect_lines(img))
+	print(detect_lines(img))
 	#showImage(img)
 	end = time.time()
 	print("time:", end - start)
 	start = time.time()
-	print(detect_point(img, 0))
+	#print(detect_point(img, 0))
 	end = time.time()
 	print("time:", end - start)
