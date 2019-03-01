@@ -34,7 +34,7 @@ def Angle(p1, p2, p3):
 def Turn(g, k):
 	if k == 1:
 		v1 = Vector(g[1], g[2])
-		v2 = Point(0, 0) #need to modify
+		v2 = Point(0, 10) #need to modify
 		sn = Cross(v2, v1) / Length(v1) / Length(v2)
 		ret = math.degrees(math.asin(sn)) + 0.5
 		return math.floor(ret)
