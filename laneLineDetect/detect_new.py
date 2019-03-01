@@ -276,7 +276,7 @@ def detect_point(img, t = 0): # t: current time
 	#-------------------------------------------
 	PYR_TIMES = 2 # Times of pyrDown()
 	PYR_SCALE = 2 ** PYR_TIMES
-	HSV_H_MIN, HSV_H_MAX = 5, 16 # H range of red # 5, 13
+	HSV_H_MIN, HSV_H_MAX = 5, 25 # H range of red # 5, 13 # 5, 16
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 46, 255 # V range of red # 46, 255
 	BOX_KSIZE_WIDTH = int(31 / PYR_SCALE)  # Kernal size of boxFilter
@@ -320,9 +320,9 @@ def detect_point(img, t = 0): # t: current time
 		return y > h * ratio
 
 if __name__ == '__main__':
-	isShowImage=False
-	isDraw=False
-	img = cv2.imread('fig8.jpg')
+	isShowImage=True
+	isDraw=True
+	img = cv2.imread('fig10.jpg')
 	start = time.time()
 	#last_error=-200
 	#print(detect_lines(img))
