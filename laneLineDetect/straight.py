@@ -65,9 +65,10 @@ def work(handler, Number):
 		
 		if point!=None:
 			car.set_speed(500)
-			tmp=(float(point+140)**0.5)/34
-			if (point > 280):
-				tmp+=float(point-280)/750
+			if (point < 250):
+				tmp=(float(point+173)**0.5)/36.5
+			else:
+				tmp=float(point-290)/470+0.613
 			car.short_forward(tmp)
 			car.stop()
 			time.sleep(0.75)
@@ -80,4 +81,4 @@ def work(handler, Number):
 
 if __name__ == '__main__':
 	handler=camera.Handler()
-	work(handler,7)
+	work(handler,0)

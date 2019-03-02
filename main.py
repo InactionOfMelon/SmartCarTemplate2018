@@ -17,7 +17,7 @@ from data import Data
 #initialize the list
 
 
-car.set_pid_param(20,0,0)
+car.set_pid_param(3,0,1)
 
 N = 60
 p = []

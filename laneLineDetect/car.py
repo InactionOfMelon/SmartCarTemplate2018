@@ -103,7 +103,7 @@ def right_turn(last_time):
 	stop()
 	
 def single_turn(deg):
-	last_time = float(deg) / 180
+	last_time = float(deg) / 165
 	if deg > 0:
 		left_turn(last_time)
 	else:
@@ -149,14 +149,14 @@ def test():
 	spi.xfer2(x)
 	
 def short_backward(last_time):
-	backward()
 	print('backward:',last_time)
+	backward()
 	time.sleep(last_time)
 	stop()
 
 def short_forward(last_time):
-	forward()
 	print('forward:',last_time)
+	forward()
 	time.sleep(last_time)
 	stop()
 
