@@ -13,7 +13,16 @@ def Dot(v1, v2):
 
 def Cross(v1, v2):
 	return v1.x * v2.y - v2.x * v1.y
-
+def rotate(v1,v2):
+	deg = math.atan2(v2.y, v2.x) - math.atan2(v1.y, v1.x)
+	
+	while deg > math.pi:
+		deg -= math.pi * 2
+	while deg < -math.pi:
+		deg += math.pi * 2
+		
+	return deg
+	
 #calculate the distance between two points
 def Length(v):
 	return math.sqrt(Dot(v, v))
@@ -30,17 +39,23 @@ def Angle(p1, p2, p3):
 	u = Dot(v1, v2)
 	#print(v1.x,v1.y)
 	#print(v2.x,v2.y)
-	sn = u / Length(v1) / Length(v2)
-	ret = math.degrees(math.acos(sn)) + 0.5
+	#sn = math.acos(Dot(v2, v1) / Length(v1) / Length(v2))
+	
+	sn = rotate(v1,v2)
+	
+	ret = math.degrees(sn) + 0.5
 	return math.floor(ret)
 
 #return the rotate angle
 def Turn(g, k):
 	if k == 0:
-		v1 = Vector(g[0], g[1])
-		v2 = Point(0, 10) #need to modify
-		sn = Dot(v2, v1) / Length(v1) / Length(v2)
-		ret = math.degrees(math.acos(sn)) + 0.5
+		v1 = Point(0, 10) #need to modify
+		v2 = Vector(g[0], g[1])
+		#sn = math.acos(Dot(v2, v1) / Length(v1) / Length(v2))
+		
+		sn = rotate(v1,v2)
+		
+		ret = math.degrees(sn) + 0.5
 		return math.floor(ret)
 	else:
 		return Angle(g[k - 1], g[k], g[k + 1])
