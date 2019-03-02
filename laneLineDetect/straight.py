@@ -9,7 +9,7 @@ def straight(error):
 	elif error > 0:
 		car.right_adjustment(error)
 
-def work(handler):
+def work(handler, Number):
 	car.set_speed(500)
 	#car.forward()
 	cnt = 0
@@ -20,10 +20,18 @@ def work(handler):
 	try:
 		cnt=0
 		tmp=None
+		last_point=-1
 		while True:
 			point,error=handler.work()
-			if (point!=None):
+			if point != None:
+				if point > last_point:
+					Number-=1
+				last_point=point
+			else:
+				last_point=-1
+			if Number < 0:
 				break
+				
 			straight(error)
 			cnt+=1
 			pass
@@ -37,7 +45,8 @@ def work(handler):
 		point,error=handler.work()
 		
 		if point!=None:
-			tmp=(float(point+77)**0.5)/34
+			car.set_speed(500)
+			tmp=(float(point+70)**0.5)/36
 			car.short_forward(tmp)
 			car.stop()
 			
@@ -49,4 +58,4 @@ def work(handler):
 
 if __name__ == '__main__':
 	handler=camera.Handler()
-	work(handler)
+	work(handler,0)

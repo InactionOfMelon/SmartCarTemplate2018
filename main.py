@@ -4,10 +4,10 @@ import time
 import sys
 sys.path.append("laneLineDetect/")
 sys.path.append("roadPlanning/")
-#import car
-#import straight
-#import camera
-#import adjustment
+import car
+import straight
+import camera
+import adjustment
 import spfa as sp
 
 
@@ -25,6 +25,8 @@ dis = [[0 for col in range(N)] for row in range(N)]
 
 sp.init(p, d, dis, cnt)
 	
+handler = camera.Handler()
+
 def work(start, end):
 	R = sp.spfa(start, end, d, p, inq, dis, frm, cnt)
 	pos = []
@@ -38,19 +40,29 @@ def work(start, end):
 	print(R)
 	Angle = sp.Turn(pos, 0)
 	if math.fabs(Angle) > 7:
-		print('Turn',Angle)
+		print('********Turn',Angle)
+		car.turn(Angle)
+		print('********Adjustment')
+		adjustment.work(handler)
+			
 	for i in range(1, n):
 		if i==n-1:
-			print('straight:',count)
+			print('********straight:',count)
+			straight.work(handler, count)
+			count=0
 			break
 			
 		Angle = sp.Turn(pos, i)
 		if math.fabs(Angle) <= 7:
 			count+=1
 		else:
-			print('straight:',count)
-			print('Turn',Angle)
-			count = 0
+			print('********straight:',count)
+			straight.work(handler, count)
+			count=0
+			print('********Turn',Angle)
+			car.turn(Angle)
+			print('********Adjustment')
+			adjustment.work(handler)
 
 if __name__ == '__main__':
 	start = int(input())
