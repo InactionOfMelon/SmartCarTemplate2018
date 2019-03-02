@@ -277,8 +277,8 @@ def detect_lines(img):
 
 	leftX=leftVtx[0][0]
 	rightX=rightVtx[0][0]
-	leftOffset=w/2-leftX
-	rightOffset=rightX-w/2
+	leftOffset=w*rate/2-leftX
+	rightOffset=rightX-w*rate/2
 	offset=rightOffset-leftOffset
 
 	print('detect success')
