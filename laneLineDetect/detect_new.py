@@ -155,52 +155,54 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 				
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
-	if len(left_lines) == 0 or len(right_lines) == 0:
-		return None,None,False
-	if len(left_lines)==0:
+        
+	if len(left_lines)!=0:
 		left_lines.append(np.array([[0,0,0,h]]))
-	if len(right_lines)==0:
+                left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
+                left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+	        draw_lines(left_lines_img, left_lines)
+	        showImage(left_lines_img)
+                #print(left_lines)
+                if isDraw:
+		        draw_lines(img,left_lines,[255,0,0])
+                left_points = [(x1, y1) for line in left_lines for x1,y1,x2,y2 in line]
+	        left_points = left_points + [(x2, y2) for line in left_lines for x1,y1,x2,y2 in line]
+                left_vtx = calc_lane_vertices(left_points, 0, img.shape[0], img)
+	        if isDraw:
+		        cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
+        else:
+                left_vtx=None
+                
+        if len(right_lines)!=0:
 		right_lines.append(np.array([[w,0,w,h]]))
-	left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
-	right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
-	left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-	draw_lines(left_lines_img, left_lines)
-	showImage(left_lines_img)
-	right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-	draw_lines(right_lines_img, right_lines)
-	showImage(right_lines_img)
-	#print(left_lines)
-	#print(right_lines)
-
-	if isDraw:
-		draw_lines(img,left_lines,[255,0,0])
-		draw_lines(img,right_lines,[0,0,255])
-	
-	left_points = [(x1, y1) for line in left_lines for x1,y1,x2,y2 in line]
-	left_points = left_points + [(x2, y2) for line in left_lines for x1,y1,x2,y2 in line]
-	right_points = [(x1, y1) for line in right_lines for x1,y1,x2,y2 in line]
-	right_points = right_points + [(x2, y2) for line in right_lines for x1,y1,x2,y2 in line]
-  
-	left_vtx = calc_lane_vertices(left_points, 0, img.shape[0], img)
-	right_vtx = calc_lane_vertices(right_points, 0, img.shape[0], img)
-	#if isDraw:
-		#print(left_vtx[0], left_vtx[1])
-		#print(right_vtx[0], right_vtx[1])
-
-	if abs(left_vtx[0][0]-right_vtx[0][0])<=50 and abs(left_vtx[1][0]-right_vtx[1][0])<=50:
+	        right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
+	        right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+	        draw_lines(right_lines_img, right_lines)
+	        showImage(right_lines_img)
+	        #print(right_lines)
+                if isDraw:
+                        draw_lines(img,right_lines,[0,0,255])
+	        right_points = [(x1, y1) for line in right_lines for x1,y1,x2,y2 in line]
+	        right_points = right_points + [(x2, y2) for line in right_lines for x1,y1,x2,y2 in line]
+                right_vtx = calc_lane_vertices(right_points, 0, img.shape[0], img)
+	        if isDraw:
+                        cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
+        else:
+                right_vtx=None
+                
+        if len(left_lines)!=0 and len(right_lines)!=0:
+	        if abs(left_vtx[0][0]-right_vtx[0][0])<=50 and abs(left_vtx[1][0]-right_vtx[1][0])<=50:
 			if left_vtx[0][0]<left_vtx[1][0]:
-					left_vtx[0]=(0,0)
-					left_vtx[1]=(0,h)
+				left_vtx[0]=(0,0)
+				left_vtx[1]=(0,h)
 			else:
-					right_vtx[0]=(w,0)
-					right_vtx[1]=(w,h)
-	if isDraw:
-		#print(left_vtx[0], left_vtx[1])
-		#print(right_vtx[0], right_vtx[1])
-		cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
-		cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
+				right_vtx[0]=(w,0)
+				right_vtx[1]=(w,h)
 	
-	return left_vtx,right_vtx,True
+	if len(left_lines) == 0 or len(right_lines) == 0:
+		return left_vtx,right_vtx,False	
+	else:
+	        return left_vtx,right_vtx,True
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold):
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
@@ -264,7 +266,17 @@ def detect_lines(img):
 	
 	if isDetected==False:
 		print('detect failed')
-		return 0,False,None,None
+                if leftVtx!=None:
+                        for i in range(2):
+		                leftVtx[i]=list(leftVtx[i])
+		                for j in range(2):
+			                leftVtx[i][j]*=rate
+                if rightVtx!=None:
+                        for i in range(2):
+		                leftVtx[i]=list(rightVtx[i])
+		                for j in range(2):
+			                rightVtx[i][j]*=rate
+		return 0,False,leftVtx,rightVtx
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 		showImage(res)
@@ -376,7 +388,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('fig20.jpg')
+	img=cv2.imread('test.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
