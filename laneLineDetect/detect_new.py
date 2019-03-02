@@ -295,12 +295,12 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	STARTUP_TIME = 0.5
 	STARTUP_TIME_HALF = float(STARTUP_TIME) / 2
 	#-------------------------------------------
-	h,w=img.shape[:2]
 	#---------Resizes
 	small = img.copy()
 	for i in range(PYR_TIMES):
 		small = cv2.pyrDown(small)
 	showImage(small)
+	h,w=small.shape[:2]
 	#---------Converts to HSV
 	hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
 	showImage(hsv)
@@ -312,36 +312,35 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	#print lines
 	#print "lines not none"
 	#x1, y1, x2, y2 = lines[0][0]
-	if lines is not None:
-		if lines[0] is not None:
-			x1,y1=lines[0][0]
-			x2,y2=lines[0][1]
-			#print x1,y1,x2,y2
-			if y1 > y2:
-				x1, y1, x2, y2 = x2, y2, x1, y1
-			top_left = x1 / PYR_SCALE
-			bottom_left = x2 / PYR_SCALE
-		else:
-			top_left = 0.
-			bottom_left = 0.
-		if lines[1] is not None:
-			#x1, y1, x2, y2 = lines[1][0]
-			x1,y1=lines[1][0]
-			x2,y2=lines[1][1]
-			#print x1,y1,x2,y2
-			if y1 > y2:
-				x1, y1, x2, y2 = x2, y2, x1, y1
-			top_right = x1 / PYR_SCALE
-			bottom_right = x2 / PYR_SCALE
-		else:
-			top_right = w
-			bottom_right = w
-		if lines[0] is not None or lines[1] is not None:
-			mask = np.zeros_like(dst)
-			mask[:, :] = 255
-			mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
-			showImage(mask)
-			dst = cv2.bitwise_and(dst, mask)
+	if lines is None:
+		lines = [None, None]
+	if lines[0] is not None:
+		x1,y1=lines[0][0]
+		x2,y2=lines[0][1]
+		#print x1,y1,x2,y2
+		if y1 > y2:
+			x1, y1, x2, y2 = x2, y2, x1, y1
+		top_left = x1 / PYR_SCALE
+		bottom_left = x2 / PYR_SCALE
+	else:
+		top_left = bottom_left = w * (1 / 4)
+	if lines[1] is not None:
+		#x1, y1, x2, y2 = lines[1][0]
+		x1,y1=lines[1][0]
+		x2,y2=lines[1][1]
+		#print x1,y1,x2,y2
+		if y1 > y2:
+			x1, y1, x2, y2 = x2, y2, x1, y1
+		top_right = x1 / PYR_SCALE
+		bottom_right = x2 / PYR_SCALE
+	else:
+		top_right = bottom_right = w * (3 / 4)
+	if lines[0] is not None or lines[1] is not None:
+		mask = np.zeros_like(dst)
+		mask[:, :] = 255
+		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
+		showImage(mask)
+		dst = cv2.bitwise_and(dst, mask)
 	showImage(dst)
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_W, BOX_KSIZE_H), normalize = True)
@@ -365,14 +364,14 @@ def detect_point(img, t = 0, lines = None): # t: current time
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	#start = time.time()
+	start = time.time()
 	#last_error=-200
 	img=cv2.imread('fig13.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
-	#end = time.time()
-	#print("time:", end - start)
+	end = time.time()
+	print("time:", end - start)
 	start = time.time()
 	print(detect_point(img, 0,lines))
 	end = time.time()
