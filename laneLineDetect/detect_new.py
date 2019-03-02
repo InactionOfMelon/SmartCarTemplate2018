@@ -217,6 +217,9 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 	return line_img,lvtx,rvtx,True
 
 def detect_lines(img):
+        rate=2
+        img=cv2.resize(img,(img.shape[1]/rate,img.shape[0]/rate))
+        
 	h,w=img.shape[:2]
 	showImage(img)
 	#import trans
@@ -226,16 +229,16 @@ def detect_lines(img):
 	#--------------
 	white_thresh = 235
 
-	blur_ksize = 9  # Gaussian blur kernel size
-	canny_lthreshold = 100  # Canny edge detection low threshold
-	canny_hthreshold = 200  # Canny edge detection high threshold
+	blur_ksize = 5 #9  # Gaussian blur kernel size
+	canny_lthreshold = 100/rate  # Canny edge detection low threshold
+	canny_hthreshold = 200/rate  # Canny edge detection high threshold
 	
 	# Hough transform parameters
 	rho = 1
 	theta = np.pi / 180
-	threshold = 15
-	min_line_length = 60
-	max_line_gap = 20
+	threshold = 15/rate
+	min_line_length = 60/rate
+	max_line_gap = 20/rate
 	
 	#roi_vtx = np.array([[(0, int(h*0.4)), (0, int(h)),
 	#				   (w, int(h)), (w, int(h*0.4))]])
@@ -258,7 +261,13 @@ def detect_lines(img):
 	
 	line_img,leftVtx,rightVtx,isDetected= hough_lines(roi_edges, rho, theta, threshold,
 												  min_line_length, max_line_gap,horizon_threshold)
-
+        for i in range(2):
+                leftVtx[i]=list(leftVtx[i])
+                rightVtx[i]=list(rightVtx[i])
+                for j in range(2):
+                        leftVtx[i][j]*=rate
+                        rightVtx[i][j]*=rate
+        
 	if isDetected==False:
 		print('detect failed')
 		return 0,False,None,None
@@ -365,14 +374,14 @@ def detect_point(img, t = 0, lines = None): # t: current time
 if __name__ == '__main__':
 	isShowImage=True
 	isDraw=True
-	#start = time.time()
+	start = time.time()
 	#last_error=-200
 	img=cv2.imread('fig13.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
-	#end = time.time()
-	#print("time:", end - start)
+	end = time.time()
+	print("time:", end - start)
 	start = time.time()
 	print(detect_point(img, 0,lines))
 	end = time.time()
