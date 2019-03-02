@@ -28,7 +28,7 @@ class ipcamCapture:
 		time.sleep(0)
    
 	def getframe(self):
-		for i in range(4):
+		for i in range(10):
 			self.status, frame = self.capture.read()
 		t = 0
 		while t <= 0.035:
@@ -83,9 +83,9 @@ class Handler:
 		print('point:',tmp)
 		return tmp
 		
-	def work(self):
+	def work(self, leftLine, rightLine, Number):
 		frame=self.ipcam.getframe()
-		saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
+		#saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
 		ret=self.ipcam.status
 		if frame is None:
 			print('None')
@@ -94,18 +94,25 @@ class Handler:
 		#ret=True
 		h,w=frame.shape[:2]
 		
+		if leftLine == None and rightLine == None:
+			error,ret,leftLine,rightLine=detect.detect_lines(frame)
+			get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
+		else:
+			get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
+			if get_point!=None:
+				print('Point:',get_point)
+				if Number==0:
+					return get_point,None,None,None
+			error,ret,leftLine,rightLine=detect.detect_lines(frame)
 		
-		error,ret,leftLine,rightLine=detect.detect_lines(frame)
-			
-		get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
 		
 		
-		print(get_point, error)
+		print('Error:',error)
 		
 		#if error > 0 or error< -0:
 			#saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
 			#exit()
-		return get_point,error
+		return get_point,error,leftLine,rightLine
 
 		#break
 

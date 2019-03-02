@@ -59,10 +59,17 @@ def work(start, end):
 			print('********straight:',count)
 			straight.work(handler, count)
 			count=0
+			car.stop()
+			time.sleep(0.5)
+			
 			print('********Turn',Angle)
 			car.turn(Angle)
+			car.stop()
+			time.sleep(0.5)
+			
 			print('********Adjustment')
 			adjustment.work(handler)
+			time.sleep(0.5)
 
 if __name__ == '__main__':
 	start = int(input())

@@ -15,10 +15,12 @@ def work(handler):
 	handler.func=adjustment
 	#handler = camera.Handler(adjustment)
 	#time.sleep(1)
+	leftLine = None
+	rightLine = None
 	try:
 		while True:
 			#time.sleep(0)
-			point,error=handler.work()
+			point,error,leftLine,rightLine=handler.work(None, None,1)
 			if adjustment(error):
 				great+=1
 			else:
