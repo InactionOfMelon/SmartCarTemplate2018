@@ -273,7 +273,7 @@ def detect_lines(img):
 					leftVtx[i][j]*=rate
 		if rightVtx!=None:
 			for i in range(2):
-				leftVtx[i]=list(rightVtx[i])
+				rightVtx[i]=list(rightVtx[i])
 				for j in range(2):
 					rightVtx[i][j]*=rate
 		return 0,False,leftVtx,rightVtx
