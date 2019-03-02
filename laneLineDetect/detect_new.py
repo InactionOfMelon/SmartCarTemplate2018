@@ -250,11 +250,11 @@ def detect_lines(img):
 	
 	gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 	showImage(gray)
-	_retval, th_gray = cv2.threshold(gray, white_thresh, 0, cv2.THRESH_TOZERO)
-	showImage(th_gray)
-	blur_gray = cv2.GaussianBlur(th_gray, (blur_ksize, blur_ksize), 0, 0)
+	blur_gray = cv2.GaussianBlur(gray, (blur_ksize, blur_ksize), 0, 0)
 	showImage(blur_gray)
-	edges = cv2.Canny(blur_gray, canny_lthreshold, canny_hthreshold)
+	_retval, th_gray = cv2.threshold(blur_gray, white_thresh, 0, cv2.THRESH_TOZERO)
+	showImage(th_gray)
+	edges = cv2.Canny(th_gray, canny_lthreshold, canny_hthreshold)
 	showImage(edges)
 	roi_edges = roi_mask(edges, roi_vtx)
 	showImage(roi_edges)
@@ -376,7 +376,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test2.jpg')
+	img=cv2.imread('test3.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
