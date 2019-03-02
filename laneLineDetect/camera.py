@@ -100,7 +100,7 @@ class Handler:
 		get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
 		
 		
-		print(error)
+		print(get_point,error)
 		
 		#if error > 0 or error< -0:
 			#saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')

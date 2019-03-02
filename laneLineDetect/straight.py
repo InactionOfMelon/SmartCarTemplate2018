@@ -37,7 +37,7 @@ def work(handler):
 		point,error=handler.work()
 		
 		if point!=None:
-			tmp=(float(point+77)**0.5)/34
+			tmp=(float(point+78)**0.5)/34
 			car.short_forward(tmp)
 			car.stop()
 			

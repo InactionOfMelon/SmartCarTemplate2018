@@ -105,9 +105,9 @@ def right_turn(deg):
 def self_adjustment(error):
 	set_speed(1000)
 	if error > 0:
-		right_turn(float(error)/30)
+		right_turn(float(error)/19)
 	if error < 0:
-		left_turn(float(-error)/30)
+		left_turn(float(-error)/19)
 		
 def set_pulse_single(MOTOR, Dir, Pulse):
 	x = [200+MOTOR+Dir*10, Pulse & (0xFF), Pulse >> 8, 0, 1]

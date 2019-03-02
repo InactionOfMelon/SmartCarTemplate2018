@@ -13,6 +13,7 @@ def Dot(v1, v2):
 
 def Cross(v1, v2):
 	return v1.x * v2.y - v2.x * v1.y
+	
 def rotate(v1,v2):
 	deg = math.atan2(v2.y, v2.x) - math.atan2(v1.y, v1.x)
 	
