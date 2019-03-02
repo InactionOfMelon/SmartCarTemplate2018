@@ -137,7 +137,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		draw_lines(img,lines,[255,255,255])
 	
 	h,w=img.shape[:2]
-	
+	mid = w / 2
 	left_lines, right_lines = [], []
 	for line in lines:
 		for x1, y1, x2, y2 in line:
@@ -148,17 +148,16 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 				continue
 			#if (abs(k)<horizon_threshold):
 			#	continue
-			if midx<img.shape[1]/2:
+			if midx<mid:
 				left_lines.append(line)
 			else:
 				right_lines.append(line)
 				
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
-	
 	if len(left_lines)!=0:
 		left_lines.append(np.array([[0,0,0,h]]))
-		left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
+		left_lines = choose_lines(left_lines, (int(mid), h))#clean_lines(left_lines, 0.2)
 		left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 		draw_lines(left_lines_img, left_lines)
 		showImage(left_lines_img)
@@ -175,7 +174,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		
 	if len(right_lines)!=0:
 		right_lines.append(np.array([[w,0,w,h]]))
-		right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
+		right_lines = choose_lines(right_lines, (int(mid+0.5), h))#clean_lines(right_lines, 0.2)
 		right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 		draw_lines(right_lines_img, right_lines)
 		showImage(right_lines_img)
@@ -266,19 +265,19 @@ def detect_lines(img):
 	
 	if isDetected==False:
 		print('detect failed')
-                #print leftVtx,rightVtx
+		#print leftVtx,rightVtx
 		if leftVtx is not None:
 			for i in range(2):
 				leftVtx[i]=list(leftVtx[i])
 				for j in range(2):
 					leftVtx[i][j]*=rate
-		        return 400,True,leftVtx,rightVtx
+			return 400,True,leftVtx,rightVtx
 		if rightVtx is not None:
 			for i in range(2):
 				rightVtx[i]=list(rightVtx[i])
 				for j in range(2):
 					rightVtx[i][j]*=rate
-		        return -400,True,leftVtx,rightVtx
+			return -400,True,leftVtx,rightVtx
 		return 0,False,leftVtx,rightVtx
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
@@ -293,8 +292,9 @@ def detect_lines(img):
 
 	leftX=leftVtx[0][0]
 	rightX=rightVtx[0][0]
-	leftOffset=w*rate/2-leftX
-	rightOffset=rightX-w*rate/2
+	mid = w * rate / 2 + 12
+	leftOffset=mid-leftX
+	rightOffset=rightX-mid
 	offset=rightOffset-leftOffset
 
 	print('detect success')
@@ -388,11 +388,11 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		return y > h * ratio
 
 if __name__ == '__main__':
-	isShowImage=True
+	isShowImage=False
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test5.jpg')
+	img=cv2.imread('figure609.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)

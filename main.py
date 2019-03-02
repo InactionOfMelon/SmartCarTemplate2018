@@ -4,19 +4,20 @@ import time
 import sys
 sys.path.append("laneLineDetect/")
 sys.path.append("roadPlanning/")
+sys.path.append("Pi/")
 import car
 import straight
 import camera
 import adjustment
 import spfa as sp
-from .Pi.mqtt import MQTT
-from .Pi.data import Data
+from mqtt import MQTT
+from data import Data
 
 
 #initialize the list
 
 
-car.set_pid_param(4,0,2)
+car.set_pid_param(20,0,0)
 
 N = 60
 p = []
@@ -38,14 +39,15 @@ def work(start, end):
 		sp.init_spfa(d, cnt, frm, inq)
 		R = sp.spfa(start, end, d, p, inq, dis, frm, cnt)
 		pos = []
-		for i in range(len(R)):
+		for i in R:
+			#print(i,p[i].x,p[i].y)
 			pos.append(p[i])
 		
 		n = len(R)
 		count = 0
 		
 		print('Trip start!')
-		#print(R)
+		print(R)
 		Angle = sp.Turn(pos, 0)
 		if math.fabs(Angle) > 7:
 			print('********Turn',Angle)
@@ -79,14 +81,14 @@ def work(start, end):
 					adjustment.work(handler)
 					time.sleep(0.5)
 			print('current:', 'expecting', pos[i], '; actually', data.vertices['u'])
-			if pos[i] != data.vertices['u']:
+			if data.vertices['u'] != -1 and pos[i] != data.vertices['u']:
 				not_ended = True
 				break
 		start = data.vertices['u']
 
 if __name__ == '__main__':
-	start = data.vertices['s']#int(input())
-	end = data.vertices['t']#int(input())
+	start = data.vertices['s']=int(input())
+	end = data.vertices['t']=int(input())
 	try:
 		work(start, end)
 	except KeyboardInterrupt:

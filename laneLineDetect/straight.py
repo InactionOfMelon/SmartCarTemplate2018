@@ -5,9 +5,9 @@ import detect_new as detect
 
 def straight(error):
 	if error < 0:
-		car.left_adjustment(-error)
+		car.left_adjustment(int(-error))
 	elif error > 0:
-		car.right_adjustment(error)
+		car.right_adjustment(int(error))
 
 def work(handler, Number):
 	#car.forward()
@@ -65,9 +65,9 @@ def work(handler, Number):
 		
 		if point!=None:
 			car.set_speed(500)
-			tmp=(float(point+146.2)**0.5)/34
-			if (point > 300):
-				tmp+=float(point-300)/750
+			tmp=(float(point+140)**0.5)/34
+			if (point > 280):
+				tmp+=float(point-280)/750
 			car.short_forward(tmp)
 			car.stop()
 			time.sleep(0.75)
@@ -80,4 +80,4 @@ def work(handler, Number):
 
 if __name__ == '__main__':
 	handler=camera.Handler()
-	work(handler,0)
+	work(handler,7)
