@@ -306,9 +306,9 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	HSV_H_MIN, HSV_H_MAX = 5, 27 # H range of red # 5, 13 # 5, 16
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 160, 255 # V range of red # 46, 255
-	BOX_KSIZE_W_RADIUS = int(40 / PYR_SCALE)  # Kernal width radius of boxFilter
+	BOX_KSIZE_W_RADIUS = int(35 / PYR_SCALE)  # Kernal width radius of boxFilter
 	BOX_KSIZE_W = BOX_KSIZE_W_RADIUS * 2 + 1
-	BOX_KSIZE_H_RADIUS = int(40 / PYR_SCALE)  # Kernal height radius of boxFilter
+	BOX_KSIZE_H_RADIUS = int(30 / PYR_SCALE)  # Kernal height radius of boxFilter
 	BOX_KSIZE_H = BOX_KSIZE_H_RADIUS * 2 + 1
 	BOX_THRESHOLD = 0.25 # Threshold of boxFilter result
 	CENTER_THRESHOLD_RATIO_MAX = 1
@@ -342,7 +342,6 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	if lines[0] is not None:
 		x1,y1=lines[0][0]
 		x2,y2=lines[0][1]
-		#print x1,y1,x2,y2
 		if y1 > y2:
 			x1, y1, x2, y2 = x2, y2, x1, y1
 		top_left = x1 / PYR_SCALE
@@ -350,22 +349,18 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	else:
 		top_left = bottom_left = 0
 	if lines[1] is not None:
-		print "?"
 		#x1, y1, x2, y2 = lines[1][0]
 		x1,y1=lines[1][0]
 		x2,y2=lines[1][1]
-		#print x1,y1,x2,y2
 		if y1 > y2:
 			x1, y1, x2, y2 = x2, y2, x1, y1
 		top_right = x1 / PYR_SCALE
 		bottom_right = x2 / PYR_SCALE
 	else:
 		top_right = bottom_right = w
-		
 	if lines[0] is not None or lines[1] is not None:
 		mask = np.zeros_like(dst)
 		mask[:, :] = 255
-		print top_left, top_right, bottom_left, bottom_right
 		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
 		showImage(mask)
 		dst = cv2.bitwise_and(dst, mask)
@@ -394,7 +389,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test.jpg')
+	img=cv2.imread('fig25.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
