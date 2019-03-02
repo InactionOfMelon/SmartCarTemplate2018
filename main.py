@@ -14,7 +14,7 @@ import spfa as sp
 
 #initialize the list
 
-
+car.set_pid_param(4,0,2)
 p = []
 N = 60
 cnt = [0 for i in range(N)]

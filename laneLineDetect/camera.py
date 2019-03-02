@@ -88,7 +88,7 @@ class Handler:
 		t1=time.time()
 		print('Start!')
 		frame=self.ipcam.getframe()
-		saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
+		#saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
 		ret=self.ipcam.status
 		#print('T:',time.time()-t1)
 		if frame is None:

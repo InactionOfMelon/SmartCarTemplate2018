@@ -102,19 +102,32 @@ def right_turn(last_time):
 	time.sleep(last_time)
 	stop()
 	
-def turn(deg):
-	last_time = float(deg) / 180
+def single_turn(deg):
+	last_time = float(deg) / 200
 	if deg > 0:
 		left_turn(last_time)
 	else:
 		right_turn(-last_time)
+def turn(deg):
+	if deg > 90:
+		single_turn(90)
+		deg-=90
+		time.sleep(0.2)
+		
+	if deg < -90:
+		single_turn(-90)
+		deg+=90
+		time.sleep(0.2)
+	
+	single_turn(deg)
+		
 		
 def self_adjustment(error):
 	set_speed(1000)
 	if error > 0:
-		right_turn(float(error)/1900)
+		right_turn(float(error)/3000)
 	if error < 0:
-		left_turn(float(-error)/1900)
+		left_turn(float(-error)/3000)
 		
 def set_pulse_single(MOTOR, Dir, Pulse):
 	x = [200+MOTOR+Dir*10, Pulse & (0xFF), Pulse >> 8, 0, 1]

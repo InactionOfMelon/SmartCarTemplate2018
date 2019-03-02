@@ -26,11 +26,12 @@ def work(handler, Number):
 		last_point=-1
 		while True:
 			t0 = time.time()
-			if cnt>0:
-				car.set_speed(400)
+			if cnt == 0:
+				car.set_speed(550)
+			elif cnt == 1:
+				car.set_speed(500)
 			else:
 				car.set_speed(400)
-			
 			tmp = last_point
 			if Number > 0:
 				tmp=1e9
@@ -41,6 +42,7 @@ def work(handler, Number):
 				last_point=point
 			else:
 				last_point=-1
+			print('********',point,Number)
 			if Number < 0:
 				break
 				
@@ -59,13 +61,16 @@ def work(handler, Number):
 			car.stop()
 			time.sleep(2)
 		point,error,leftLine,rightLine=handler.work(leftLine,rightLine,0)
-		print(point)
+		print('********',point)
 		
 		if point!=None:
 			car.set_speed(500)
-			tmp=(float(point+65)**0.5)/36
+			tmp=(float(point+146.2)**0.5)/34
+			if (point > 300):
+				tmp+=float(point-300)/750
 			car.short_forward(tmp)
 			car.stop()
+			time.sleep(0.75)
 			
 	except KeyboardInterrupt:
 		car.stop()
