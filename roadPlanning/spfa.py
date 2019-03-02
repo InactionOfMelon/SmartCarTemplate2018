@@ -62,17 +62,20 @@ def Turn(g, k):
 		return Angle(g[k - 1], g[k], g[k + 1])
 
 		
+inf = math.pow(2, 30) - 1
 #initialize the graph
-def init(p, d, dis, cnt):
-	inf = math.pow(2, 30) - 1
+def init_spfa(d, cnt, frm, inq):
+	for i in range(1, 56):
+		d[i] = inf
+		cnt[i] = inf
+		frm[i] = 0
+		inq[i] = 0
+def init_graph(p, dis):
 	for i in range(1, 56):
 		for j in range(1, 56):
 			dis[i][j] = inf
 	for i in range(1, 56):
 		dis[i][i] = 0
-		d[i] = inf
-		cnt[i] = inf
-
 	p.append(Point(0, 0))
 	p.append(Point(150, 150))
 	p.append(Point(1150, 150))
