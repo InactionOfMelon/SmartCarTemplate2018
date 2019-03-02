@@ -42,8 +42,9 @@ def work(start, end):
 	if math.fabs(Angle) > 7:
 		print('********Turn',Angle)
 		car.turn(Angle)
-		print('********Adjustment')
-		adjustment.work(handler)
+		
+	print('********Adjustment')
+	adjustment.work(handler)
 			
 	for i in range(1, n):
 		if i==n-1:
@@ -74,4 +75,8 @@ def work(start, end):
 if __name__ == '__main__':
 	start = int(input())
 	end = int(input())
-	work(start, end)
+	try:
+		work(start, end)
+	except KeyboardInterrupt:
+		car.stop()
+		pass
