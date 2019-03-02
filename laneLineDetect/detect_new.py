@@ -338,7 +338,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	#x1, y1, x2, y2 = lines[0][0]
 	if lines is None:
 		lines = [None, None]
-        
+	
 	if lines[0] is not None:
 		x1,y1=lines[0][0]
 		x2,y2=lines[0][1]
@@ -350,7 +350,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	else:
 		top_left = bottom_left = 0
 	if lines[1] is not None:
-                print "?"
+		print "?"
 		#x1, y1, x2, y2 = lines[1][0]
 		x1,y1=lines[1][0]
 		x2,y2=lines[1][1]
@@ -360,12 +360,12 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		top_right = x1 / PYR_SCALE
 		bottom_right = x2 / PYR_SCALE
 	else:
-                top_right = bottom_right = w
-                
-        if lines[0] is not None or lines[1] is not None:
+		top_right = bottom_right = w
+		
+	if lines[0] is not None or lines[1] is not None:
 		mask = np.zeros_like(dst)
 		mask[:, :] = 255
-                print top_left, top_right, bottom_left, bottom_right
+		print top_left, top_right, bottom_left, bottom_right
 		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
 		showImage(mask)
 		dst = cv2.bitwise_and(dst, mask)
