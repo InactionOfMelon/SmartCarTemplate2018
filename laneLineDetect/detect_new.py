@@ -340,6 +340,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 			mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
 			showImage(mask)
 			dst = cv2.bitwise_and(dst, mask)
+	showImage(dst)
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
 	res_max = np.max(res)
@@ -364,7 +365,7 @@ if __name__ == '__main__':
 	isDraw=True
 	#start = time.time()
 	#last_error=-200
-	img=cv2.imread('fig12.jpg')
+	img=cv2.imread('fig10.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
