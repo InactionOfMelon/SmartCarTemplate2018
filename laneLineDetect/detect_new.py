@@ -155,43 +155,43 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 				
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
-        
+	
 	if len(left_lines)!=0:
 		left_lines.append(np.array([[0,0,0,h]]))
-                left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
-                left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-	        draw_lines(left_lines_img, left_lines)
-	        showImage(left_lines_img)
-                #print(left_lines)
-                if isDraw:
-		        draw_lines(img,left_lines,[255,0,0])
-                left_points = [(x1, y1) for line in left_lines for x1,y1,x2,y2 in line]
-	        left_points = left_points + [(x2, y2) for line in left_lines for x1,y1,x2,y2 in line]
-                left_vtx = calc_lane_vertices(left_points, 0, img.shape[0], img)
-	        if isDraw:
-		        cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
-        else:
-                left_vtx=None
-                
-        if len(right_lines)!=0:
+		left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
+		left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+		draw_lines(left_lines_img, left_lines)
+		showImage(left_lines_img)
+		#print(left_lines)
+		if isDraw:
+			draw_lines(img,left_lines,[255,0,0])
+		left_points = [(x1, y1) for line in left_lines for x1,y1,x2,y2 in line]
+		left_points = left_points + [(x2, y2) for line in left_lines for x1,y1,x2,y2 in line]
+		left_vtx = calc_lane_vertices(left_points, 0, img.shape[0], img)
+		if isDraw:
+			cv2.line(img, left_vtx[0], left_vtx[1], [0,0,255], thickness) #Red
+	else:
+		left_vtx=None
+		
+	if len(right_lines)!=0:
 		right_lines.append(np.array([[w,0,w,h]]))
-	        right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
-	        right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-	        draw_lines(right_lines_img, right_lines)
-	        showImage(right_lines_img)
-	        #print(right_lines)
-                if isDraw:
-                        draw_lines(img,right_lines,[0,0,255])
-	        right_points = [(x1, y1) for line in right_lines for x1,y1,x2,y2 in line]
-	        right_points = right_points + [(x2, y2) for line in right_lines for x1,y1,x2,y2 in line]
-                right_vtx = calc_lane_vertices(right_points, 0, img.shape[0], img)
-	        if isDraw:
-                        cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
-        else:
-                right_vtx=None
-                
-        if len(left_lines)!=0 and len(right_lines)!=0:
-	        if abs(left_vtx[0][0]-right_vtx[0][0])<=50 and abs(left_vtx[1][0]-right_vtx[1][0])<=50:
+		right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
+		right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+		draw_lines(right_lines_img, right_lines)
+		showImage(right_lines_img)
+		#print(right_lines)
+		if isDraw:
+			draw_lines(img,right_lines,[0,0,255])
+		right_points = [(x1, y1) for line in right_lines for x1,y1,x2,y2 in line]
+		right_points = right_points + [(x2, y2) for line in right_lines for x1,y1,x2,y2 in line]
+		right_vtx = calc_lane_vertices(right_points, 0, img.shape[0], img)
+		if isDraw:
+			cv2.line(img, right_vtx[0], right_vtx[1], [0,255,0], thickness) #Green
+	else:
+		right_vtx=None
+		
+	if len(left_lines)!=0 and len(right_lines)!=0:
+		if abs(left_vtx[0][0]-right_vtx[0][0])<=50 and abs(left_vtx[1][0]-right_vtx[1][0])<=50:
 			if left_vtx[0][0]<left_vtx[1][0]:
 				left_vtx[0]=(0,0)
 				left_vtx[1]=(0,h)
@@ -202,7 +202,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	if len(left_lines) == 0 or len(right_lines) == 0:
 		return left_vtx,right_vtx,False	
 	else:
-	        return left_vtx,right_vtx,True
+		return left_vtx,right_vtx,True
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_threshold):
 	lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
@@ -266,21 +266,21 @@ def detect_lines(img):
 	
 	if isDetected==False:
 		print('detect failed')
-                if leftVtx!=None:
-                        for i in range(2):
-		                leftVtx[i]=list(leftVtx[i])
-		                for j in range(2):
-			                leftVtx[i][j]*=rate
-                if rightVtx!=None:
-                        for i in range(2):
-		                leftVtx[i]=list(rightVtx[i])
-		                for j in range(2):
-			                rightVtx[i][j]*=rate
+		if leftVtx!=None:
+			for i in range(2):
+				leftVtx[i]=list(leftVtx[i])
+				for j in range(2):
+					leftVtx[i][j]*=rate
+		if rightVtx!=None:
+			for i in range(2):
+				leftVtx[i]=list(rightVtx[i])
+				for j in range(2):
+					rightVtx[i][j]*=rate
 		return 0,False,leftVtx,rightVtx
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 		showImage(res)
-                
+		
 	for i in range(2):
 		leftVtx[i]=list(leftVtx[i])
 		rightVtx[i]=list(rightVtx[i])
@@ -338,6 +338,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	#x1, y1, x2, y2 = lines[0][0]
 	if lines is None:
 		lines = [None, None]
+        
 	if lines[0] is not None:
 		x1,y1=lines[0][0]
 		x2,y2=lines[0][1]
@@ -347,8 +348,9 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		top_left = x1 / PYR_SCALE
 		bottom_left = x2 / PYR_SCALE
 	else:
-		top_left = bottom_left = w * (1 / 4)
+		top_left = bottom_left = 0
 	if lines[1] is not None:
+                print "?"
 		#x1, y1, x2, y2 = lines[1][0]
 		x1,y1=lines[1][0]
 		x2,y2=lines[1][1]
@@ -358,10 +360,12 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		top_right = x1 / PYR_SCALE
 		bottom_right = x2 / PYR_SCALE
 	else:
-		top_right = bottom_right = w * (3 / 4)
-	if lines[0] is not None or lines[1] is not None:
+                top_right = bottom_right = w
+                
+        if lines[0] is not None or lines[1] is not None:
 		mask = np.zeros_like(dst)
 		mask[:, :] = 255
+                print top_left, top_right, bottom_left, bottom_right
 		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
 		showImage(mask)
 		dst = cv2.bitwise_and(dst, mask)
