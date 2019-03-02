@@ -132,7 +132,7 @@ def calc_lane_vertices(point_list, ymin, ymax, img):
 
 def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	if lines is None:
-		return 0,0,False
+		return None,None,False
 	if isDraw:
 		draw_lines(img,lines,[255,255,255])
 	
@@ -266,6 +266,7 @@ def detect_lines(img):
 	
 	if isDetected==False:
 		print('detect failed')
+                #print leftVtx,rightVtx
 		if leftVtx is not None:
 			for i in range(2):
 				leftVtx[i]=list(leftVtx[i])
@@ -282,7 +283,7 @@ def detect_lines(img):
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 		showImage(res)
-		
+
 	for i in range(2):
 		leftVtx[i]=list(leftVtx[i])
 		rightVtx[i]=list(rightVtx[i])
@@ -391,7 +392,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test4.jpg')
+	img=cv2.imread('test5.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
