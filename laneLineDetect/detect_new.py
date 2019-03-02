@@ -309,7 +309,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	HSV_H_MIN, HSV_H_MAX = 5, 25 # H range of red # 5, 13 # 5, 16
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 200, 255 # V range of red # 46, 255
-	BOX_KSIZE_W_RADIUS = int(35 / PYR_SCALE)  # Kernal width radius of boxFilter
+	BOX_KSIZE_W_RADIUS = int(30 / PYR_SCALE)  # Kernal width radius of boxFilter
 	BOX_KSIZE_W = BOX_KSIZE_W_RADIUS * 2 + 1
 	BOX_KSIZE_H_RADIUS = int(30 / PYR_SCALE)  # Kernal height radius of boxFilter
 	BOX_KSIZE_H = BOX_KSIZE_H_RADIUS * 2 + 1
@@ -388,11 +388,11 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		return y > h * ratio
 
 if __name__ == '__main__':
-	isShowImage=False
-	isDraw=False
+	isShowImage=True
+	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('fig16.jpg')
+	img=cv2.imread('pic2.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
