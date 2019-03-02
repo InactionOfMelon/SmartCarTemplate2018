@@ -156,7 +156,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
 	if len(left_lines) == 0 or len(right_lines) == 0:
-		return 0,0,False
+		return None,None,False
 	if len(left_lines)==0:
 		left_lines.append(np.array([[0,0,0,h]]))
 	if len(right_lines)==0:
@@ -259,15 +259,15 @@ def detect_lines(img):
 	line_img,leftVtx,rightVtx,isDetected= hough_lines(roi_edges, rho, theta, threshold,
 												  min_line_length, max_line_gap,horizon_threshold)
 
-        leftX=leftVtx[0][0]
-        rightX=rightVtx[0][0]
-	
 	if isDetected==False:
 		print('detect failed')
-		return 0,False,0,0
-	res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
+		return 0,False,None,None
+	if isDraw:
+		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 	showImage(res)
 
+	leftX=leftVtx[0][0]
+	rightX=rightVtx[0][0]
 	leftOffset=w/2-leftX
 	rightOffset=rightX-w/2
 	offset=rightOffset-leftOffset
@@ -293,6 +293,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	STARTUP_TIME = 0.6
 	STARTUP_TIME_HALF = float(STARTUP_TIME) / 2
 	#-------------------------------------------
+	h,w=img.shape[:2]
 	#---------Resizes
 	small = img.copy()
 	for i in range(PYR_TIMES):
@@ -306,29 +307,39 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	showImage(dst)
 	dst.astype(np.int16)
 	#---------Finds point within road
-        #print lines
+	#print lines
+	#print "lines not none"
+	#x1, y1, x2, y2 = lines[0][0]
 	if lines is not None:
-                #print "lines not none"
-		#x1, y1, x2, y2 = lines[0][0]
-                x1,y1=lines[0][0]
-                x2,y2=lines[0][1]
-                #print x1,y1,x2,y2
-		if y1 > y2:
-			x1, y1, x2, y2 = x2, y2, x1, y1
-		top_left = x1 / PYR_SCALE
-		bottom_left = x2 / PYR_SCALE
-		#x1, y1, x2, y2 = lines[1][0]
-                x1,y1=lines[1][0]
-                x2,y2=lines[1][1]
-                #print x1,y1,x2,y2
-		if y1 > y2:
-			x1, y1, x2, y2 = x2, y2, x1, y1
-		top_right = x1 / PYR_SCALE
-		bottom_right = x2 / PYR_SCALE
-		mask = np.zeros_like(dst)
-		mask[:, :] = 255
-		mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
-		dst = cv2.bitwise_and(dst, mask)
+		if lines[0] is not None:
+			x1,y1=lines[0][0]
+			x2,y2=lines[0][1]
+			#print x1,y1,x2,y2
+			if y1 > y2:
+				x1, y1, x2, y2 = x2, y2, x1, y1
+			top_left = x1 / PYR_SCALE
+			bottom_left = x2 / PYR_SCALE
+		else:
+			top_left = 0.
+			bottom_left = 0.
+		if lines[1] is not None:
+			#x1, y1, x2, y2 = lines[1][0]
+			x1,y1=lines[1][0]
+			x2,y2=lines[1][1]
+			#print x1,y1,x2,y2
+			if y1 > y2:
+				x1, y1, x2, y2 = x2, y2, x1, y1
+			top_right = x1 / PYR_SCALE
+			bottom_right = x2 / PYR_SCALE
+		else:
+			top_right = w
+			bottom_right = w
+		if lines[0] is not None or lines[1] is not None:
+			mask = np.zeros_like(dst)
+			mask[:, :] = 255
+			mask = trans.transform(mask, top_left, top_right, bottom_left, bottom_right)
+			showImage(mask)
+			dst = cv2.bitwise_and(dst, mask)
 	#---------Filters detected color
 	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_WIDTH, BOX_KSIZE_HEIGHT), normalize = True)
 	res_max = np.max(res)
@@ -353,8 +364,10 @@ if __name__ == '__main__':
 	isDraw=True
 	#start = time.time()
 	#last_error=-200
+	img=cv2.imread('fig12.jpg')
+	showImage(img)
 	lines = detect_lines(img)[2:]
-        print lines
+	print(lines)
 	#end = time.time()
 	#print("time:", end - start)
 	start = time.time()
