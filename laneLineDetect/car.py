@@ -88,20 +88,27 @@ def pid_init():
 	x = [115, 0, 0, 0, 1]
 	spi.xfer2(x)
 	
-def left_turn(deg):
+def left_turn(last_time):
 	stop()
 	set_speed(1000)
 	anticlockwise()
-	time.sleep(float(deg)/100)
+	time.sleep(last_time)
 	stop()
 
-def right_turn(deg):
+def right_turn(last_time):
 	stop()
 	set_speed(1000)
 	clockwise()
-	time.sleep(float(deg)/100)
+	time.sleep(last_time)
 	stop()
 	
+def turn(deg):
+	last_time=float(deg)/150
+	if deg>0:
+		left_turn(last_time)
+	else:
+		right_turn(last_time)
+		
 def self_adjustment(error):
 	set_speed(1000)
 	if error > 0:

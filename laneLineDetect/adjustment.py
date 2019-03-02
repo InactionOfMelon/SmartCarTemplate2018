@@ -3,7 +3,7 @@ import car
 import time
 
 def adjustment(error):
-	if error<20 and error>-20:
+	if error<40 and error>-40:
 		return True
 	else:
 		car.self_adjustment(error)
