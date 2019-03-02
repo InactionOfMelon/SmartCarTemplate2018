@@ -310,7 +310,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	BOX_KSIZE_W = BOX_KSIZE_W_RADIUS * 2 + 1
 	BOX_KSIZE_H_RADIUS = int(30 / PYR_SCALE)  # Kernal height radius of boxFilter
 	BOX_KSIZE_H = BOX_KSIZE_H_RADIUS * 2 + 1
-	BOX_THRESHOLD = 0.25 # Threshold of boxFilter result
+	BOX_THRESHOLD = 0.1 # Threshold of boxFilter result
 	CENTER_THRESHOLD_RATIO_MAX = 1
 	CENTER_THRESHOLD_RATIO_MIN = 0.3
 	CENTER_THRESHOLD_RATIO_WIDTH = CENTER_THRESHOLD_RATIO_MAX - CENTER_THRESHOLD_RATIO_MIN
@@ -389,7 +389,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('fig25.jpg')
+	img=cv2.imread('fig26.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
