@@ -157,7 +157,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	#	return 0,0,False
 	
 	if len(left_lines)!=0:
-		left_lines.append(np.array([[0,0,0,h]]))
+		#left_lines.append(np.array([[0,0,0,h]]))
 		left_lines = choose_lines(left_lines, (w // 2, h))#clean_lines(left_lines, 0.2)
 		left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 		draw_lines(left_lines_img, left_lines)
@@ -174,7 +174,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		left_vtx=None
 		
 	if len(right_lines)!=0:
-		right_lines.append(np.array([[w,0,w,h]]))
+		#right_lines.append(np.array([[w,0,w,h]]))
 		right_lines = choose_lines(right_lines, ((w + 1) // 2, h))#clean_lines(right_lines, 0.2)
 		right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 		draw_lines(right_lines_img, right_lines)
@@ -266,19 +266,19 @@ def detect_lines(img):
 	
 	if isDetected==False:
 		print('detect failed')
-                #print leftVtx,rightVtx
+		#print leftVtx,rightVtx
 		if leftVtx is not None:
 			for i in range(2):
 				leftVtx[i]=list(leftVtx[i])
 				for j in range(2):
 					leftVtx[i][j]*=rate
-		        return 400,True,leftVtx,rightVtx
+			return 400,True,leftVtx,rightVtx
 		if rightVtx is not None:
 			for i in range(2):
 				rightVtx[i]=list(rightVtx[i])
 				for j in range(2):
 					rightVtx[i][j]*=rate
-		        return -400,True,leftVtx,rightVtx
+			return -400,True,leftVtx,rightVtx
 		return 0,False,leftVtx,rightVtx
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
@@ -392,7 +392,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test5.jpg')
+	img=cv2.imread('test8.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
