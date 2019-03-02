@@ -218,7 +218,7 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 
 def detect_lines(img):
         rate=2
-        img=cv2.resize(img,(img.shape[1]/rate,img.shape[0]/rate))
+        img=cv2.resize(img,(img.shape[1]//rate,img.shape[0]//rate))
         
 	h,w=img.shape[:2]
 	showImage(img)
@@ -230,15 +230,15 @@ def detect_lines(img):
 	white_thresh = 235
 
 	blur_ksize = 5 #9  # Gaussian blur kernel size
-	canny_lthreshold = 100/rate  # Canny edge detection low threshold
-	canny_hthreshold = 200/rate  # Canny edge detection high threshold
+	canny_lthreshold = 100//rate  # Canny edge detection low threshold
+	canny_hthreshold = 200//rate  # Canny edge detection high threshold
 	
 	# Hough transform parameters
 	rho = 1
 	theta = np.pi / 180
-	threshold = 15/rate
-	min_line_length = 60/rate
-	max_line_gap = 20/rate
+	threshold = 15//rate
+	min_line_length = 60//rate
+	max_line_gap = 20//rate
 	
 	#roi_vtx = np.array([[(0, int(h*0.4)), (0, int(h)),
 	#				   (w, int(h)), (w, int(h*0.4))]])
@@ -371,11 +371,11 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		return y > h * ratio
 
 if __name__ == '__main__':
-	isShowImage=False
+	isShowImage=True
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test.jpg')
+	img=cv2.imread('test2.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
