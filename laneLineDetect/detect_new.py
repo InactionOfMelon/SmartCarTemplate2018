@@ -279,7 +279,7 @@ def detect_lines(img):
 				for j in range(2):
 					rightVtx[i][j]*=rate
 		        return -400,True,leftVtx,rightVtx
-		#return 0,False,leftVtx,rightVtx
+		return 0,False,leftVtx,rightVtx
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 		showImage(res)
