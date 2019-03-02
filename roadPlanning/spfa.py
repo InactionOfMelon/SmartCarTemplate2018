@@ -52,6 +52,10 @@ def Turn(g, k):
 	if k == 0:
 		v1 = Point(0, 10) #need to modify
 		v2 = Vector(g[0], g[1])
+		
+		
+		#print(g[0].x,g[0].y)
+		#print(g[1].x,g[1].y)
 		#sn = math.acos(Dot(v2, v1) / Length(v1) / Length(v2))
 		
 		sn = rotate(v1,v2)

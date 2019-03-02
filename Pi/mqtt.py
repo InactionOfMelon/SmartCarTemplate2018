@@ -53,9 +53,11 @@ class MQTT:
 		self.client.username_pw_set('smartcar', 'smartcar')
 		self.client.on_connect = self.on_connect
 		self.client.on_message = self.on_message
-		while self.client.not_connected:
-			self.client.connect('mqtt.gycis.me', port = 1883)
-		self.client.loop_start()
+		self.client.connect('mqtt.gycis.me', port = 1883)
+		if self.client.not_connected:
+			print('mqtt:','not connected')
+		else:
+			self.client.loop_start()
 
 def __str2int(val, default):
 	return default if val == '' else int(val)
