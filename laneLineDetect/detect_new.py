@@ -156,7 +156,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 	#if (len(left_lines) <= 0 or len(right_lines) <= 0):
 	#	return 0,0,False
 	if len(left_lines)!=0:
-		left_lines.append(np.array([[0,0,0,h]]))
+		#left_lines.append(np.array([[0,0,0,h]]))
 		left_lines = choose_lines(left_lines, (int(mid), h))#clean_lines(left_lines, 0.2)
 		left_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 		draw_lines(left_lines_img, left_lines)
@@ -173,7 +173,7 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		left_vtx=None
 		
 	if len(right_lines)!=0:
-		right_lines.append(np.array([[w,0,w,h]]))
+		#right_lines.append(np.array([[w,0,w,h]]))
 		right_lines = choose_lines(right_lines, (int(mid+0.5), h))#clean_lines(right_lines, 0.2)
 		right_lines_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
 		draw_lines(right_lines_img, right_lines)
