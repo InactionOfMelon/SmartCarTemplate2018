@@ -21,10 +21,10 @@ def work(handler):
 		cnt=0
 		tmp=None
 		while True:
-			tmp=handler.work_for_point(t0)
-			if (tmp!=None):
+			point,error=handler.work()
+			if (point!=None):
 				break
-			handler.work()
+			straight(error)
 			cnt+=1
 			pass
 		print('Find a point')
@@ -34,7 +34,7 @@ def work(handler):
 			car.short_backward(0.15)
 			car.stop()
 			time.sleep(1)
-		point=handler.work_for_point(t0)
+		point,error=handler.work()
 		
 		if point!=None:
 			tmp=(float(point+77)**0.5)/34

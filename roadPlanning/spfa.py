@@ -23,24 +23,29 @@ def Length(v):
 def Angle(p1, p2, p3):
 	v1 = Vector(p2, p1)
 	v2 = Vector(p3, p2)
-	u = Cross(v1, v2)
-	if u == 0:
+	
+	if Length(v1) == 0 or Length(v2) == 0:
 		return 0
+	
+	u = Dot(v1, v2)
+	#print(v1.x,v1.y)
+	#print(v2.x,v2.y)
 	sn = u / Length(v1) / Length(v2)
-	ret = math.degrees(math.asin(sn)) + 0.5
+	ret = math.degrees(math.acos(sn)) + 0.5
 	return math.floor(ret)
 
 #return the rotate angle
 def Turn(g, k):
-	if k == 1:
-		v1 = Vector(g[1], g[2])
+	if k == 0:
+		v1 = Vector(g[0], g[1])
 		v2 = Point(0, 10) #need to modify
-		sn = Cross(v2, v1) / Length(v1) / Length(v2)
-		ret = math.degrees(math.asin(sn)) + 0.5
+		sn = Dot(v2, v1) / Length(v1) / Length(v2)
+		ret = math.degrees(math.acos(sn)) + 0.5
 		return math.floor(ret)
 	else:
-		return Angle(p[k - 1], p[k], p[k + 1])
+		return Angle(g[k - 1], g[k], g[k + 1])
 
+		
 #initialize the graph
 def init(p, d, dis, cnt):
 	inf = math.pow(2, 30) - 1

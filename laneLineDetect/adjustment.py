@@ -18,8 +18,8 @@ def work(handler):
 	try:
 		while True:
 			#time.sleep(0)
-			tmp=handler.work()
-			if tmp:
+			point,error=handler.work()
+			if adjustment(error):
 				great+=1
 			else:
 				great=0

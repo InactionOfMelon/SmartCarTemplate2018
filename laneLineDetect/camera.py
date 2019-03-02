@@ -53,7 +53,7 @@ class ipcamCapture:
 
 		
 		
-print "camera launched"
+print('camera launched')
 
 def saveImageTo(img, fileName):
 	cv2.imwrite(fileName, img)
@@ -80,13 +80,6 @@ class Handler:
 		#self.ipcam.stop()
 		pass
 	def work_for_point(self, t0 = 0.0):
-		frame=self.ipcam.getframe()
-		saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
-		ret=self.ipcam.status
-		if frame is None:
-			print('None')
-			return True, None
-		tmp=detect.detect_point(frame, time.time() - t0)
 		print('point:',tmp)
 		return tmp
 		
@@ -100,28 +93,19 @@ class Handler:
 		#frame=cv2.imread('5.jpg')
 		#ret=True
 		h,w=frame.shape[:2]
-		#if not ret:
-		#	print "capture error"
-		#	raise Exception('Car stopped')
-		#cv2.imwrite("camera.jpg",frame)
 		
-		error,ret=detect.detect_lines(frame)
 		
-		#global cnt
-		#if not ret:
-		#	cv2.imwrite("camera.jpg",frame)
-		#	cnt=cnt+1
-		#	if cnt > 10:
-		#		raise Exception('Car stopped')
-		#else:
-		#	cnt = 0
+		error,ret,leftLine,rightLine=detect.detect_lines(frame)
 			
-		print error
+		get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
+		
+		
+		print(error)
 		
 		#if error > 0 or error< -0:
 			#saveImageTo(frame, "figure" + str(random.randint(0, 99)) + '.jpg')
 			#exit()
-		return self.func(error)
+		return get_point,error
 
 		#break
 
