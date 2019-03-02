@@ -294,11 +294,11 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	HSV_H_MIN, HSV_H_MAX = 5, 27 # H range of red # 5, 13 # 5, 16
 	HSV_S_MIN, HSV_S_MAX = 43, 255 # S range of red # 65, 255
 	HSV_V_MIN, HSV_V_MAX = 160, 255 # V range of red # 46, 255
-	BOX_KSIZE_W_RADIUS = int(50 / PYR_SCALE)  # Kernal width radius of boxFilter
+	BOX_KSIZE_W_RADIUS = int(45 / PYR_SCALE)  # Kernal width radius of boxFilter
 	BOX_KSIZE_W = BOX_KSIZE_W_RADIUS * 2 + 1
-	BOX_KSIZE_H_RADIUS = int(45 / PYR_SCALE)  # Kernal height radius of boxFilter
+	BOX_KSIZE_H_RADIUS = int(40 / PYR_SCALE)  # Kernal height radius of boxFilter
 	BOX_KSIZE_H = BOX_KSIZE_H_RADIUS * 2 + 1
-	BOX_THRESHOLD = 0.4 # Threshold of boxFilter result
+	BOX_THRESHOLD = 0.3 # Threshold of boxFilter result
 	CENTER_THRESHOLD_RATIO_MAX = 1
 	CENTER_THRESHOLD_RATIO_MIN = 0.3
 	CENTER_THRESHOLD_RATIO_WIDTH = CENTER_THRESHOLD_RATIO_MAX - CENTER_THRESHOLD_RATIO_MIN
@@ -353,7 +353,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 		dst = cv2.bitwise_and(dst, mask)
 	showImage(dst)
 	#---------Filters detected color
-	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_W, BOX_KSIZE_H), normalize = True)
+	res = cv2.boxFilter(dst, -1, (BOX_KSIZE_W, BOX_KSIZE_H), normalize = True, borderType = cv2.BORDER_REPLICATE)
 	res_max = np.max(res)
 	if res_max < 255 * BOX_THRESHOLD:
 		return None
@@ -376,7 +376,7 @@ if __name__ == '__main__':
 	isDraw=True
 	start = time.time()
 	#last_error=-200
-	img=cv2.imread('test2.jpg')
+	img=cv2.imread('fig20.jpg')
 	showImage(img)
 	lines = detect_lines(img)[2:]
 	print(lines)
