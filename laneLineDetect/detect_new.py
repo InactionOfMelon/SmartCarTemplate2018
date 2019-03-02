@@ -261,12 +261,6 @@ def detect_lines(img):
 	
 	line_img,leftVtx,rightVtx,isDetected= hough_lines(roi_edges, rho, theta, threshold,
 												  min_line_length, max_line_gap,horizon_threshold)
-	for i in range(2):
-		leftVtx[i]=list(leftVtx[i])
-		rightVtx[i]=list(rightVtx[i])
-		for j in range(2):
-			leftVtx[i][j]*=rate
-			rightVtx[i][j]*=rate
 	
 	if isDetected==False:
 		print('detect failed')
@@ -274,6 +268,13 @@ def detect_lines(img):
 	if isDraw:
 		res=cv2.addWeighted(img, 1, line_img, 1, 0, img)
 		showImage(res)
+                
+	for i in range(2):
+		leftVtx[i]=list(leftVtx[i])
+		rightVtx[i]=list(rightVtx[i])
+		for j in range(2):
+			leftVtx[i][j]*=rate
+			rightVtx[i][j]*=rate
 
 	leftX=leftVtx[0][0]
 	rightX=rightVtx[0][0]
