@@ -17,8 +17,11 @@ def main(img):
 	h,w=img.shape[:2]
 	#----------------------------------------------------------------------------
 	# trans region from src to dst, (left_bottom,right_bottom,left_top,right_top)
-	src_points = np.array([[0., h], [w,h],[0.+210.,0.], [w-175.,0.]], dtype = "float32")
+	src_points = np.array([[0., h], [w,h],[0.+180.,0.], [w-150.,0.]], dtype = "float32")
 	dst_points = np.array([[0., h], [w,h],[0.,0.], [w,0.]], dtype = "float32")
+	d = w * 0.234375
+	#src_points = np.array([[0., h], [w,h], [w-d,0.],[0.+d,0.]], dtype = "float32")
+	#dst_points = np.array([[0., h], [w,h],[w,0.],[0.,0.]], dtype = "float32")
 	#----------------------------------------------------------------------------
 	M = cv2.getPerspectiveTransform(src_points,dst_points)
 
@@ -27,5 +30,9 @@ def main(img):
 	return dst
 	
 if __name__ == '__main__':
-	img=cv2.imread('5.jpg')
-	main(img)
+	img=cv2.imread('fig21.jpg')
+	cv2.imshow("a",img)
+	cv2.waitKey(0)
+	img=main(img)
+	cv2.imshow("a", img)
+	cv2.waitKey(0)
