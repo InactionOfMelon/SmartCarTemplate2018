@@ -28,14 +28,15 @@ class ipcamCapture:
 		time.sleep(0)
    
 	def getframe(self):
-		for i in range(10):
-			self.status, frame = self.capture.read()
+		#for i in range(4):
+		#	self.status, frame = self.capture.read()
 		t = 0
-		while t <= 0.035:
+		while t <= 0.02:
 			t1 = time.time()
 			self.status, frame = self.capture.read()
 			t2 = time.time()
 			t = t2 - t1
+			#print(t)
 		return frame
 		##self.lock.acquire()#timeout = ipcamCapture.TIMEOUT)
 		#frame = self.Frame
@@ -83,10 +84,13 @@ class Handler:
 		print('point:',tmp)
 		return tmp
 		
-	def work(self, leftLine, rightLine, Number):
+	def work(self, leftLine, rightLine, last):
+		t1=time.time()
+		print('Start!')
 		frame=self.ipcam.getframe()
-		#saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
+		saveImageTo(frame, "figure" + str(random.randint(0, 999)) + '.jpg')
 		ret=self.ipcam.status
+		#print('T:',time.time()-t1)
 		if frame is None:
 			print('None')
 			return True, None
@@ -95,15 +99,24 @@ class Handler:
 		h,w=frame.shape[:2]
 		
 		if leftLine == None and rightLine == None:
+			t0=time.time()
 			error,ret,leftLine,rightLine=detect.detect_lines(frame)
+			#print('A',time.time()-t0)
+			t0=time.time()
 			get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
+			#print('Point:',get_point)
+			#print('B',time.time()-t0)
 		else:
+			t0=time.time()
 			get_point=detect.detect_point(frame, 0,[leftLine,rightLine])
+			#print('Point:',get_point)
 			if get_point!=None:
-				print('Point:',get_point)
-				if Number==0:
+				if get_point > last:
 					return get_point,None,None,None
+			#print('A',time.time()-t0)
+			t0=time.time()
 			error,ret,leftLine,rightLine=detect.detect_lines(frame)
+			#print('B',time.time()-t0)
 		
 		
 		
