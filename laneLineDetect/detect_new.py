@@ -15,7 +15,7 @@ def roi_mask(img, vertices):
 	mask = np.zeros_like(img)
 	mask_color = 255
 	cv2.fillPoly(mask, vertices, mask_color)
-        #showImage(mask)
+	#showImage(mask)
 	masked_img = cv2.bitwise_and(img, mask)
 	return masked_img
 
@@ -135,9 +135,9 @@ def draw_lanes(img, lines, horizon_threshold,color=[0, 255, 0], thickness=8):
 		return 0,0,False
 	if isDraw:
 		draw_lines(img,lines,[255,255,255])
-        
+	
 	h,w=img.shape[:2]
-        
+	
 	left_lines, right_lines = [], []
 	for line in lines:
 		for x1, y1, x2, y2 in line:
@@ -217,9 +217,9 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap,horizon_t
 	return line_img,lvtx,rvtx,True
 
 def detect_lines(img):
-        rate=2
-        img=cv2.resize(img,(img.shape[1]//rate,img.shape[0]//rate))
-        
+	rate=2
+	img=cv2.resize(img,(img.shape[1]//rate,img.shape[0]//rate))
+	
 	h,w=img.shape[:2]
 	showImage(img)
 	#import trans
@@ -261,13 +261,13 @@ def detect_lines(img):
 	
 	line_img,leftVtx,rightVtx,isDetected= hough_lines(roi_edges, rho, theta, threshold,
 												  min_line_length, max_line_gap,horizon_threshold)
-        for i in range(2):
-                leftVtx[i]=list(leftVtx[i])
-                rightVtx[i]=list(rightVtx[i])
-                for j in range(2):
-                        leftVtx[i][j]*=rate
-                        rightVtx[i][j]*=rate
-        
+	for i in range(2):
+		leftVtx[i]=list(leftVtx[i])
+		rightVtx[i]=list(rightVtx[i])
+		for j in range(2):
+			leftVtx[i][j]*=rate
+			rightVtx[i][j]*=rate
+	
 	if isDetected==False:
 		print('detect failed')
 		return 0,False,None,None
@@ -297,7 +297,7 @@ def detect_point(img, t = 0, lines = None): # t: current time
 	BOX_KSIZE_W = BOX_KSIZE_W_RADIUS * 2 + 1
 	BOX_KSIZE_H_RADIUS = int(45 / PYR_SCALE)  # Kernal height radius of boxFilter
 	BOX_KSIZE_H = BOX_KSIZE_H_RADIUS * 2 + 1
-	BOX_THRESHOLD = 0.5 # Threshold of boxFilter result
+	BOX_THRESHOLD = 0.4 # Threshold of boxFilter result
 	CENTER_THRESHOLD_RATIO_MAX = 1
 	CENTER_THRESHOLD_RATIO_MIN = 0.3
 	CENTER_THRESHOLD_RATIO_WIDTH = CENTER_THRESHOLD_RATIO_MAX - CENTER_THRESHOLD_RATIO_MIN
