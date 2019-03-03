@@ -87,7 +87,7 @@ def work(start, end):
 				break
 		start = data.vertices['u']
 
-while mqtt.not_connected:
+while mqtt.client.not_connected:
 	time.sleep(0)
 start = data.vertices['s']#=int(input())
 end = data.vertices['t']#=int(input())
