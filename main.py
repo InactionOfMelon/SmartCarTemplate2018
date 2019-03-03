@@ -42,7 +42,7 @@ def work(start, end):
 		pos = [sp.Point(p[start].x - dir[start].x, p[start].y - dir[start].y)]
 		for i in R:
 			#print(i,p[i].x,p[i].y)
-			pos.append(p[i])
+			pos.append((p[i], i))
 		
 		n = len(R)
 		count = 0
@@ -81,8 +81,8 @@ def work(start, end):
 					print('********Adjustment')
 					adjustment.work(handler)
 					time.sleep(0.5)
-			print('current:', 'expecting', pos[i], '; actually', data.vertices['u'])
-			if data.vertices['u'] != -1 and pos[i] != data.vertices['u']:
+			print('current:', 'expecting', R[i], '; actually', data.vertices['u'])
+			if data.vertices['u'] != -1 and R[i] != data.vertices['u']:
 				not_ended = True
 				break
 		start = data.vertices['u']
