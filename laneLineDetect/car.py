@@ -103,10 +103,11 @@ def right_turn(last_time):
 	stop()
 	
 def single_turn(deg):
-	last_time = float(deg) / 165
 	if deg > 0:
+		last_time = float(deg) / 180 + 0.1
 		left_turn(last_time)
 	else:
+		last_time = float(deg) / 165
 		right_turn(-last_time)
 def turn(deg):
 	if deg > 90:

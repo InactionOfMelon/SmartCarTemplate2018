@@ -74,68 +74,179 @@ def init_spfa(d, cnt, frm, inq):
 		cnt[i] = inf
 		frm[i] = 0
 		inq[i] = 0
-def init_graph(p, dis):
+def init_graph(p, dis, dir):
 	for i in range(1, 56):
 		for j in range(1, 56):
 			dis[i][j] = inf
 	for i in range(1, 56):
 		dis[i][i] = 0
 	p.append(Point(0, 0))
+	dir.append(Point(0, 0))
+	#1
 	p.append(Point(150, 150))
+	dir.append(Point(0, 10))
+	#2
 	p.append(Point(1150, 150))
+	dir.append(Point(0, 10))
+	#3
 	p.append(Point(2550, 150))
+	dir.append(Point(0, 10))
+	#4
 	p.append(Point(3200, 150))
+	dir.append(Point(0, 10))
+	#5
 	p.append(Point(4300, 150))
+	dir.append(Point(0, 10))
+	#6
 	p.append(Point(5850, 150))
+	dir.append(Point(0, 10))
+	#7
 	p.append(Point(150, 1000))
+	dir.append(Point(0, 10))
+	#8
 	p.append(Point(800, 1000))
+	dir.append(Point(-10, 0))
+	#9
 	p.append(Point(973, 900))
+	dir.append(Point(10, 0))
+	#10
 	p.append(Point(1150, 900))
+	dir.append(Point(0, 10))
+	#11
 	p.append(Point(1900, 900))
+	dir.append(Point(0, 10))
+	#12
 	p.append(Point(2550, 900))
+	dir.append(Point(0, 10))
+	#13
 	p.append(Point(3200, 900))
+	dir.append(Point(0, 10))
+	#14
 	p.append(Point(4300, 900))
+	dir.append(Point(0, 10))
+	#15
 	p.append(Point(5250, 900))
+	dir.append(Point(0, 10))
+	#16
 	p.append(Point(5850, 900))
+	dir.append(Point(-10, 0))
+	#17
 	p.append(Point(3200, 1550))
+	dir.append(Point(10, 0))
+	#18
 	p.append(Point(4300, 1550))
+	dir.append(Point(0, 10))
+	#19
 	p.append(Point(5250, 1550))
+	dir.append(Point(0, -10))
+	#20
 	p.append(Point(5850, 1550))
+	dir.append(Point(-10, 0))
+	#21
 	p.append(Point(150, 1950))
+	dir.append(Point(10, 0))
+	#22
 	p.append(Point(1150, 1950))
+	dir.append(Point(0, 10))
+	#23
 	p.append(Point(1900, 1950))
+	dir.append(Point(0, -10))
+	#24
 	p.append(Point(2550, 1950))
+	dir.append(Point(0, -10))
+	#25
 	p.append(Point(3200, 2250))
+	dir.append(Point(0, 10))
+	#26
 	p.append(Point(4300, 2250))
+	dir.append(Point(0, 10))
+	#27
 	p.append(Point(5850, 2250))
+	dir.append(Point(-10, 0))
+	#28
 	p.append(Point(150, 3250))
+	dir.append(Point(10, 0))
+	#29
 	p.append(Point(1150, 3250))
+	dir.append(Point(0, -10))
+	#30
 	p.append(Point(1800, 3250))
+	dir.append(Point(0, 10))
+	#31
 	p.append(Point(2450, 3250))
+	dir.append(Point(0, 10))
+	#32
 	p.append(Point(3200, 3250))
+	dir.append(Point(0, 10))
+	#33
 	p.append(Point(4300, 3250))
+	dir.append(Point(0, 10))
+	#34
 	p.append(Point(5850, 3250))
+	dir.append(Point(-10, 0))
+	#35
 	p.append(Point(0, 4100))
+	dir.append(Point(10, 0))
+	#36
 	p.append(Point(1800, 4100))
+	dir.append(Point(0, 10))
+	#37
 	p.append(Point(2450, 4100))
+	dir.append(Point(0, -10))
+	#38
 	p.append(Point(3200, 4100))
+	dir.append(Point(0, 10))
+	#39
 	p.append(Point(3750, 4100))
+	dir.append(Point(0, 10))
+	#40
 	p.append(Point(4300, 4100))
+	dir.append(Point(-10, 0))
+	#41
 	p.append(Point(1800, 5500))
+	dir.append(Point(10, 0))
+	#42
 	p.append(Point(2450, 5500))
+	dir.append(Point(0, -10))
+	#43
 	p.append(Point(2450, 5100))
+	dir.append(Point(0, 10))
+	#44
 	p.append(Point(3200, 5100))
+	dir.append(Point(0, 10))
+	#45
 	p.append(Point(3550, 4750))
+	dir.append(Point(10, 0))
+	#46
 	p.append(Point(3750, 4750))
+	dir.append(Point(0, 10))
+	#47
 	p.append(Point(4300, 4750))
+	dir.append(Point(-10, 0))
+	#48
 	p.append(Point(5850, 4750))
+	dir.append(Point(-10, 0))
+	#49
 	p.append(Point(4300, 5300))
+	dir.append(Point(10, 0))
+	#50
 	p.append(Point(5533, 5300))
+	dir.append(Point(-10, 0))
+	#51
 	p.append(Point(3200, 5500))
+	dir.append(Point(10, 10))
+	#52
 	p.append(Point(3550, 5850))
+	dir.append(Point(10, 0))
+	#53
 	p.append(Point(3750, 5850))
+	dir.append(Point(0, -10))
+	#54
 	p.append(Point(4300, 5850))
+	dir.append(Point(0, -10))
+	#55
 	p.append(Point(5215, 5850))
+	dir.append(Point(10, -10*math.sqrt(3)))
 	dis[1][2] = Length(Vector(p[1], p[2]))
 	dis[1][7] = Length(Vector(p[1], p[7]))
 	dis[2][1] = Length(Vector(p[2], p[1]))
@@ -156,8 +267,8 @@ def init_graph(p, dis):
 	dis[7][8] = Length(Vector(p[7], p[8]))
 	dis[7][21] = Length(Vector(p[7], p[21]))
 	dis[8][7] = Length(Vector(p[8], p[7]))
-	dis[8][9] = Length(Vector(p[8], p[9]))
-	dis[9][8] = Length(Vector(p[9], p[8]))
+	#dis[8][9] = Length(Vector(p[8], p[9]))
+	#dis[9][8] = Length(Vector(p[9], p[8]))
 	dis[9][10] = Length(Vector(p[9], p[10]))
 	dis[10][2] = Length(Vector(p[10], p[2]))
 	dis[10][9] = Length(Vector(p[10], p[9]))
@@ -235,7 +346,7 @@ def init_graph(p, dis):
 	dis[32][25] = Length(Vector(p[32], p[25]))
 	dis[32][31] = Length(Vector(p[32], p[31]))
 	dis[32][33] = Length(Vector(p[32], p[33]))
-	dis[32][38] = Length(Vector(p[32], p[38]))
+	#dis[32][38] = Length(Vector(p[32], p[38]))
 	dis[33][26] = Length(Vector(p[33], p[26]))
 	dis[33][32] = Length(Vector(p[33], p[32]))
 	dis[33][34] = Length(Vector(p[33], p[34]))

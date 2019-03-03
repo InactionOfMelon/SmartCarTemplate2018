@@ -31,7 +31,7 @@ def work(handler, Number):
 			elif cnt == 1:
 				car.set_speed(500)
 			else:
-				car.set_speed(400)
+				car.set_speed(430)
 			tmp = last_point
 			if Number > 0:
 				tmp=1e9

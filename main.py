@@ -21,13 +21,14 @@ car.set_pid_param(3,0,1)
 
 N = 60
 p = []
+dir = []
 dis = [[0 for col in range(N)] for row in range(N)]
 d = [0 for i in range(N)]
 cnt = [0 for i in range(N)]
 frm = [0 for i in range(N)]
 inq = [0 for i in range(N)]
 
-sp.init_graph(p, dis)
+sp.init_graph(p, dis, dir)
 sp.init_spfa(d, cnt, frm, inq)
 data = Data(dis)
 mqtt = MQTT(data)
@@ -38,7 +39,7 @@ def work(start, end):
 	while not_ended:
 		sp.init_spfa(d, cnt, frm, inq)
 		R = sp.spfa(start, end, d, p, inq, dis, frm, cnt)
-		pos = []
+		pos = [sp.Point(p[start].x - dir[start].x, p[start].y - dir[start].y)]
 		for i in R:
 			#print(i,p[i].x,p[i].y)
 			pos.append(p[i])
@@ -48,7 +49,7 @@ def work(start, end):
 		
 		print('Trip start!')
 		print(R)
-		Angle = sp.Turn(pos, 0)
+		Angle = sp.Turn(pos, 1)
 		if math.fabs(Angle) > 7:
 			print('********Turn',Angle)
 			car.turn(Angle)
@@ -62,7 +63,7 @@ def work(start, end):
 				count=0
 				not_ended = False
 			else:
-				Angle = sp.Turn(pos, i)
+				Angle = sp.Turn(pos, i+1)
 				if math.fabs(Angle) <= 7:
 					count+=1
 				else:
