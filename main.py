@@ -42,12 +42,13 @@ def work(start, end):
 		pos = [sp.Point(p[start].x - dir[start].x, p[start].y - dir[start].y)]
 		for i in R:
 			#print(i,p[i].x,p[i].y)
-			pos.append((p[i], i))
+			pos.append(p[i])
 		
 		n = len(R)
 		count = 0
 		
 		print('Trip start!')
+		print('start =', start, '; end =', end)
 		print(R)
 		Angle = sp.Turn(pos, 1)
 		if math.fabs(Angle) > 7:

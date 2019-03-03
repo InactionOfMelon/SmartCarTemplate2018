@@ -8,15 +8,15 @@ with open('/sys/class/net/wlan0/address') as f:
 print('mqtt: title:', title)
 
 topics = {
-	'task': title + 'task',
-	'command': title + 'command',
-	'position': title + 'position'
+	'task': title + 'task'
+,	'command': title + 'command'
+#,	'position': title + 'position'
 }
 
 mqtt.Client.not_connected = True
 class MQTT:
 	def task_dealer(self, msg):
-		self.data.vertices.update({'s': msg.payload[0], 't': msg.payload[1], 'u': msg.payload[0]})
+		self.data.vertices.update({'s': msg.payload[0], 't': msg.payload[1]})#, 'u': msg.payload[0]})
 	def command_dealer(self, msg):
 		if msg.payload[0] == 0x00:
 			self.data.status = 1
@@ -36,8 +36,8 @@ class MQTT:
 			self.task_dealer(msg)
 		elif msg.topic == topics['command']:
 			self.command_dealer(msg)
-		elif msg.topic == topics['position']:
-			self.position_dealer(msg)
+		#elif msg.topic == topics['position']:
+		#	self.position_dealer(msg)
 		#print("%s: %s" % (msg.topic, msg.payload))
 	def on_connect(self, client, userdata, flags, rc):
 		for key in topics:
