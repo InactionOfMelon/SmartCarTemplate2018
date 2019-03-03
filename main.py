@@ -87,10 +87,11 @@ def work(start, end):
 				break
 		start = data.vertices['u']
 
-if __name__ == '__main__':
-	start = data.vertices['s']=int(input())
-	end = data.vertices['t']=int(input())
-	try:
-		work(start, end)
-	except KeyboardInterrupt:
-		car.stop()
+while mqtt.not_connected:
+	time.sleep(0)
+start = data.vertices['s']#=int(input())
+end = data.vertices['t']#=int(input())
+try:
+	work(start, end)
+except KeyboardInterrupt:
+	car.stop()
