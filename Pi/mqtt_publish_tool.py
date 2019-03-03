@@ -1,14 +1,11 @@
 import paho.mqtt.client as mqtt
 import time
-import env
 
 def __str2int(val, default):
 	return default if val == '' else int(val)
-
+MQTT_CONNECT_ERROR = ("0: Connection successful", "1: Connection refused - incorrect protocol version", "2: Connection refused - invalid client identifier", "3: Connection refused - server unavailable", "4: Connection refused - bad username or password", "5: Connection refused - not authorised")
 def mqtt_on_connect(client, userdata, flags, rc):
-#	client.subscribe(env.MQTT_TOPIC_RCCONTROL)
-	client.subscribe(env.MQTT_TOPIC_STATUS)
-	print("rc %s" % (env.MQTT_CONNECT_ERROR[rc]))
+	print("rc %s" % (MQTT_CONNECT_ERROR[rc]))
 	if rc == 0:
 		client.not_connected = False
 	else:
@@ -20,14 +17,35 @@ def mqtt_on_message(client,	userdata, msg):
 
 mqtt.Client.not_connected = True
 client = mqtt.Client()
-client.username_pw_set(env.CLIENT_USERNAME, env.CLIENT_PASSWORD)
+client.username_pw_set('smartcar', 'smartcar')
 client.on_connect = mqtt_on_connect
 # client.on_message = mqtt_on_message
-client.connect(env.MQTT_BROKER)
+client.connect('mqtt.gycis.me', port = 1883)
 client.loop_start()
 while client.not_connected:
 	pass
 
+title = '/smartcar/dd0686/'
+topics = {
+	't': title + 'task'
+,	'c': title + 'command'
+#,	'p': title + 'position' 
+}
 while True:
-	text = input("publish: ")
-	client.publish(env.MQTT_TOPIC_RCCONTROL, text, 1)
+	print('Available topics:')
+	print('  t: task')
+	print('  c: command')
+	#print('  p: position')
+	topic = input("topic: ")
+	if topic in topics:
+		if topic == 't':
+			s = int(input('start: '))
+			t = int(input('end: '))
+			data = bytes([s, t])
+		elif topic == 'c':
+			print('0: start; 1: end; 2: error')
+			c = int(input('command: '))
+			data = bytes([c])
+		client.publish(topics[topic], data, 1)
+	else:
+		print('Invalid topic:', topic)

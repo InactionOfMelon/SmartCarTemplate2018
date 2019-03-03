@@ -46,7 +46,7 @@ class MQTT:
 		if rc == 0:
 			self.client.not_connected = False
 		else:
-			print('mqtt:', 'reconnecting...')
+			print('mqtt:', 'not connected, reconnecting...')
 	def __init__(self, data):
 		self.data = data
 		self.client = mqtt.Client()
@@ -54,10 +54,9 @@ class MQTT:
 		self.client.on_connect = self.on_connect
 		self.client.on_message = self.on_message
 		self.client.connect('mqtt.gycis.me', port = 1883)
-		if self.client.not_connected:
-			print('mqtt:','not connected')
-		else:
-			self.client.loop_start()
+		while self.client.not_connected:
+			pass
+		self.client.loop_start()
 
 def __str2int(val, default):
 	return default if val == '' else int(val)
