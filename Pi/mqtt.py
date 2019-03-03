@@ -49,13 +49,14 @@ class MQTT:
 			print('mqtt:', 'not connected, reconnecting...')
 	def __init__(self, data):
 		self.data = data
+		self.not_connected = True
 		self.client = mqtt.Client()
 		self.client.username_pw_set('smartcar', 'smartcar')
 		self.client.on_connect = self.on_connect
 		self.client.on_message = self.on_message
 		self.client.connect('mqtt.gycis.me', port = 1883)
 		while self.client.not_connected:
-			pass
+			print('mqtt: not connected')
 		self.client.loop_start()
 
 def __str2int(val, default):
