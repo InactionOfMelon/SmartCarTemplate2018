@@ -91,6 +91,8 @@ while mqtt.client.not_connected or data.vertices['s'] == -1:
 	time.sleep(0)
 start = data.vertices['s']#=int(input())
 end = data.vertices['t']#=int(input())
+while data.status == 0:
+	time.sleep(0)
 try:
 	work(start, end)
 except KeyboardInterrupt:
