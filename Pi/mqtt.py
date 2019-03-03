@@ -49,8 +49,8 @@ class MQTT:
 			print('mqtt:', 'reconnecting...')
 	def __init__(self, data):
 		self.data = data
-		self.client.not_connected = True
 		self.client = mqtt.Client()
+		self.client.not_connected = True
 		self.client.username_pw_set('smartcar', 'smartcar')
 		self.client.on_connect = self.on_connect
 		self.client.on_message = self.on_message
