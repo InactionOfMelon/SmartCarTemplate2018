@@ -29,13 +29,13 @@ title = '/smartcar/dd0686/'
 topics = {
 	't': title + 'task'
 ,	'c': title + 'command'
-#,	'p': title + 'position' 
+,	'p': title + 'position' 
 }
 while True:
 	print('Available topics:')
 	print('  t: task')
 	print('  c: command')
-	#print('  p: position')
+	print('  p: position')
 	topic = input("topic: ")
 	if topic in topics:
 		if topic == 't':
@@ -46,6 +46,10 @@ while True:
 			print('0: start; 1: end; 2: error')
 			c = int(input('command: '))
 			data = bytes([c])
+		elif topic == 'p':
+			u = int(input('current vertex: '))
+			v = 2 if u == 1 else 1
+			data = bytes([u, v, 0, 0, 0, 0, 0, 0])
 		client.publish(topics[topic], data, 1)
 	else:
 		print('Invalid topic:', topic)
